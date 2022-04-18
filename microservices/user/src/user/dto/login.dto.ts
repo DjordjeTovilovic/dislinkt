@@ -13,17 +13,10 @@ class UserDto {
   email: string;
 
   @IsNotEmpty()
-  @Length(1, 100)
-  username: string;
-
-  @IsNotEmpty()
   password: string;
-
-  bio?: string = null;
-  image?: string = null;
 }
 
-export class CreateUserDto {
+export class LoginDto {
   @IsObject()
   @ValidateNested()
   @Type(() => UserDto)

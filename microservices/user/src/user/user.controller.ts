@@ -18,10 +18,10 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  // @MessagePattern('findOneUser')
-  // findOne(@Payload() id: number) {
-  //   return this.userService.findOne(id);
-  // }
+  @GrpcMethod('UserService', 'FindByUsername')
+  async findByUsername(user) {
+    return await this.userService.findByUsername(user.username);
+  }
 
   // @MessagePattern('updateUser')
   // update(@Payload() updateUserDto: UpdateUserDto) {

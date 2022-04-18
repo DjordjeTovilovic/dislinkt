@@ -4,10 +4,23 @@ package user;
 
 service UserService {
   rpc FindAll (EmptyReq) returns (Users) {}
+  rpc FindByUsername (FindByUsernameReq) returns (User) {}
 }
 
 message EmptyReq {}
 
 message Users {
   string users = 1;
+}
+
+message FindByUsernameReq {
+  string username = 1;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string bio = 4;
+  string image = 5;
 }
