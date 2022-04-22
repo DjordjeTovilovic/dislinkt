@@ -1,5 +1,5 @@
 import { Node } from 'neo4j-driver';
-import { UserDto } from '../dto/user.dto';
+import { UserDto } from '../../protos/user.pb';
 
 export class User {
   constructor(private readonly node: Node) {}
@@ -10,20 +10,6 @@ export class User {
 
   getPassword(): string {
     return (<Record<string, any>>this.node.properties).password;
-  }
-
-  getClaims() {
-    const { username, email, bio, image } = <Record<string, any>>(
-      this.node.properties
-    );
-
-    return {
-      sub: username,
-      username,
-      email,
-      bio,
-      image: image || 'https://picsum.photos/200',
-    };
   }
 
   toJson(): UserDto {

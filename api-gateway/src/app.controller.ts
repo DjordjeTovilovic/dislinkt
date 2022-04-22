@@ -1,33 +1,43 @@
-import { Controller, Get, Inject, OnModuleInit, Param } from '@nestjs/common';
-import { ClientGrpc } from '@nestjs/microservices';
-import { Observable } from 'rxjs';
-
-interface UserService {
-  findAll(request: any): Observable<any>;
-  findByUsername(request: any): any;
-}
+import {
+  Controller,
+  Get,
+  Inject,
+  Logger,
+  OnModuleInit,
+  Param,
+} from '@nestjs/common';
+import { ClientGrpc, RpcException } from '@nestjs/microservices';
+import { catchError, lastValueFrom } from 'rxjs';
+import { UserServiceClient } from './protos/user.pb';
 
 @Controller()
 export class AppController implements OnModuleInit {
-  private userService: UserService;
+  private readonly logger = new Logger(AppController.name);
+
+  private userService: UserServiceClient;
 
   constructor(@Inject('USER_SERVICE') private userClient: ClientGrpc) {}
 
   onModuleInit() {
-    this.userService = this.userClient.getService<UserService>('UserService');
+    this.userService =
+      this.userClient.getService<UserServiceClient>('UserService');
   }
 
   @Get()
   findAll() {
+    this.logger.log('findAll.call');
     return this.userService.findAll({});
   }
 
   @Get('/:username')
   async getByUsername(@Param('username') username) {
-    const user = await this.userService
-      .findByUsername({ username })
-      .toPromise();
-
+    this.logger.log(`getByUsername.call#param username ${username}`);
+    const user = this.userService.findByUsername({ username }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+    this.logger.log('getByUsername.call#return', await lastValueFrom(user));
     return user;
   }
 }

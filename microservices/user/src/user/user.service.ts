@@ -1,20 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { status } from '@grpc/grpc-js';
+import { Injectable, Logger, UseFilters } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
 import { User } from './entity/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(private readonly neo4jService: Neo4jService) {}
+  private readonly logger = new Logger(UserService.name);
 
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
   findAll() {
-    return { users: `This action returns all user` };
+    return { users: `This action  all user` };
   }
 
   findOne(id: number) {
@@ -29,7 +31,7 @@ export class UserService {
     return `This action removes a #${id} user`;
   }
 
-  async findByUsername(username): Promise<UserDto | undefined> {
+  async findByUsername(username) {
     const res = await this.neo4jService.read(
       `
             MATCH (u:User {username: $username})
@@ -40,7 +42,13 @@ export class UserService {
       },
     );
 
-    if (res.records.length == 0) return undefined;
+    if (!res.records.length) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: 'User not found',
+      });
+    }
 
     const user = new User(res.records[0].get('u'));
     return user.toJson();

@@ -1,0 +1,22 @@
+{
+  "name": "dislinkt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "dev": "./scripts/dev.sh",
+    "lint": "./scripts/lint.sh",
+    "proto:generate": "./scripts/proto-generate.sh",
+    "proto:copy": "./scripts/proto-copy.sh",
+    "proto": "npm run proto:generate && npm run proto:copy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "nestjs-proto-gen-ts": "^1.0.20",
+    "ts-proto": "^1.110.4"
+  }
+}
