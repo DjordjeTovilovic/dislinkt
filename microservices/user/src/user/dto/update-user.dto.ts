@@ -1,7 +1,6 @@
-import { ValidateNested, IsNotEmpty, IsEmail } from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsEmail } from 'class-validator';
 
-class UpdatedUser {
+export class UpdateUserDto {
   @IsEmail()
   email?: string;
 
@@ -9,10 +8,4 @@ class UpdatedUser {
 
   bio?: string = null;
   image?: string = null;
-}
-
-export class UpdateUserDto {
-  @ValidateNested()
-  @Type(() => UpdatedUser)
-  user: UpdatedUser;
 }

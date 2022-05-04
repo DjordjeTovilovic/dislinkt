@@ -1,6 +1,7 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
+import { UserProto } from '../../protos/user.pb';
 
-export class UserDto {
+export class UserDto implements UserProto {
   @IsNotEmpty()
   id: string;
 
@@ -13,4 +14,6 @@ export class UserDto {
 
   bio?: string = null;
   image?: string = null;
+
+  password?: string = null;
 }

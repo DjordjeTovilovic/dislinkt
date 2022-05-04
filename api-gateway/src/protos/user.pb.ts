@@ -3,41 +3,50 @@ import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
+import { Metadata } from "@grpc/grpc-js";
 
 export const protobufPackage = "user";
 
-export interface EmptyReq {}
+export interface EmptyRequest {}
 
 export interface Users {
   users: string;
 }
 
-export interface FindByUsernameReq {
+export interface FindByUsernameRequest {
   username: string;
 }
 
-export interface UserDto {
-  id: string;
-  email: string;
-  username: string;
-  bio: string;
-  image: string;
+export interface UserProto {
+  id?: string | undefined;
+  email?: string | undefined;
+  username?: string | undefined;
+  bio?: string | undefined;
+  image?: string | undefined;
+  password?: string | undefined;
 }
 
 export const USER_PACKAGE_NAME = "user";
 
 export interface UserServiceClient {
-  findAll(request: EmptyReq): Observable<Users>;
+  findAll(request: EmptyRequest, metadata?: Metadata): Observable<Users>;
 
-  findByUsername(request: FindByUsernameReq): Observable<UserDto>;
+  findByUsername(
+    request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
 }
 
 export interface UserServiceController {
-  findAll(request: EmptyReq): Promise<Users> | Observable<Users> | Users;
+  findAll(
+    request: EmptyRequest,
+    metadata?: Metadata
+  ): Promise<Users> | Observable<Users> | Users;
 
   findByUsername(
-    request: FindByUsernameReq
-  ): Promise<UserDto> | Observable<UserDto> | UserDto;
+    request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
 }
 
 export function UserServiceControllerMethods() {

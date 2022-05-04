@@ -2,10 +2,11 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
+import { UserRepository } from './user.repository';
 
 @Module({
   controllers: [UserController],
-  providers: [UserService],
+  providers: [UserService, UserRepository],
 })
 export class UserModule implements OnModuleInit {
   constructor(private readonly neo4jService: Neo4jService) {}

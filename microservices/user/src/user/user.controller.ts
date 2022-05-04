@@ -1,14 +1,12 @@
 import { Controller, Logger } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import {
-  FindByUsernameReq,
-  Users,
+  EmptyRequest,
+  FindByUsernameRequest,
   UserServiceController,
   UserServiceControllerMethods,
 } from '../protos/user.pb';
-import { Observable } from 'rxjs';
+import { Metadata } from '@grpc/grpc-js';
 
 @Controller()
 //zbog ove annotacije ispod ne mora se stavljati @GrpcMethod('UserService', 'FindAll') anotacije iznad svake metode
@@ -24,12 +22,14 @@ export class UserController implements UserServiceController {
   // }
 
   // @GrpcMethod('UserService', 'FindAll')
-  findAll(): Users {
+  async findAll(emptyRequest: EmptyRequest, metadata: Metadata) {
+    this.logger.log('findAll.call');
+    // console.log(metadata.get('username')[0]);
     return this.userService.findAll();
   }
 
   // @GrpcMethod('UserService', 'FindByUsername')
-  async findByUsername(user: FindByUsernameReq) {
+  async findByUsername(user: FindByUsernameRequest, metadata: Metadata) {
     this.logger.log('findByUsername.call#param user', user);
     return this.userService.findByUsername(user.username);
   }

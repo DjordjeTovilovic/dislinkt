@@ -23,11 +23,29 @@ services:
       NEO4J_PASSWORD: "neo"
     restart: "on-failure"
 
+  auth:
+    image: "dislinkt:auth"
+    build:
+      context: "./microservices/auth"
+    expose:
+      - "50052"
+    depends_on:
+      - "neo"
+    networks:
+      - neo4j_net
+      - microservices
+    environment:
+      NODE_ENV: "test"
+      URL: "0.0.0.0"
+      PORT: "50052"
+      USER_SERVICE_URL: "user"
+      USER_SERVICE_PORT: "50051"
+    restart: "on-failure"
+
   api-gateway:
     image: "api-gateway:dev"
     build:
       context: "./api-gateway"
-    hostname: gateway
     ports:
       - "3000:3000"
     networks:
@@ -39,6 +57,8 @@ services:
       PORT: "3000"
       USER_SERVICE_URL: "user"
       USER_SERVICE_PORT: "50051"
+      AUTH_SERVICE_URL: "auth"
+      AUTH_SERVICE_PORT: "50052"
     restart: "on-failure"
 
   neo:
@@ -51,6 +71,7 @@ services:
     environment:
       - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
       - NEO4J_AUTH=neo4j/neo
+      # - NEO4JLABS_PLUGINS=["apoc"]
     networks:
       - neo4j_net
     restart: "on-failure"

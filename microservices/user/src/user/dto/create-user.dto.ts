@@ -1,13 +1,6 @@
-import {
-  IsNotEmpty,
-  IsEmail,
-  ValidateNested,
-  IsObject,
-  Length,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsNotEmpty, IsEmail, Length } from 'class-validator';
 
-class UserDto {
+export class CreateUserDto {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -21,11 +14,4 @@ class UserDto {
 
   bio?: string = null;
   image?: string = null;
-}
-
-export class CreateUserDto {
-  @IsObject()
-  @ValidateNested()
-  @Type(() => UserDto)
-  user: UserDto;
 }

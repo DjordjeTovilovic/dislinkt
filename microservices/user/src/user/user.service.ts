@@ -1,14 +1,14 @@
 import { status } from '@grpc/grpc-js';
-import { Injectable, Logger, UseFilters } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { Neo4jService } from 'nest-neo4j/dist';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entity/user.entity';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly neo4jService: Neo4jService) {}
+  constructor(private readonly userRepository: UserRepository) {}
   private readonly logger = new Logger(UserService.name);
 
   create(createUserDto: CreateUserDto) {
@@ -32,21 +32,13 @@ export class UserService {
   }
 
   async findByUsername(username) {
-    const res = await this.neo4jService.read(
-      `
-            MATCH (u:User {username: $username})
-            RETURN u
-        `,
-      {
-        username,
-      },
-    );
+    const res = await this.userRepository.findByUsername(username);
 
     if (!res.records.length) {
       this.logger.warn('User not found, throwing exception');
       throw new RpcException({
         code: status.NOT_FOUND,
-        message: 'User not found',
+        message: `User with username:${username} not found`,
       });
     }
 
