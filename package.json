@@ -4,12 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "./scripts/install.sh",
+    "install:win": ".\\scripts\\install.sh",
     "start:dev": "./scripts/dev.sh",
+    "start:dev:win": ".\\scripts\\dev.sh",
     "build": "./scripts/build.sh",
     "lint": "./scripts/lint.sh",
     "proto:generate": "./scripts/proto-generate.sh",
+    "proto:generate:win": ".\\scripts\\proto-generate.sh",
     "proto:copy": "./scripts/proto-copy.sh",
+    "proto:copy:win": ".\\scripts\\proto-copy.sh",
     "proto": "npm run proto:generate && npm run proto:copy",
+    "proto:win": "npm run proto:generate:win && npm run proto:copy:win",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
