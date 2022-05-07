@@ -61,6 +61,7 @@ export class PostRepository {
 `,
       {
         userId,
+        username,
       },
     );
 

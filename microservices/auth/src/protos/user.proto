@@ -5,6 +5,7 @@ package user;
 service UserService {
   rpc FindAll (EmptyRequest) returns (Users) {}
   rpc FindByUsername (FindByUsernameRequest) returns (UserProto) {}
+  rpc Create (CreateUserRequest) returns (UserProto) {}
 }
 
 message EmptyRequest {}
@@ -17,11 +18,19 @@ message FindByUsernameRequest {
   string username = 1;
 }
 
+message CreateUserRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string bio = 4;
+  string image = 5;
+}
+
 message UserProto {
-  optional string id = 1;
-  optional string email = 2;
-  optional string username = 3;
-  optional string bio = 4;
-  optional string image = 5;
-  optional string password = 6;
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string bio = 4;
+  string image = 5;
+  string password = 6;
 }

@@ -3,6 +3,9 @@ import { IsNotEmpty } from 'class-validator';
 
 export class PostDto implements PostProto {
   @IsNotEmpty()
+  id: string;
+
+  @IsNotEmpty()
   title: string;
 
   @IsNotEmpty()

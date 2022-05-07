@@ -12,8 +12,8 @@ export class UserDto implements UserProto {
   @IsNotEmpty()
   username: string;
 
-  bio?: string = null;
-  image?: string = null;
+  bio: string;
+  image: string;
 
-  password?: string = null;
+  password: string;
 }

@@ -12,6 +12,7 @@ import {
   AuthServiceClient,
   AUTH_SERVICE_NAME,
   LoginRequest,
+  RegistrationRequest,
 } from './protos/auth.pb';
 
 @Controller('auth')
@@ -28,7 +29,7 @@ export class AuthRestController implements OnModuleInit {
 
   @Post('/login')
   async login(@Body() loginRequest: LoginRequest) {
-    this.logger.log(`login.call#param username ${loginRequest}`);
+    this.logger.log('login.call#body loginRequest', loginRequest);
 
     const user = await lastValueFrom(
       this.authService.login(loginRequest).pipe(
@@ -40,6 +41,26 @@ export class AuthRestController implements OnModuleInit {
     );
 
     this.logger.log('login.call#return', user);
+    return user;
+  }
+
+  @Post('/registration')
+  async registration(@Body() registrationRequest: RegistrationRequest) {
+    this.logger.log(
+      'registration.call#body registrationRequest',
+      registrationRequest,
+    );
+
+    const user = await lastValueFrom(
+      this.authService.registration(registrationRequest).pipe(
+        catchError((e) => {
+          this.logger.log(e);
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('registration.call#return', user);
     return user;
   }
 }

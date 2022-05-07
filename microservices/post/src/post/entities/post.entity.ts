@@ -12,8 +12,9 @@ export class Post {
   ) {}
 
   toJson(): PostDto {
-    const { title, description, body } = this.post.properties;
+    const { id, title, description, body } = this.post.properties;
     return {
+      id,
       title,
       description,
       body,

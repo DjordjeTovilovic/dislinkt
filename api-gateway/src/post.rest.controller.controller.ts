@@ -37,7 +37,7 @@ export class PostRestController implements OnModuleInit {
   @UseGuards(AuthGuard)
   @Post()
   async create(@Req() req, @Body() createPostDto: CreatePostRequest) {
-    this.logger.log('REST.create.call#body createPostDto', createPostDto);
+    this.logger.log('create.call#body createPostDto', createPostDto);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
@@ -49,14 +49,14 @@ export class PostRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('REST.create.call#return post', post);
+    this.logger.log('create.call#return post', post);
     return post;
   }
 
   @UseGuards(AuthGuard)
-  @Get('/:userId')
+  @Get('/user/:userId')
   async findByUserId(@Req() req, @Param('userId') userId: string) {
-    this.logger.log('REST.create.call#param userId', userId);
+    this.logger.log('create.call#param userId', userId);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
@@ -68,7 +68,7 @@ export class PostRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('REST.findByUsername.call#return posts', posts);
+    this.logger.log('findByUsername.call#return posts', posts);
     return posts;
   }
 
@@ -79,31 +79,31 @@ export class PostRestController implements OnModuleInit {
     @Param('postId') postId: string,
     @Body() createCommentDto: CreateCommentRequest,
   ) {
-    this.logger.log(
-      'REST.comment.call#body createCommentDto',
-      createCommentDto,
-    );
+    this.logger.log('comment.call#body createCommentDto', createCommentDto);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
+    const createCommentRequest: CreateCommentRequest = {
+      postId,
+      body: createCommentDto.body,
+    };
+
     const comment = await lastValueFrom(
-      this.postService
-        .comment({ postId, body: createCommentDto.body }, metadata)
-        .pipe(
-          catchError((e) => {
-            throw new RpcException(e);
-          }),
-        ),
+      this.postService.comment(createCommentRequest, metadata).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
     );
 
-    this.logger.log('REST.comment.call#return comment', comment);
+    this.logger.log('comment.call#return comment', comment);
     return comment;
   }
 
   @UseGuards(AuthGuard)
   @Post('/:postId/like')
   async like(@Req() req, @Param('postId') postId: string) {
-    this.logger.log('REST.like.call#param postId', postId);
+    this.logger.log('like.call#param postId', postId);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
@@ -115,14 +115,14 @@ export class PostRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('REST.like.call#return like', like);
+    this.logger.log('like.call#return like', like);
     return like;
   }
 
   @UseGuards(AuthGuard)
   @Post('/:postId/dislike')
   async dislike(@Req() req, @Param('postId') postId: string) {
-    this.logger.log('REST.dislike.call#param postId', postId);
+    this.logger.log('dislike.call#param postId', postId);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
@@ -134,7 +134,7 @@ export class PostRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('REST.dislike.call#return dislike', dislike);
+    this.logger.log('dislike.call#return dislike', dislike);
     return dislike;
   }
 }

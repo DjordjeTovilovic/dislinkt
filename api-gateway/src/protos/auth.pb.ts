@@ -16,16 +16,24 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface RegistrationRequest {
+  username: string;
+  password: string;
+  email: string;
+  bio: string;
+  image: string;
+}
+
 export interface LoggedInRequest {
   token: string;
 }
 
 export interface LoggedInResponse {
   valid: boolean;
-  user: UserProto | undefined;
+  user: AuthUserProto | undefined;
 }
 
-export interface UserProto {
+export interface AuthUserProto {
   id: string;
   email: string;
   username: string;
@@ -39,6 +47,11 @@ export const AUTH_PACKAGE_NAME = "auth";
 export interface AuthServiceClient {
   login(request: LoginRequest, metadata?: Metadata): Observable<LoginResponse>;
 
+  registration(
+    request: RegistrationRequest,
+    metadata?: Metadata
+  ): Observable<AuthUserProto>;
+
   loggedIn(
     request: LoggedInRequest,
     metadata?: Metadata
@@ -51,6 +64,11 @@ export interface AuthServiceController {
     metadata?: Metadata
   ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
+  registration(
+    request: RegistrationRequest,
+    metadata?: Metadata
+  ): Promise<AuthUserProto> | Observable<AuthUserProto> | AuthUserProto;
+
   loggedIn(
     request: LoggedInRequest,
     metadata?: Metadata
@@ -62,7 +80,7 @@ export interface AuthServiceController {
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "loggedIn"];
+    const grpcMethods: string[] = ["login", "registration", "loggedIn"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,

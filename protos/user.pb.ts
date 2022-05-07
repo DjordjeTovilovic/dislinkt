@@ -17,13 +17,21 @@ export interface FindByUsernameRequest {
   username: string;
 }
 
+export interface CreateUserRequest {
+  username: string;
+  password: string;
+  email: string;
+  bio: string;
+  image: string;
+}
+
 export interface UserProto {
-  id?: string | undefined;
-  email?: string | undefined;
-  username?: string | undefined;
-  bio?: string | undefined;
-  image?: string | undefined;
-  password?: string | undefined;
+  id: string;
+  email: string;
+  username: string;
+  bio: string;
+  image: string;
+  password: string;
 }
 
 export const USER_PACKAGE_NAME = "user";
@@ -33,6 +41,11 @@ export interface UserServiceClient {
 
   findByUsername(
     request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  create(
+    request: CreateUserRequest,
     metadata?: Metadata
   ): Observable<UserProto>;
 }
@@ -47,11 +60,16 @@ export interface UserServiceController {
     request: FindByUsernameRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  create(
+    request: CreateUserRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
 }
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll", "findByUsername"];
+    const grpcMethods: string[] = ["findAll", "findByUsername", "create"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
