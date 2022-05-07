@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Login (LoginRequest) returns (LoginResponse) {}
+  rpc LoggedIn (LoggedInRequest) returns (LoggedInResponse) {}
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message LoggedInRequest {
+  string token = 1;
+}
+
+message LoggedInResponse {
+  bool valid = 1;
+  UserProto user = 2;
+}
+
+message UserProto {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string bio = 4;
+  string image = 5;
+  string password = 6;
+}

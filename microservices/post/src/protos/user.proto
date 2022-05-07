@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc FindAll (EmptyRequest) returns (Users) {}
+  rpc FindByUsername (FindByUsernameRequest) returns (UserProto) {}
+}
+
+message EmptyRequest {}
+
+message Users {
+  string users = 1;
+}
+
+message FindByUsernameRequest {
+  string username = 1;
+}
+
+message UserProto {
+  optional string id = 1;
+  optional string email = 2;
+  optional string username = 3;
+  optional string bio = 4;
+  optional string image = 5;
+  optional string password = 6;
+}

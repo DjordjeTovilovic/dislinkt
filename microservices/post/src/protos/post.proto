@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package post;
+
+service PostService {
+  rpc Create (CreatePostRequest) returns (PostProto) {}
+  rpc FindByUserId (FindByUserIdRequest) returns (PostProtoList) {}
+  rpc Comment (CreateCommentRequest) returns (CommentProto) {}
+  rpc Like (LikeRequest) returns (PostProto) {}
+  rpc Dislike (DislikeRequest) returns (PostProto) {}
+}
+
+message FindByUserIdRequest {
+  string userId = 1;
+}
+
+message PostProtoList {
+  repeated PostProto posts=1;
+}
+
+message CreatePostRequest {
+  string title = 1;
+  string description = 2;
+  string body = 3;
+}
+
+message CreateCommentRequest {
+  string postId = 1;
+  string body = 2;
+}
+
+message LikeRequest {
+  string postId = 1;
+}
+
+message DislikeRequest {
+  string postId = 1;
+}
+
+message CommentProto {
+  string body = 1;
+  string postId = 2;
+  string authorUsername = 3;
+}
+
+message PostProto {
+  string title = 1;
+  string description = 2;
+  string body = 3;
+  string authorUsername = 4;
+  int32 likeCount = 5;
+  bool liked = 6;
+  int32 dislikeCount = 7;
+  bool disliked = 8;
+}

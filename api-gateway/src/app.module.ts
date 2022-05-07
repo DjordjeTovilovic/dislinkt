@@ -9,6 +9,8 @@ import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from './protos/user.pb';
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from './protos/auth.pb';
 import { AuthRestController } from './auth.rest.controller';
 import { PassportModule } from '@nestjs/passport';
+import { PostRestController } from './post.rest.controller.controller';
+import { POST_PACKAGE_NAME, POST_SERVICE_NAME } from './protos/post.pb';
 
 @Module({
   imports: [
@@ -34,9 +36,19 @@ import { PassportModule } from '@nestjs/passport';
           protoPath: join(__dirname, './protos/auth.proto'),
         },
       },
+      {
+        name: POST_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          url: `${process.env.POST_SERVICE_URL}:${process.env.POST_SERVICE_PORT}`,
+          // url: '0.0.0.0:50053',
+          package: POST_PACKAGE_NAME,
+          protoPath: join(__dirname, './protos/post.proto'),
+        },
+      },
     ]),
   ],
-  controllers: [UserRestController, AuthRestController],
+  controllers: [UserRestController, AuthRestController, PostRestController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
