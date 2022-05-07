@@ -4,6 +4,7 @@ package auth;
 
 service AuthService {
   rpc Login (LoginRequest) returns (LoginResponse) {}
+  rpc Registration (RegistrationRequest) returns (AuthUserProto) {}
   rpc LoggedIn (LoggedInRequest) returns (LoggedInResponse) {}
 }
 
@@ -16,16 +17,24 @@ message LoginResponse {
   string token = 1;
 }
 
+message RegistrationRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string bio = 4;
+  string image = 5;
+}
+
 message LoggedInRequest {
   string token = 1;
 }
 
 message LoggedInResponse {
   bool valid = 1;
-  UserProto user = 2;
+  AuthUserProto user = 2;
 }
 
-message UserProto {
+message AuthUserProto {
   string id = 1;
   string email = 2;
   string username = 3;

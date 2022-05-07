@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsEmail, Length } from 'class-validator';
+import { CreateUserRequest } from '../../protos/user.pb';
 
-export class CreateUserDto {
+export class CreateUserDto implements CreateUserRequest {
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -12,6 +13,6 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  bio?: string = null;
-  image?: string = null;
+  bio: string;
+  image: string;
 }

@@ -1,20 +1,26 @@
 import { Metadata } from '@grpc/grpc-js';
 import {
+  Body,
   Controller,
   Get,
   Inject,
   Logger,
   OnModuleInit,
   Param,
+  Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AuthGuard } from './auth.guard';
-import { UserServiceClient, USER_SERVICE_NAME } from './protos/user.pb';
+import {
+  CreateUserRequest,
+  UserServiceClient,
+  USER_SERVICE_NAME,
+} from './protos/user.pb';
 
-@Controller('user')
+@Controller('users')
 export class UserRestController implements OnModuleInit {
   private readonly logger = new Logger(UserRestController.name);
 
@@ -43,7 +49,7 @@ export class UserRestController implements OnModuleInit {
 
   @Get('/:username')
   async getByUsername(@Param('username') username) {
-    this.logger.log(`getByUsername.call#param username ${username}`);
+    this.logger.log('getByUsername.call#param username', username);
 
     const user = await lastValueFrom(
       this.userService.findByUsername({ username }).pipe(
@@ -52,6 +58,7 @@ export class UserRestController implements OnModuleInit {
         }),
       ),
     );
+
     this.logger.log('getByUsername.call#return', user);
     return user;
   }

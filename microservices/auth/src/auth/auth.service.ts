@@ -1,19 +1,22 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
-import { compareSync } from 'bcrypt';
 import { catchError, lastValueFrom } from 'rxjs';
+import { EncryptionService } from '../encryption/encryption.service';
 import { LoginResponse } from '../protos/auth.pb';
 import { UserServiceClient, USER_SERVICE_NAME } from '../protos/user.pb';
-import { LoginDto } from './login.dto';
+import { LoginDto } from './dto/login.dto';
+import { RegistrationDto } from './dto/registration.dto';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
   private readonly logger = new Logger(AuthService.name);
   private userService: UserServiceClient;
+
   constructor(
     @Inject(USER_SERVICE_NAME) private userClient: ClientGrpc,
     private readonly jwtService: JwtService,
+    private readonly encryptionService: EncryptionService,
   ) {}
 
   onModuleInit() {
@@ -33,7 +36,7 @@ export class AuthService implements OnModuleInit {
       return { valid: true, user: res.user };
     } catch (e) {
       this.logger.log(e);
-      return { valid: false };
+      return { valid: false, user: null };
     }
   }
 
@@ -45,21 +48,36 @@ export class AuthService implements OnModuleInit {
         }),
       ),
     );
-    if (compareSync(password, user?.password)) {
+
+    if (this.encryptionService.compare(password, user?.password)) {
       return user;
     }
+
     return null;
   }
 
-  async login(loginRequest: LoginDto): Promise<LoginResponse> {
-    const user = await this.validateUser(
-      loginRequest.username,
-      loginRequest.password,
-    );
+  async login(loginDto: LoginDto): Promise<LoginResponse> {
+    const user = await this.validateUser(loginDto.username, loginDto.password);
     const token = this.createToken(user);
 
     return {
       token,
     };
+  }
+
+  async registration(registrationDto: RegistrationDto) {
+    registrationDto.password = await this.encryptionService.hash(
+      registrationDto.password,
+    );
+
+    const user = await lastValueFrom(
+      this.userService.create(registrationDto).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    return user;
   }
 }
