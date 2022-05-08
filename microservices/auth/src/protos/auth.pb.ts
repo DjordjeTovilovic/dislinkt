@@ -7,6 +7,12 @@ import { Metadata } from "@grpc/grpc-js";
 
 export const protobufPackage = "auth";
 
+export enum Gender {
+  MALE = 0,
+  FEMALE = 1,
+  UNRECOGNIZED = -1,
+}
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -22,6 +28,14 @@ export interface RegistrationRequest {
   email: string;
   bio: string;
   image: string;
+  phoneNumber: string;
+  birthday: string;
+  gender: Gender;
+  experiences: ExperienceProto[];
+  education: EducationProto[];
+  skills: SkillProto[];
+  interests: InterestProto[];
+  privateProfile: boolean;
 }
 
 export interface LoggedInRequest {
@@ -40,6 +54,41 @@ export interface AuthUserProto {
   bio: string;
   image: string;
   password: string;
+  phoneNumber: string;
+  birthday: string;
+  gender: Gender;
+  experiences: ExperienceProto[];
+  education: EducationProto[];
+  skills: SkillProto[];
+  interests: InterestProto[];
+  privateProfile: boolean;
+}
+
+export interface ExperienceProto {
+  id: string;
+  position: string;
+  company: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface EducationProto {
+  id: string;
+  institution: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface SkillProto {
+  id: string;
+  name: string;
+}
+
+export interface InterestProto {
+  id: string;
+  name: string;
 }
 
 export const AUTH_PACKAGE_NAME = "auth";

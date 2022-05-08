@@ -1,5 +1,12 @@
 import { IsNotEmpty, IsEmail, Length } from 'class-validator';
-import { CreateUserRequest } from '../../protos/user.pb';
+import {
+  CreateUserRequest,
+  EducationProto,
+  ExperienceProto,
+  Gender,
+  InterestProto,
+  SkillProto,
+} from '../../protos/user.pb';
 
 export class CreateUserDto implements CreateUserRequest {
   @IsNotEmpty()
@@ -15,4 +22,12 @@ export class CreateUserDto implements CreateUserRequest {
 
   bio: string;
   image: string;
+  gender: Gender;
+  phoneNumber: string;
+  birthday: string;
+  experiences: ExperienceProto[];
+  education: EducationProto[];
+  skills: SkillProto[];
+  interests: InterestProto[];
+  privateProfile: boolean;
 }

@@ -8,6 +8,7 @@ import {
   OnModuleInit,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -15,7 +16,7 @@ import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 import {
-  CreateUserRequest,
+  UpdateUserRequest,
   UserServiceClient,
   USER_SERVICE_NAME,
 } from './protos/user.pb';
@@ -33,23 +34,25 @@ export class UserRestController implements OnModuleInit {
       this.userClient.getService<UserServiceClient>(USER_SERVICE_NAME);
   }
 
-  @UseGuards(AuthGuard)
-  @Get()
-  async findAll(@Req() req) {
-    this.logger.log('findAll.call');
-    // Ove dvije linije ispod dodaju username u metapodatke koji se mogu slati microservisima
-    // Objekat req.user postoji samo ako se koristi AuthGuard za autentifikaciju, jer inace user nije ulogovan
-    // U microservisu se pristupa kao metadata.get('username')[0]
-    // Ubacite slobodno jos metapodataka u zahtjev kad god vam treba
-    const metadata = new Metadata();
-    metadata.add('user', req.user.username);
+  @Get('/:id')
+  async findById(@Param('id') id) {
+    this.logger.log('findById.call#param id', id);
 
-    return await lastValueFrom(this.userService.findAll({}, metadata));
+    const user = await lastValueFrom(
+      this.userService.findById({ id }).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
   }
 
-  @Get('/:username')
-  async getByUsername(@Param('username') username) {
-    this.logger.log('getByUsername.call#param username', username);
+  @Get('/username/:username')
+  async findByUsername(@Param('username') username) {
+    this.logger.log('findByUsername.call#param username', username);
 
     const user = await lastValueFrom(
       this.userService.findByUsername({ username }).pipe(
@@ -59,7 +62,36 @@ export class UserRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('getByUsername.call#return', user);
+    this.logger.log('findByUsername.call#return', user);
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:username/follow')
+  async follow(@Req() req, @Param('username') username) {
+    this.logger.log('follow.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.follow({ username }, metadata);
+
+    return user;
+  }
+
+  @Put('')
+  async update(@Body() updateUser: UpdateUserRequest) {
+    this.logger.log('update.call#body updateUser', updateUser);
+
+    const user = await lastValueFrom(
+      this.userService.update(updateUser).pipe(
+        catchError((e) => {
+          this.logger.log(e);
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('update.call#return', user);
     return user;
   }
 }

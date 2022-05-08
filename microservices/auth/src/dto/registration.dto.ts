@@ -2,29 +2,28 @@ import { IsEmail, IsNotEmpty } from 'class-validator';
 import {
   EducationProto,
   ExperienceProto,
-  Gender,
   InterestProto,
+  RegistrationRequest,
   SkillProto,
-  UserProto,
-} from '../../protos/user.pb';
+} from '../../protos/auth.pb';
+import { Gender } from '../../protos/user.pb';
 
-export class UserDto implements UserProto {
+export class RegistrationDto implements RegistrationRequest {
   @IsNotEmpty()
-  id: string;
+  username: string;
+
+  @IsNotEmpty()
+  password: string;
 
   @IsNotEmpty()
   @IsEmail()
   email: string;
-
-  @IsNotEmpty()
-  username: string;
 
   bio: string;
   image: string;
   gender: Gender;
   phoneNumber: string;
   birthday: string;
-  password: string;
   experiences: ExperienceProto[];
   education: EducationProto[];
   skills: SkillProto[];

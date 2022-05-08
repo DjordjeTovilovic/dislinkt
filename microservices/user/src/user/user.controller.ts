@@ -1,25 +1,27 @@
 import { Controller, Logger } from '@nestjs/common';
 import { UserService } from './user.service';
 import {
-  EmptyRequest,
+  FindByIdRequest,
   FindByUsernameRequest,
+  FollowRequest,
   UserServiceController,
   UserServiceControllerMethods,
 } from '../protos/user.pb';
 import { Metadata } from '@grpc/grpc-js';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller()
-//zbog ove annotacije ispod ne mora se stavljati @GrpcMethod('UserService', 'FindAll') anotacije iznad svake metode
+//zbog ove annotacije ispod ne mora se stavljati @GrpcMethod('UserService', 'FindById') anotacije iznad svake metode
 //generise se automatski iz proto fajla
 @UserServiceControllerMethods()
 export class UserController implements UserServiceController {
   constructor(private readonly userService: UserService) {}
   private readonly logger = new Logger(UserController.name);
 
-  // @GrpcMethod('UserService', 'FindAll')
-  async findAll(emptyRequest: EmptyRequest, metadata: Metadata) {
-    return this.userService.findAll();
+  // @GrpcMethod('UserService', 'FindById')
+  async findById(user: FindByIdRequest, metadata: Metadata) {
+    return this.userService.findById(user.id);
   }
 
   async findByUsername(user: FindByUsernameRequest, metadata: Metadata) {
@@ -28,5 +30,14 @@ export class UserController implements UserServiceController {
 
   async create(createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  async update(updateUserDto: UpdateUserDto) {
+    return this.userService.update(updateUserDto);
+  }
+
+  async follow(userToFollow: FollowRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.follow(userToFollow.username, username);
   }
 }
