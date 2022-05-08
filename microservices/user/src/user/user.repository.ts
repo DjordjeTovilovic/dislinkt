@@ -240,7 +240,7 @@ export class UserRepository {
             name: $name
           })
 
-          MERGE (u)-[a:INTERESTED_IN]->(s)
+          MERGE (u)-[a:INTERESTED_IN]->(i)
         
           RETURN i
           `,

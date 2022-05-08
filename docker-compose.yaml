@@ -40,10 +40,34 @@ services:
       PORT: "50052"
       USER_SERVICE_URL: "user"
       USER_SERVICE_PORT: "50051"
+      JWT_SECRET: mySecret
+      JWT_EXPIRES_IN: 30d
+    restart: "on-failure"
+
+  post:
+    image: "dislinkt:post"
+    build:
+      context: "./microservices/post"
+    expose:
+      - "50053"
+    depends_on:
+      - "neo"
+    networks:
+      - neo4j_net
+      - microservices
+    environment:
+      NODE_ENV: "test"
+      URL: "0.0.0.0"
+      PORT: "50053"
+      NEO4J_SCHEME: "bolt"
+      NEO4J_HOST: "neo"
+      NEO4J_PORT: "7687"
+      NEO4J_USERNAME: "neo4j"
+      NEO4J_PASSWORD: "neo"
     restart: "on-failure"
 
   api-gateway:
-    image: "api-gateway:dev"
+    image: "dislinkt:api-gateway"
     build:
       context: "./api-gateway"
     ports:
@@ -59,6 +83,8 @@ services:
       USER_SERVICE_PORT: "50051"
       AUTH_SERVICE_URL: "auth"
       AUTH_SERVICE_PORT: "50052"
+      POST_SERVICE_URL: "post"
+      POST_SERVICE_PORT: "50053"
     restart: "on-failure"
 
   neo:

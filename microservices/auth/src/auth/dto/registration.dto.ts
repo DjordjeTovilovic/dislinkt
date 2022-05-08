@@ -1,5 +1,12 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { RegistrationRequest } from '../../protos/auth.pb';
+import {
+  EducationProto,
+  ExperienceProto,
+  InterestProto,
+  RegistrationRequest,
+  SkillProto,
+  Gender,
+} from '../../protos/auth.pb';
 
 export class RegistrationDto implements RegistrationRequest {
   @IsNotEmpty()
@@ -12,9 +19,14 @@ export class RegistrationDto implements RegistrationRequest {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
   bio: string;
-
-  @IsNotEmpty()
   image: string;
+  gender: Gender;
+  phoneNumber: string;
+  birthday: string;
+  experiences: ExperienceProto[];
+  education: EducationProto[];
+  skills: SkillProto[];
+  interests: InterestProto[];
+  privateProfile: boolean;
 }
