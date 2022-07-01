@@ -1,0 +1,67 @@
+{
+	"info": {
+		"_postman_id": "6523fd8e-16ab-4960-9af7-2628c344a2fe",
+		"name": "auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"user3\",\n    \"password\": \"pass\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"b9\",\n    \"email\": \"b9@gmail.com\",\n    \"password\": \"pass\",\n    \"bio\": \"bio\",\n    \"image\": \"url\",\n    \"gender\": \"FEMALE\",\n    \"phoneNumber\": \"0632111355\",\n    \"birthday\": \"26.4.1996\",\n    \"privateProfile\": false,\n    \"education\": [\n        {\n            \"institution\": \"ftn\",\n            \"description\": \"master\",\n            \"startDate\": \"11/11/1998\",\n            \"endDate\": \"11/11/1999\"\n        }\n    ],\n    \"experiences\": [\n        {\n            \"position\": \"full stack medior\",\n            \"company\": \"vega\",\n            \"description\": \"opis\",\n            \"startDate\": \"11/11/1998\",\n            \"endDate\": \"11/11/1999\"\n        }\n    ],\n    \"skills\": [\n        {\n            \"name\": \"nodejs\"\n        },\n        {\n            \"name\": \"spring boot\"\n        },\n        {\n            \"name\": \"c#\"\n        }\n    ],\n    \"interests\": [\n        {\n            \"name\": \"basketball\"\n        },\n        {\n            \"name\": \"interest 2\"\n        },\n        {\n            \"name\": \"interest 3\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/auth/registration",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"registration"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

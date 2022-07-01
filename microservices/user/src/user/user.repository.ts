@@ -212,7 +212,7 @@ export class UserRepository {
             name: $name
           })
 
-          MERGE (u)-[a:HAS]->(s)
+          MERGE (u)-[a:HAS_SKILL]->(s)
         
           RETURN s
           `,

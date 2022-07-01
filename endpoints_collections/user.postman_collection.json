@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "16a77754-556d-4b43-8e4a-90980eea63cd",
+		"name": "user",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "username/:username",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/username/user4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"username",
+						"user4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "follow",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjE2YWE1MTUtNzRkNy00MGQzLThiMDAtMjk1MjQxMWMxNzEyIiwiZW1haWwiOiJlbWFpbDNAZ21hLmNvbSIsInVzZXJuYW1lIjoidXNlcjMiLCJiaW8iOiJiaW8iLCJpbWFnZSI6InVybCIsInBhc3N3b3JkIjoiJDJiJDEwJGlVNkk4TERraGZpdzhicWxrZFBHbXVVOWo0eHQwZEs0am12LjlYQ2NrVG50TFlRdjNsaFdxIn0sInN1YiI6IjYxNmFhNTE1LTc0ZDctNDBkMy04YjAwLTI5NTI0MTFjMTcxMiIsImlhdCI6MTY1MTkzNTM3MCwiZXhwIjoxNjU0NTI3MzcwfQ.-tj2HYCYfy4u4gsl8Y7UQsNc3z0iRZbbEOtjSbqQNf0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/user3/follow",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"user3",
+						"follow"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5007a696-dfb9-4059-91e5-cbeb7cf5434e\",\n    \"username\": \"b7\",\n    \"email\": \"b7@gmail.com\",\n    \"password\": \"pass\",\n    \"bio\": \"bioaaa\",\n    \"image\": \"url\",\n    \"gender\": \"FEMALE\",\n    \"phoneNumber\": \"0632111355\",\n    \"birthday\": \"26.4.1996\",\n    \"privateProfile\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": ":id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/5007a696-dfb9-4059-91e5-cbeb7cf5434e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"5007a696-dfb9-4059-91e5-cbeb7cf5434e"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
