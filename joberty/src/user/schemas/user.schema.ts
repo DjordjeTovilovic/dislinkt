@@ -3,7 +3,24 @@ import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({
+  toObject: {
+    virtuals: true,
+    transform: function (doc: any, ret: any) {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    },
+  },
+  toJSON: {
+    virtuals: true,
+    transform: function (doc: any, ret: any) {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    },
+  },
+})
 export class User {
   @Prop()
   username: string;
