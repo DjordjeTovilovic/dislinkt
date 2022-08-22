@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegistrationDto } from '../auth/dto/registration.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './schemas/user.schema';
 
@@ -9,8 +9,8 @@ import { User, UserDocument } from './schemas/user.schema';
 export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(createUserDto: CreateUserDto) {
-    const createdUser = new this.userModel(createUserDto);
+  create(registrationDto: RegistrationDto) {
+    const createdUser = new this.userModel(registrationDto);
     return createdUser.save();
   }
 
@@ -18,15 +18,19 @@ export class UserRepository {
     return this.userModel.find({});
   }
 
-  findOne(id: number) {
-    return this.userModel.find({ id });
+  findOne(id: string) {
+    return this.userModel.findOne({ id });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  findByUsername(username: string) {
+    return this.userModel.findOne({ username });
+  }
+
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.userModel.findOneAndUpdate({ id }, updateUserDto);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.userModel.findOneAndDelete({ id });
   }
 }
