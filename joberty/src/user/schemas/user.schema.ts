@@ -1,9 +1,27 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Role } from 'src/enums/role';
 
 export type UserDocument = User & Document;
 
-@Schema()
+@Schema({
+  toObject: {
+    virtuals: true,
+    transform: function (doc: any, ret: any) {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    },
+  },
+  toJSON: {
+    virtuals: true,
+    transform: function (doc: any, ret: any) {
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    },
+  },
+})
 export class User {
   @Prop()
   username: string;
@@ -25,6 +43,9 @@ export class User {
 
   @Prop()
   dislinktToken: string;
+
+  @Prop({ default: Role.User })
+  roles: Role[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

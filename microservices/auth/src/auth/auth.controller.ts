@@ -2,7 +2,9 @@ import { Controller, Logger } from '@nestjs/common';
 import {
   AuthServiceController,
   AuthServiceControllerMethods,
+  GenerateApiTokenRequest,
   LoggedInRequest,
+  ValidateApiTokenRequest,
 } from '../protos/auth.pb';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
@@ -24,5 +26,13 @@ export class AuthController implements AuthServiceController {
 
   async loggedIn(jwt: LoggedInRequest) {
     return this.authService.validateToken(jwt.token);
+  }
+
+  async generateApiToken(user: GenerateApiTokenRequest) {
+    return this.authService.generateApiToken(user.id);
+  }
+
+  async validateApiToken(token: ValidateApiTokenRequest) {
+    return this.authService.validateApiToken(token.apiToken);
   }
 }

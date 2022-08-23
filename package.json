@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "./scripts/install.sh",
+    "install:linux": "./scripts/install.sh",
     "install:win": ".\\scripts\\install.sh",
     "start:dev": "./scripts/dev.sh",
     "start:dev:win": ".\\scripts\\dev.sh",

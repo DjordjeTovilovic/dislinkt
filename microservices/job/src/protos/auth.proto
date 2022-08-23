@@ -1,0 +1,110 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Login (LoginRequest) returns (LoginResponse) {}
+  rpc Registration (RegistrationRequest) returns (AuthUserProto) {}
+  rpc LoggedIn (LoggedInRequest) returns (LoggedInResponse) {}
+  rpc GenerateApiToken (GenerateApiTokenRequest) returns (GenerateApiTokenResponse) {}
+  rpc ValidateApiToken (ValidateApiTokenRequest) returns (ValidateApiTokenResponse) {}
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message GenerateApiTokenRequest {
+  string id = 1;
+}
+
+message GenerateApiTokenResponse {
+  string apiToken = 1;
+}
+
+message ValidateApiTokenRequest {
+  string apiToken = 1;
+}
+
+message ValidateApiTokenResponse {
+  bool valid = 1;
+}
+
+message RegistrationRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string bio = 4;
+  string image = 5;
+  string phoneNumber = 6;
+  string birthday = 7;
+  Gender gender = 8;
+  repeated ExperienceProto experiences = 9;
+  repeated EducationProto education = 10;
+  repeated SkillProto skills = 11;
+  repeated InterestProto interests = 12;
+  bool privateProfile = 13;
+}
+
+message LoggedInRequest {
+  string token = 1;
+}
+
+message LoggedInResponse {
+  bool valid = 1;
+  AuthUserProto user = 2;
+}
+
+message AuthUserProto {
+  string id = 1;
+  string email = 2;
+  string username = 3;
+  string bio = 4;
+  string image = 5;
+  string password = 6;
+  string phoneNumber = 7;
+  string birthday = 8;
+  Gender gender = 9;
+  repeated ExperienceProto experiences = 10;
+  repeated EducationProto education = 11;
+  repeated SkillProto skills = 12;
+  repeated InterestProto interests = 13;
+  bool privateProfile = 14;
+}
+
+enum Gender{
+  MALE = 0;
+  FEMALE = 1;
+}
+
+message ExperienceProto {
+  string id = 1;
+  string position = 2;
+  string company = 3;
+  string description = 4;
+  string startDate = 5;
+  string endDate = 6;
+}
+
+message EducationProto {
+  string id = 1;
+  string institution = 2;
+  string description = 3;
+  string startDate = 4;
+  string endDate = 5;
+}
+
+message SkillProto {
+  string id = 1;
+  string name = 2;
+}
+
+message InterestProto {
+  string id = 1;
+  string name = 2;
+}

@@ -11,6 +11,8 @@ import { AuthRestController } from './auth.rest.controller';
 import { PassportModule } from '@nestjs/passport';
 import { PostRestController } from './post.rest.controller.controller';
 import { POST_PACKAGE_NAME, POST_SERVICE_NAME } from './protos/post.pb';
+import { JOB_PACKAGE_NAME, JOB_SERVICE_NAME } from './protos/job.pb';
+import { JobRestController } from './job.rest.controller.controller';
 
 @Module({
   imports: [
@@ -46,9 +48,24 @@ import { POST_PACKAGE_NAME, POST_SERVICE_NAME } from './protos/post.pb';
           protoPath: join(__dirname, './protos/post.proto'),
         },
       },
+      {
+        name: JOB_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          url: `${process.env.JOB_SERVICE_URL}:${process.env.JOB_SERVICE_PORT}`,
+          // url: '0.0.0.0:50054',
+          package: JOB_PACKAGE_NAME,
+          protoPath: join(__dirname, './protos/job.proto'),
+        },
+      },
     ]),
   ],
-  controllers: [UserRestController, AuthRestController, PostRestController],
+  controllers: [
+    UserRestController,
+    AuthRestController,
+    PostRestController,
+    JobRestController,
+  ],
   providers: [
     {
       provide: APP_INTERCEPTOR,
