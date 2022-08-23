@@ -9,10 +9,15 @@ import { USER_PACKAGE_NAME, USER_SERVICE_NAME } from './protos/user.pb';
 import { AUTH_PACKAGE_NAME, AUTH_SERVICE_NAME } from './protos/auth.pb';
 import { AuthRestController } from './auth.rest.controller';
 import { PassportModule } from '@nestjs/passport';
-import { PostRestController } from './post.rest.controller.controller';
+import { PostRestController } from './post.rest.controller';
 import { POST_PACKAGE_NAME, POST_SERVICE_NAME } from './protos/post.pb';
 import { JOB_PACKAGE_NAME, JOB_SERVICE_NAME } from './protos/job.pb';
-import { JobRestController } from './job.rest.controller.controller';
+import { JobRestController } from './job.rest.controller';
+import {
+  MESSAGING_PACKAGE_NAME,
+  MESSAGING_SERVICE_NAME,
+} from './protos/messaging.pb';
+import { MessagingRestController } from './messaging.rest.controller';
 
 @Module({
   imports: [
@@ -58,6 +63,16 @@ import { JobRestController } from './job.rest.controller.controller';
           protoPath: join(__dirname, './protos/job.proto'),
         },
       },
+      {
+        name: MESSAGING_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          url: `${process.env.MESSAGING_SERVICE_URL}:${process.env.MESSAGING_SERVICE_PORT}`,
+          // url: '0.0.0.0:50055',
+          package: MESSAGING_PACKAGE_NAME,
+          protoPath: join(__dirname, './protos/messaging.proto'),
+        },
+      },
     ]),
   ],
   controllers: [
@@ -65,6 +80,7 @@ import { JobRestController } from './job.rest.controller.controller';
     AuthRestController,
     PostRestController,
     JobRestController,
+    MessagingRestController,
   ],
   providers: [
     {

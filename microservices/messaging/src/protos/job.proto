@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package job;
+
+service JobService {
+  rpc FindAll (Empty) returns (LoginResponse) {}
+}
+
+message Empty {
+}
+
+message LoginResponse {
+  string token = 1;
+}
