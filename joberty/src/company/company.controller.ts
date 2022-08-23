@@ -14,6 +14,8 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { NewReviewDto } from './dto/new-review.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { NewJobOfferDto } from './dto/new-jobOffer.dto';
+import { Roles } from 'src/decorators/role';
+import { Role } from 'src/enums/role';
 
 @Controller('companies')
 export class CompanyController {
@@ -34,6 +36,7 @@ export class CompanyController {
     return this.companyService.findOne(companyId);
   }
 
+  @Roles(Role.Owner)
   @Patch(':companyId')
   update(
     @Param('companyId') companyId: string,
@@ -41,12 +44,11 @@ export class CompanyController {
   ) {
     return this.companyService.update(companyId, updateCompanyDto);
   }
-
+  @Roles(Role.Owner)
   @Delete(':companyId')
   remove(@Param('companyId') companyId: string) {
     return this.companyService.remove(companyId);
   }
-
   @Post(':companyId/jobs')
   addJobOffer(
     @Param('companyId') companyId: string,
