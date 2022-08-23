@@ -1,9 +1,10 @@
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
 import { EncryptionService } from '../encryption/encryption.service';
-import { LoginResponse } from '../protos/auth.pb';
+import { GenerateApiTokenResponse, LoginResponse } from '../protos/auth.pb';
 import { UserServiceClient, USER_SERVICE_NAME } from '../protos/user.pb';
 import { LoginDto } from './dto/login.dto';
 import { RegistrationDto } from './dto/registration.dto';
@@ -15,6 +16,7 @@ export class AuthService implements OnModuleInit {
 
   constructor(
     @Inject(USER_SERVICE_NAME) private userClient: ClientGrpc,
+    private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
     private readonly encryptionService: EncryptionService,
   ) {}
@@ -37,6 +39,28 @@ export class AuthService implements OnModuleInit {
     } catch (e) {
       this.logger.log(e);
       return { valid: false, user: null };
+    }
+  }
+
+  // Poseban secret key za ApiToken da se ne bi mogao koristiti za nista drugo
+  createJobertyApiToken(user: any): string {
+    const payload = { sub: user.id };
+    const apiToken = this.jwtService.sign(payload, {
+      secret: this.configService.get('API_TOKEN_SECRET'),
+      expiresIn: this.configService.get('API_TOKEN_EXPIRES_IN'),
+    });
+    return apiToken;
+  }
+
+  validateApiToken(apiToken: string) {
+    try {
+      this.jwtService.verify(apiToken, {
+        secret: this.configService.get('API_TOKEN_SECRET'),
+      });
+      return { valid: true };
+    } catch (e) {
+      this.logger.log(e);
+      return { valid: false };
     }
   }
 
@@ -79,5 +103,20 @@ export class AuthService implements OnModuleInit {
     );
 
     return user;
+  }
+
+  async generateApiToken(id: string): Promise<GenerateApiTokenResponse> {
+    const user = await lastValueFrom(
+      this.userService.findById({ id }).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+    const apiToken = this.createJobertyApiToken(user);
+
+    return {
+      apiToken,
+    };
   }
 }

@@ -5,14 +5,18 @@ import {
   Logger,
   OnModuleInit,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
+import { AuthGuard } from './auth.guard';
 import {
   AuthServiceClient,
   AUTH_SERVICE_NAME,
   LoginRequest,
   RegistrationRequest,
+  ValidateApiTokenRequest,
 } from './protos/auth.pb';
 
 @Controller('auth')
@@ -62,5 +66,41 @@ export class AuthRestController implements OnModuleInit {
 
     this.logger.log('registration.call#return', user);
     return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/token')
+  async generateApiToken(@Req() req) {
+    this.logger.log('generateApiToken.call#jwt id', req.user.id);
+
+    const apiToken = await lastValueFrom(
+      this.authService.generateApiToken({ id: req.user.id }).pipe(
+        catchError((e) => {
+          this.logger.log(e);
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    return apiToken;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/token/validate')
+  async validateApiToken(
+    @Body() validateApiTokenRequest: ValidateApiTokenRequest,
+  ) {
+    this.logger.log('validateApiToken.call#body', validateApiTokenRequest);
+
+    const apiToken = await lastValueFrom(
+      this.authService.validateApiToken(validateApiTokenRequest).pipe(
+        catchError((e) => {
+          this.logger.log(e);
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    return apiToken;
   }
 }

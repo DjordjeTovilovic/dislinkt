@@ -6,6 +6,8 @@ service AuthService {
   rpc Login (LoginRequest) returns (LoginResponse) {}
   rpc Registration (RegistrationRequest) returns (AuthUserProto) {}
   rpc LoggedIn (LoggedInRequest) returns (LoggedInResponse) {}
+  rpc GenerateApiToken (GenerateApiTokenRequest) returns (GenerateApiTokenResponse) {}
+  rpc ValidateApiToken (ValidateApiTokenRequest) returns (ValidateApiTokenResponse) {}
 }
 
 message LoginRequest {
@@ -15,6 +17,22 @@ message LoginRequest {
 
 message LoginResponse {
   string token = 1;
+}
+
+message GenerateApiTokenRequest {
+  string id = 1;
+}
+
+message GenerateApiTokenResponse {
+  string apiToken = 1;
+}
+
+message ValidateApiTokenRequest {
+  string apiToken = 1;
+}
+
+message ValidateApiTokenResponse {
+  bool valid = 1;
 }
 
 message RegistrationRequest {
