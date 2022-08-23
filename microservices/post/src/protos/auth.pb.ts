@@ -36,22 +36,6 @@ export interface ValidateApiTokenResponse {
   valid: boolean;
 }
 
-export interface RegistrationRequest {
-  username: string;
-  password: string;
-  email: string;
-  bio: string;
-  image: string;
-  phoneNumber: string;
-  birthday: string;
-  gender: Gender;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
-  privateProfile: boolean;
-}
-
 export interface LoggedInRequest {
   token: string;
 }
@@ -71,10 +55,18 @@ export interface AuthUserProto {
   phoneNumber: string;
   birthday: string;
   gender: Gender;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
+  privateProfile: boolean;
+}
+
+export interface RegistrationRequest {
+  username: string;
+  password: string;
+  email: string;
+  bio: string;
+  image: string;
+  phoneNumber: string;
+  birthday: string;
+  gender: Gender;
   privateProfile: boolean;
 }
 
