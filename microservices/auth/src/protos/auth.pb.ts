@@ -22,6 +22,22 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface GenerateApiTokenRequest {
+  id: string;
+}
+
+export interface GenerateApiTokenResponse {
+  apiToken: string;
+}
+
+export interface ValidateApiTokenRequest {
+  apiToken: string;
+}
+
+export interface ValidateApiTokenResponse {
+  valid: boolean;
+}
+
 export interface LoggedInRequest {
   token: string;
 }
@@ -97,6 +113,16 @@ export interface AuthServiceClient {
     request: LoggedInRequest,
     metadata?: Metadata
   ): Observable<LoggedInResponse>;
+
+  generateApiToken(
+    request: GenerateApiTokenRequest,
+    metadata?: Metadata
+  ): Observable<GenerateApiTokenResponse>;
+
+  validateApiToken(
+    request: ValidateApiTokenRequest,
+    metadata?: Metadata
+  ): Observable<ValidateApiTokenResponse>;
 }
 
 export interface AuthServiceController {
@@ -117,11 +143,33 @@ export interface AuthServiceController {
     | Promise<LoggedInResponse>
     | Observable<LoggedInResponse>
     | LoggedInResponse;
+
+  generateApiToken(
+    request: GenerateApiTokenRequest,
+    metadata?: Metadata
+  ):
+    | Promise<GenerateApiTokenResponse>
+    | Observable<GenerateApiTokenResponse>
+    | GenerateApiTokenResponse;
+
+  validateApiToken(
+    request: ValidateApiTokenRequest,
+    metadata?: Metadata
+  ):
+    | Promise<ValidateApiTokenResponse>
+    | Observable<ValidateApiTokenResponse>
+    | ValidateApiTokenResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["login", "registration", "loggedIn"];
+    const grpcMethods: string[] = [
+      "login",
+      "registration",
+      "loggedIn",
+      "generateApiToken",
+      "validateApiToken",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
