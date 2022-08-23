@@ -7,8 +7,23 @@ service UserService {
   rpc FindByUsername (FindByUsernameRequest) returns (UserProto) {}
   rpc Create (CreateUserRequest) returns (UserProto) {}
   rpc Follow (FollowRequest) returns (UserProto) {}
+  rpc Block (BlockRequest) returns (UserProto) {}
+  rpc Unblock (BlockRequest) returns (UserProto) {}
+  rpc AllBlockedUsers (Empty) returns (UsersProto) {}
+  rpc AllBlockedByUsers (Empty) returns (UsersProto) {}
   rpc Update (UpdateUserRequest) returns (UserProto) {}
+  rpc AddEducations (EducationUpdateList) returns (EducationUpdateList) {}
+  rpc RemoveEducations (EducationUpdateList) returns (EducationUpdateList) {}
+  rpc AddExperiences (ExperienceUpdateList) returns (ExperienceUpdateList) {}
+  rpc RemoveExperiences (ExperienceUpdateList) returns (ExperienceUpdateList) {}
+  rpc AddSkills (SkillUpdateList) returns (SkillUpdateList) {}
+  rpc RemoveSkills (SkillUpdateList) returns (SkillUpdateList) {}
+  rpc AddInterests (InterestUpdateList) returns (InterestUpdateList) {}
+  rpc RemoveInterests (InterestUpdateList) returns (InterestUpdateList) {}
 }
+
+message Empty {}
+
 
 message FindByIdRequest {
   string id = 1;
@@ -22,6 +37,10 @@ message FollowRequest {
   string username = 1;
 }
 
+message BlockRequest {
+  string username = 1;
+}
+
 message CreateUserRequest {
   string username = 1;
   string password = 2;
@@ -31,10 +50,6 @@ message CreateUserRequest {
   string phoneNumber = 6;
   string birthday = 7;
   Gender gender = 8;
-  repeated ExperienceProto experiences = 9;
-  repeated EducationProto education = 10;
-  repeated SkillProto skills = 11;
-  repeated InterestProto interests = 12;
   bool privateProfile = 13;
 }
 
@@ -48,11 +63,11 @@ message UserProto {
   string phoneNumber = 7;
   string birthday = 8;
   Gender gender = 9;
-  repeated ExperienceProto experiences = 10;
-  repeated EducationProto education = 11;
-  repeated SkillProto skills = 12;
-  repeated InterestProto interests = 13;
   bool privateProfile = 14;
+}
+
+message UsersProto {
+  repeated UserProto users = 1;
 }
 
 message UpdateUserRequest {
@@ -65,10 +80,6 @@ message UpdateUserRequest {
   string phoneNumber = 7;
   string birthday = 8;
   Gender gender = 9;
-  repeated ExperienceProto experiences = 10;
-  repeated EducationProto education = 11;
-  repeated SkillProto skills = 12;
-  repeated InterestProto interests = 13;
   bool privateProfile = 14;
 }
 
@@ -86,6 +97,18 @@ message ExperienceProto {
   string endDate = 6;
 }
 
+message WorkedProto {
+  string id = 1;
+  string position = 2;
+  string description = 3;
+  string startDate = 4;
+  string endDate = 5;
+}
+
+message ExperienceUpdateList {
+  repeated ExperienceProto experiences = 1;
+}
+
 message EducationProto {
   string id = 1;
   string institution = 2;
@@ -94,12 +117,31 @@ message EducationProto {
   string endDate = 5;
 }
 
+message AttendedProto {
+  string id = 1;
+  string description = 2;
+  string startDate = 3;
+  string endDate = 4;
+}
+
+message EducationUpdateList {
+  repeated EducationProto educations = 1;
+}
+
 message SkillProto {
   string id = 1;
   string name = 2;
 }
 
+message SkillUpdateList {
+  repeated SkillProto skills = 1;
+}
+
 message InterestProto {
   string id = 1;
   string name = 2;
+}
+
+message InterestUpdateList {
+  repeated InterestProto interests = 1;
 }

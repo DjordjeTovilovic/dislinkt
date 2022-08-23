@@ -1,7 +1,9 @@
+import { Metadata } from '@grpc/grpc-js';
 import { Controller, Logger } from '@nestjs/common';
-import { UserService } from './user.service';
 import {
+  BlockRequest,
   EducationUpdateList,
+  Empty,
   ExperienceUpdateList,
   FindByIdRequest,
   FindByUsernameRequest,
@@ -11,10 +13,9 @@ import {
   UserServiceController,
   UserServiceControllerMethods,
 } from '../protos/user.pb';
-import { Metadata } from '@grpc/grpc-js';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Observable } from 'rxjs';
+import { UserService } from './user.service';
 
 @Controller()
 //zbog ove annotacije ispod ne mora se stavljati @GrpcMethod('UserService', 'FindById') anotacije iznad svake metode
@@ -44,6 +45,26 @@ export class UserController implements UserServiceController {
   async follow(userToFollow: FollowRequest, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return this.userService.follow(userToFollow.username, username);
+  }
+
+  async block(userToFollow: BlockRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.block(userToFollow.username, username);
+  }
+
+  async unblock(userToFollow: BlockRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.unblock(userToFollow.username, username);
+  }
+
+  async allBlockedUsers(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allBlockedUsers(username);
+  }
+
+  async allBlockedByUsers(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allBlockedByUsers(username);
   }
 
   async addEducations(request: EducationUpdateList, metadata?: Metadata) {
