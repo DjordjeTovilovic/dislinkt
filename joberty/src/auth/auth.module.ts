@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
@@ -11,7 +11,7 @@ import { EncryptionService } from './encryption.service';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    UserModule,
+    forwardRef(() => UserModule),
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -26,5 +26,6 @@ import { EncryptionService } from './encryption.service';
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, EncryptionService],
+  exports: [AuthService],
 })
 export class AuthModule {}
