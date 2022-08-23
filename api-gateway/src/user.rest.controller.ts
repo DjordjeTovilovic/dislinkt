@@ -82,6 +82,54 @@ export class UserRestController implements OnModuleInit {
     return user;
   }
 
+  @UseGuards(AuthGuard)
+  @Post('/:username/block')
+  async block(@Req() req, @Param('username') username) {
+    this.logger.log('block.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.block({ username }, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:username/unblock')
+  async unblock(@Req() req, @Param('username') username) {
+    this.logger.log('unblock.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.unblock({ username }, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/blocked')
+  async allBlockedUsers(@Req() req) {
+    this.logger.log('allBlockedUsers#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allBlockedUsers(null, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/blockedBy')
+  async allBlockedByUsers(@Req() req) {
+    this.logger.log('allBlockedByUsers#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allBlockedByUsers(null, metadata);
+
+    return user;
+  }
+
   @Put('')
   async update(@Body() updateUser: UpdateUserRequest) {
     this.logger.log('update.call#body updateUser', updateUser);

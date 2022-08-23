@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserDto } from './dto/user.dto';
+import { UsersDto } from './dto/users.dto';
 import { Education } from './entity/education.entity';
 import { Experiences } from './entity/experiences.entity';
 import { Interests } from './entity/interests.entity';
@@ -66,6 +68,90 @@ export class UserRepository {
 
     const row = res.records[0];
     return new User(row.get('userToFollow')).toJson();
+  }
+
+  async block(usernameToBlock, username) {
+    const res = await this.neo4jService.write(
+      `
+      MATCH (userToBlock:User {username: $usernameToBlock})
+      MATCH (loggedInUser:User {username: $username})
+
+      MERGE (loggedInUser)-[b:BLOCKS]->(userToBlock)
+      ON CREATE SET b.createdAt = datetime()
+
+      RETURN userToBlock
+      `,
+      {
+        usernameToBlock,
+        username,
+      },
+    );
+
+    if (!res.records.length) return null;
+
+    const row = res.records[0];
+    return new User(row.get('userToBlock')).toJson();
+  }
+
+  async unblock(usernameToUnblock, username) {
+    const res = await this.neo4jService.write(
+      `
+      
+      MATCH (loggedInUser:User {username: $username})-[b:BLOCKS]-
+      (userToUnblock:User {username: $usernameToUnblock})
+
+      DELETE b
+
+      RETURN userToUnblock
+      `,
+      {
+        usernameToUnblock,
+        username,
+      },
+    );
+
+    if (!res.records.length) return null;
+
+    const row = res.records[0];
+    return new User(row.get('userToUnblock')).toJson();
+  }
+
+  async allBlockedUsers(username) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {username: $username}) - [b:BLOCKS] -> (blockedUser:User)
+          RETURN blockedUser
+      `,
+      {
+        username,
+      },
+    );
+    let users = [];
+    res.records.forEach(
+      (record) => (users = users.concat(record.get('blockedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
+  }
+
+  async allBlockedByUsers(username) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {username: $username}) <- [b:BLOCKS] - (blockingUser:User)
+          RETURN blockingUser
+      `,
+      {
+        username,
+      },
+    );
+    let users = [];
+    res.records.forEach(
+      (record) => (users = users.concat(record.get('blockingUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
   }
 
   async create(user: CreateUserDto) {

@@ -68,6 +68,53 @@ export class UserService {
     return user;
   }
 
+  async block(usernameToBlock, username) {
+    const user = await this.userRepository.block(usernameToBlock, username);
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToBlock} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async unblock(usernameToBlock, username) {
+    const user = await this.userRepository.unblock(usernameToBlock, username);
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToBlock} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async allBlockedUsers(username) {
+    const users = await this.userRepository.allBlockedUsers(username);
+
+    if (!users) {
+      this.logger.warn('No users blocked');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} has no blocked users`,
+      });
+    }
+
+    return users;
+  }
+
+  async allBlockedByUsers(username) {
+    const users = await this.userRepository.allBlockedByUsers(username);
+    return users;
+  }
+
   async addEducations(request: EducationUpdateList, username) {
     const user = {
       username: username,

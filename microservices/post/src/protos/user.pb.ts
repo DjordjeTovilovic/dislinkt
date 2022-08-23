@@ -1,7 +1,9 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import { Metadata } from "@grpc/grpc-js";
+import * as Long from "long";
+import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
+import { Metadata } from "@grpc/grpc-js";
 
 export const protobufPackage = "user";
 
@@ -22,6 +24,10 @@ export interface FindByUsernameRequest {
 }
 
 export interface FollowRequest {
+  username: string;
+}
+
+export interface BlockRequest {
   username: string;
 }
 
@@ -48,6 +54,10 @@ export interface UserProto {
   birthday: string;
   gender: Gender;
   privateProfile: boolean;
+}
+
+export interface UsersProto {
+  users: UserProto[];
 }
 
 export interface UpdateUserRequest {
@@ -141,6 +151,17 @@ export interface UserServiceClient {
 
   follow(request: FollowRequest, metadata?: Metadata): Observable<UserProto>;
 
+  block(request: BlockRequest, metadata?: Metadata): Observable<UserProto>;
+
+  unblock(request: BlockRequest, metadata?: Metadata): Observable<UserProto>;
+
+  allBlockedUsers(request: Empty, metadata?: Metadata): Observable<UsersProto>;
+
+  allBlockedByUsers(
+    request: Empty,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
   update(
     request: UpdateUserRequest,
     metadata?: Metadata
@@ -207,6 +228,26 @@ export interface UserServiceController {
     request: FollowRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  block(
+    request: BlockRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  unblock(
+    request: BlockRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  allBlockedUsers(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  allBlockedByUsers(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
 
   update(
     request: UpdateUserRequest,
@@ -279,6 +320,10 @@ export function UserServiceControllerMethods() {
       "findByUsername",
       "create",
       "follow",
+      "block",
+      "unblock",
+      "allBlockedUsers",
+      "allBlockedByUsers",
       "update",
       "addEducations",
       "removeEducations",
@@ -316,3 +361,10 @@ export function UserServiceControllerMethods() {
 }
 
 export const USER_SERVICE_NAME = "UserService";
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
