@@ -2,18 +2,18 @@ import { Node } from 'neo4j-driver';
 import { EducationProto } from '../../protos/user.pb';
 
 export class Education {
-  educationList: Node[] = [];
+  educationsList: Node[] = [];
 
   add(element) {
-    this.educationList.push(element);
+    this.educationsList.push(element);
   }
 
   toJson() {
-    const educationListJson: EducationProto[] = [];
-    this.educationList.forEach((education) => {
+    const educationsListJson: EducationProto[] = [];
+    this.educationsList.forEach((educations) => {
       const { id, institution, description, startDate, endDate } =
-        education.properties;
-      educationListJson.push({
+        educations.properties;
+      educationsListJson.push({
         id,
         institution,
         description,
@@ -22,6 +22,6 @@ export class Education {
       });
     });
 
-    return educationListJson;
+    return educationsListJson;
   }
 }

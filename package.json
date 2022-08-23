@@ -11,7 +11,7 @@
     "build": "./scripts/build.sh",
     "lint": "./scripts/lint.sh",
     "proto:generate": "./scripts/proto-generate.sh",
-    "proto:generate:win": ".\\scripts\\proto-generate.sh",
+    "proto:generate:win": ".\\scripts\\proto-generate-win.sh",
     "proto:copy": "./scripts/proto-copy.sh",
     "proto:copy:win": ".\\scripts\\proto-copy.sh",
     "proto": "npm run proto:generate && npm run proto:copy",

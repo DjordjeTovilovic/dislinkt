@@ -13,6 +13,8 @@ export enum Gender {
   UNRECOGNIZED = -1,
 }
 
+export interface Empty {}
+
 export interface FindByIdRequest {
   id: string;
 }
@@ -34,10 +36,6 @@ export interface CreateUserRequest {
   phoneNumber: string;
   birthday: string;
   gender: Gender;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
   privateProfile: boolean;
 }
 
@@ -51,10 +49,6 @@ export interface UserProto {
   phoneNumber: string;
   birthday: string;
   gender: Gender;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
   privateProfile: boolean;
 }
 
@@ -68,10 +62,6 @@ export interface UpdateUserRequest {
   phoneNumber: string;
   birthday: string;
   gender: Gender;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
   privateProfile: boolean;
 }
 
@@ -84,6 +74,18 @@ export interface ExperienceProto {
   endDate: string;
 }
 
+export interface WorkedProto {
+  id: string;
+  position: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface ExperienceUpdateList {
+  experiences: ExperienceProto[];
+}
+
 export interface EducationProto {
   id: string;
   institution: string;
@@ -92,14 +94,33 @@ export interface EducationProto {
   endDate: string;
 }
 
+export interface AttendedProto {
+  id: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+}
+
+export interface EducationUpdateList {
+  educations: EducationProto[];
+}
+
 export interface SkillProto {
   id: string;
   name: string;
 }
 
+export interface SkillUpdateList {
+  skills: SkillProto[];
+}
+
 export interface InterestProto {
   id: string;
   name: string;
+}
+
+export interface InterestUpdateList {
+  interests: InterestProto[];
 }
 
 export const USER_PACKAGE_NAME = "user";
@@ -126,6 +147,46 @@ export interface UserServiceClient {
     request: UpdateUserRequest,
     metadata?: Metadata
   ): Observable<UserProto>;
+
+  addEducations(
+    request: EducationUpdateList,
+    metadata?: Metadata
+  ): Observable<EducationUpdateList>;
+
+  removeEducations(
+    request: EducationUpdateList,
+    metadata?: Metadata
+  ): Observable<EducationUpdateList>;
+
+  addExperiences(
+    request: ExperienceUpdateList,
+    metadata?: Metadata
+  ): Observable<ExperienceUpdateList>;
+
+  removeExperiences(
+    request: ExperienceUpdateList,
+    metadata?: Metadata
+  ): Observable<ExperienceUpdateList>;
+
+  addSkills(
+    request: SkillUpdateList,
+    metadata?: Metadata
+  ): Observable<SkillUpdateList>;
+
+  removeSkills(
+    request: SkillUpdateList,
+    metadata?: Metadata
+  ): Observable<SkillUpdateList>;
+
+  addInterests(
+    request: InterestUpdateList,
+    metadata?: Metadata
+  ): Observable<InterestUpdateList>;
+
+  removeInterests(
+    request: InterestUpdateList,
+    metadata?: Metadata
+  ): Observable<InterestUpdateList>;
 }
 
 export interface UserServiceController {
@@ -153,6 +214,64 @@ export interface UserServiceController {
     request: UpdateUserRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  addEducations(
+    request: EducationUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<EducationUpdateList>
+    | Observable<EducationUpdateList>
+    | EducationUpdateList;
+
+  removeEducations(
+    request: EducationUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<EducationUpdateList>
+    | Observable<EducationUpdateList>
+    | EducationUpdateList;
+
+  addExperiences(
+    request: ExperienceUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<ExperienceUpdateList>
+    | Observable<ExperienceUpdateList>
+    | ExperienceUpdateList;
+
+  removeExperiences(
+    request: ExperienceUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<ExperienceUpdateList>
+    | Observable<ExperienceUpdateList>
+    | ExperienceUpdateList;
+
+  addSkills(
+    request: SkillUpdateList,
+    metadata?: Metadata
+  ): Promise<SkillUpdateList> | Observable<SkillUpdateList> | SkillUpdateList;
+
+  removeSkills(
+    request: SkillUpdateList,
+    metadata?: Metadata
+  ): Promise<SkillUpdateList> | Observable<SkillUpdateList> | SkillUpdateList;
+
+  addInterests(
+    request: InterestUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<InterestUpdateList>
+    | Observable<InterestUpdateList>
+    | InterestUpdateList;
+
+  removeInterests(
+    request: InterestUpdateList,
+    metadata?: Metadata
+  ):
+    | Promise<InterestUpdateList>
+    | Observable<InterestUpdateList>
+    | InterestUpdateList;
 }
 
 export function UserServiceControllerMethods() {
@@ -163,6 +282,14 @@ export function UserServiceControllerMethods() {
       "create",
       "follow",
       "update",
+      "addEducations",
+      "removeEducations",
+      "addExperiences",
+      "removeExperiences",
+      "addSkills",
+      "removeSkills",
+      "addInterests",
+      "removeInterests",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(

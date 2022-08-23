@@ -1,6 +1,12 @@
 import { status } from '@grpc/grpc-js';
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
+import {
+  EducationUpdateList,
+  ExperienceUpdateList,
+  InterestUpdateList,
+  SkillUpdateList,
+} from 'src/protos/user.pb';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
@@ -60,5 +66,101 @@ export class UserService {
     }
 
     return user;
+  }
+
+  async addEducations(request: EducationUpdateList, username) {
+    const user = {
+      username: username,
+      education: request.educations,
+    };
+
+    const edus = {
+      educations: (await this.userRepository.addEducations(user)).toJson(),
+    };
+
+    return edus;
+  }
+
+  async removeEducations(request: EducationUpdateList, username) {
+    const user = {
+      username: username,
+      education: request.educations,
+    };
+    const edus = {
+      educations: (await this.userRepository.removeEducations(user)).toJson(),
+    };
+    return edus;
+  }
+
+  async addExperiences(request: ExperienceUpdateList, username) {
+    const user = {
+      username: username,
+      experience: request.experiences,
+    };
+
+    const exps = {
+      experiences: (await this.userRepository.addExperiences(user)).toJson(),
+    };
+
+    return exps;
+  }
+
+  async removeExperiences(request: ExperienceUpdateList, username) {
+    const user = {
+      username: username,
+      experience: request.experiences,
+    };
+    const exps = {
+      experiences: (await this.userRepository.removeExperiences(user)).toJson(),
+    };
+    return exps;
+  }
+
+  async addSkills(request: SkillUpdateList, username) {
+    const user = {
+      username: username,
+      skills: request.skills,
+    };
+
+    const skills = {
+      skills: (await this.userRepository.addSkills(user)).toJson(),
+    };
+
+    return skills;
+  }
+
+  async removeSkills(request: SkillUpdateList, username) {
+    const user = {
+      username: username,
+      skills: request.skills,
+    };
+    const skills = {
+      skills: (await this.userRepository.removeSkills(user)).toJson(),
+    };
+    return skills;
+  }
+
+  async addInterests(request: InterestUpdateList, username) {
+    const user = {
+      username: username,
+      interests: request.interests,
+    };
+
+    const ints = {
+      interests: (await this.userRepository.addInterests(user)).toJson(),
+    };
+
+    return ints;
+  }
+
+  async removeInterests(request: InterestUpdateList, username) {
+    const user = {
+      username: username,
+      interests: request.interests,
+    };
+    const ints = {
+      interests: (await this.userRepository.removeInterests(user)).toJson(),
+    };
+    return ints;
   }
 }
