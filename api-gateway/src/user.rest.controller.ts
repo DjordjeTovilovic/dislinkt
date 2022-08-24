@@ -83,6 +83,111 @@ export class UserRestController implements OnModuleInit {
   }
 
   @UseGuards(AuthGuard)
+  @Post('/:username/unfollow')
+  async unfollow(@Req() req, @Param('username') username) {
+    this.logger.log('unfollow.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.unfollow({ username }, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:username/approveFollow')
+  async approveFollowRequest(@Req() req, @Param('username') username) {
+    this.logger.log('approveFollowRequest.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.approveFollowRequest(
+      { username },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:username/declineFollow')
+  async declineFollowRequest(@Req() req, @Param('username') username) {
+    this.logger.log('declineFollowRequest.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.declineFollowRequest(
+      { username },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('/:username/deleteFollow')
+  async deleteFollowRequest(@Req() req, @Param('username') username) {
+    this.logger.log('deleteFollowRequest.call#param username', username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.deleteFollowRequest(
+      { username },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/following')
+  async allFollowing(@Req() req) {
+    this.logger.log('allFollowing#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allFollowing(null, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/followers')
+  async allFollowers(@Req() req) {
+    this.logger.log('allFollowers#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allFollowers(null, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/followingRequests')
+  async allFollowingRequests(@Req() req) {
+    this.logger.log('allFollowingRequests#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allFollowingRequests(null, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/followerRequests')
+  async allFollowerRequests(@Req() req) {
+    this.logger.log('allFollowerRequests#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.allFollowerRequests(null, metadata);
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
   @Post('/:username/block')
   async block(@Req() req, @Param('username') username) {
     this.logger.log('block.call#param username', username);

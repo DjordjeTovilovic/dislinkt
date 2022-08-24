@@ -10,10 +10,14 @@ import {
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './user.repository';
+import { BlockFollowRepository } from './blockFollow.repository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly blockFollowRepository: BlockFollowRepository,
+  ) {}
   private readonly logger = new Logger(UserService.name);
 
   async create(createUserDto: CreateUserDto) {
@@ -55,7 +59,10 @@ export class UserService {
   }
 
   async follow(usernameToFollow, username) {
-    const user = await this.userRepository.follow(usernameToFollow, username);
+    const user = await this.blockFollowRepository.follow(
+      usernameToFollow,
+      username,
+    );
 
     if (!user) {
       this.logger.warn('User not found, throwing exception');
@@ -68,8 +75,138 @@ export class UserService {
     return user;
   }
 
+  async unfollow(usernameToUnfollow, username) {
+    const user = await this.blockFollowRepository.unfollow(
+      usernameToUnfollow,
+      username,
+    );
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToUnfollow} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async approveFollowRequest(usernameToUnfollow, username) {
+    const user = await this.blockFollowRepository.approveFollowRequest(
+      usernameToUnfollow,
+      username,
+    );
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToUnfollow} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async declineFollowRequest(usernameToUnfollow, username) {
+    const user = await this.blockFollowRepository.declineFollowRequest(
+      usernameToUnfollow,
+      username,
+    );
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToUnfollow} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async deleteFollowRequest(usernameToUnfollow, username) {
+    const user = await this.blockFollowRepository.deleteFollowRequest(
+      usernameToUnfollow,
+      username,
+    );
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${usernameToUnfollow} not found`,
+      });
+    }
+
+    return user;
+  }
+
+  async allFollowing(username) {
+    const users = await this.blockFollowRepository.allFollowing(username);
+
+    if (!users) {
+      this.logger.warn('No users following');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} has no following users`,
+      });
+    }
+
+    return users;
+  }
+
+  async allFollowers(username) {
+    const users = await this.blockFollowRepository.allFollowers(username);
+    if (!users) {
+      this.logger.warn('No users followers');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} has no followers users`,
+      });
+    }
+
+    return users;
+  }
+
+  async allFollowingRequests(username) {
+    const users = await this.blockFollowRepository.allFollowingRequests(
+      username,
+    );
+
+    if (!users) {
+      this.logger.warn('No users followingRequests');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} has no followingRequests users`,
+      });
+    }
+
+    return users;
+  }
+
+  async allFollowerRequests(username) {
+    const users = await this.blockFollowRepository.allFollowerRequests(
+      username,
+    );
+
+    if (!users) {
+      this.logger.warn('No users followerRequests');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} has no followerRequests users`,
+      });
+    }
+
+    return users;
+  }
+
   async block(usernameToBlock, username) {
-    const user = await this.userRepository.block(usernameToBlock, username);
+    const user = await this.blockFollowRepository.block(
+      usernameToBlock,
+      username,
+    );
 
     if (!user) {
       this.logger.warn('User not found, throwing exception');
@@ -83,7 +220,10 @@ export class UserService {
   }
 
   async unblock(usernameToBlock, username) {
-    const user = await this.userRepository.unblock(usernameToBlock, username);
+    const user = await this.blockFollowRepository.unblock(
+      usernameToBlock,
+      username,
+    );
 
     if (!user) {
       this.logger.warn('User not found, throwing exception');
@@ -97,7 +237,7 @@ export class UserService {
   }
 
   async allBlockedUsers(username) {
-    const users = await this.userRepository.allBlockedUsers(username);
+    const users = await this.blockFollowRepository.allBlockedUsers(username);
 
     if (!users) {
       this.logger.warn('No users blocked');
@@ -111,7 +251,7 @@ export class UserService {
   }
 
   async allBlockedByUsers(username) {
-    const users = await this.userRepository.allBlockedByUsers(username);
+    const users = await this.blockFollowRepository.allBlockedByUsers(username);
     return users;
   }
 

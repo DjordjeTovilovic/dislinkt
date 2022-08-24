@@ -151,6 +151,37 @@ export interface UserServiceClient {
 
   follow(request: FollowRequest, metadata?: Metadata): Observable<UserProto>;
 
+  unfollow(request: FollowRequest, metadata?: Metadata): Observable<UserProto>;
+
+  approveFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  declineFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  deleteFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  allFollowingRequests(
+    request: Empty,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  allFollowerRequests(
+    request: Empty,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  allFollowing(request: Empty, metadata?: Metadata): Observable<UsersProto>;
+
+  allFollowers(request: Empty, metadata?: Metadata): Observable<UsersProto>;
+
   block(request: BlockRequest, metadata?: Metadata): Observable<UserProto>;
 
   unblock(request: BlockRequest, metadata?: Metadata): Observable<UserProto>;
@@ -228,6 +259,46 @@ export interface UserServiceController {
     request: FollowRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  unfollow(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  approveFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  declineFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  deleteFollowRequest(
+    request: FollowRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  allFollowingRequests(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  allFollowerRequests(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  allFollowing(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  allFollowers(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
 
   block(
     request: BlockRequest,
@@ -320,6 +391,14 @@ export function UserServiceControllerMethods() {
       "findByUsername",
       "create",
       "follow",
+      "unfollow",
+      "approveFollowRequest",
+      "declineFollowRequest",
+      "deleteFollowRequest",
+      "allFollowingRequests",
+      "allFollowerRequests",
+      "allFollowing",
+      "allFollowers",
       "block",
       "unblock",
       "allBlockedUsers",

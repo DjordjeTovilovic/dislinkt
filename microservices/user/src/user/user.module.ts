@@ -3,10 +3,11 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { UserRepository } from './user.repository';
+import { BlockFollowRepository } from './blockFollow.repository';
 
 @Module({
   controllers: [UserController],
-  providers: [UserService, UserRepository],
+  providers: [UserService, UserRepository, BlockFollowRepository],
 })
 export class UserModule implements OnModuleInit {
   constructor(private readonly neo4jService: Neo4jService) {}
