@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UsersDto } from './dto/users.dto';
 import { Education } from './entity/education.entity';
 import { Experiences } from './entity/experiences.entity';
 import { Interests } from './entity/interests.entity';
@@ -102,6 +103,211 @@ export class UserRepository {
     const row = res.records[0];
 
     return new User(row.get('u')).toJson();
+  }
+
+  async recommendThroughMutualProfiles(skipNumber, username) {
+    let res;
+    if (skipNumber === 0)
+      res = await this.neo4jService.read(
+        `
+          MATCH (loggedInUser:User {username: $username})-[:FOLLOWS]->(commonUser:User)<-[:FOLLOWS]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonUser)
+          ORDER BY count(commonUser) desc
+          LIMIT 10
+        `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    else
+      res = await this.neo4jService.read(
+        `
+          MATCH (u:User {username: $username})-[:FOLLOWS]->(commonUser:User)<-[:FOLLOWS]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonUser)
+          ORDER BY count(commonUser)
+          SKIP $skipNumber
+          LIMIT 10
+      `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    let users = [];
+    res.records.forEach(
+      (record) =>
+        (users = users.concat(record.get('recommendedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
+  }
+
+  async recommendThroughSkills(skipNumber, username) {
+    let res;
+    if (skipNumber === 0)
+      res = await this.neo4jService.read(
+        `
+          MATCH (loggedInUser:User {username: $username})-[:HAS_SKILL]->(commonSkill:Skill)<-[:HAS_SKILL]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonSkill)
+          ORDER BY count(commonSkill) desc
+          LIMIT 10
+        `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    else
+      res = await this.neo4jService.read(
+        `
+          MATCH (u:User {username: $username})-[:HAS_SKILL]->(commonSkill:Skill)<-[:HAS_SKILL]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonSkill)
+          ORDER BY count(commonSkill)
+          SKIP $skipNumber
+          LIMIT 10
+      `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    let users = [];
+    res.records.forEach(
+      (record) =>
+        (users = users.concat(record.get('recommendedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
+  }
+
+  async recommendThroughInterests(skipNumber, username) {
+    let res;
+    if (skipNumber === 0)
+      res = await this.neo4jService.read(
+        `
+          MATCH (loggedInUser:User {username: $username})-[:INTERESTED_IN]->(commonInterest:Interest)<-[:INTERESTED_IN]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonInterest)
+          ORDER BY count(commonInterest) desc
+          LIMIT 10
+        `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    else
+      res = await this.neo4jService.read(
+        `
+          MATCH (u:User {username: $username})-[:INTERESTED_IN]->(commonInterest:Interest)<-[:INTERESTED_IN]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonInterest)
+          ORDER BY count(commonInterest)
+          SKIP $skipNumber
+          LIMIT 10
+      `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    let users = [];
+    res.records.forEach(
+      (record) =>
+        (users = users.concat(record.get('recommendedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
+  }
+
+  async recommendThroughEducation(skipNumber, username) {
+    let res;
+    if (skipNumber === 0)
+      res = await this.neo4jService.read(
+        `
+          MATCH (loggedInUser:User {username: $username})-[:ATTENDED]->(commonInstitution:Education)<-[:ATTENDED]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonInstitution)
+          ORDER BY count(commonInstitution) desc
+          LIMIT 10
+        `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    else
+      res = await this.neo4jService.read(
+        `
+          MATCH (u:User {username: $username})-[:ATTENDED]->(commonInstitution:Education)<-[:ATTENDED]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonInstitution)
+          ORDER BY count(commonInstitution)
+          SKIP $skipNumber
+          LIMIT 10
+      `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    let users = [];
+    res.records.forEach(
+      (record) =>
+        (users = users.concat(record.get('recommendedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
+  }
+
+  async recommendThroughExperience(skipNumber, username) {
+    let res;
+    if (skipNumber === 0)
+      res = await this.neo4jService.read(
+        `
+          MATCH (loggedInUser:User {username: $username})-[:WORKED]->(commonCompany:Experience)<-[:WORKED]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonCompany)
+          ORDER BY count(commonCompany) desc
+          LIMIT 10
+        `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    else
+      res = await this.neo4jService.read(
+        `
+          MATCH (u:User {username: $username})-[:WORKED]->(commonCompany:Experience)<-[:WORKED]-(recommendedUser:User)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          RETURN recommendedUser, count(commonCompany)
+          ORDER BY count(commonCompany)
+          SKIP $skipNumber
+          LIMIT 10
+      `,
+        {
+          skipNumber,
+          username,
+        },
+      );
+    let users = [];
+    res.records.forEach(
+      (record) =>
+        (users = users.concat(record.get('recommendedUser').properties)),
+    );
+    let retUsers = new UsersDto();
+    retUsers.users = users;
+    return retUsers;
   }
 
   async addExperiences(user) {
@@ -304,7 +510,7 @@ export class UserRepository {
     for (const skill of user.skills) {
       const exists = await this.neo4jService.read(
         `
-        MATCH (s:Skill )
+        MATCH (s:Skill)
         WHERE toLower(s.name) = toLower($name)
         RETURN s
         `,

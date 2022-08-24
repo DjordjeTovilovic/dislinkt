@@ -15,6 +15,10 @@ export enum Gender {
 
 export interface Empty {}
 
+export interface PaginationNumber {
+  num: number;
+}
+
 export interface FindByIdRequest {
   id: string;
 }
@@ -193,6 +197,31 @@ export interface UserServiceClient {
     metadata?: Metadata
   ): Observable<UsersProto>;
 
+  recommendThroughMutualProfiles(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  recommendThroughExperience(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  recommendThroughEducation(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  recommendThroughSkills(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
+  recommendThroughInterests(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Observable<UsersProto>;
+
   update(
     request: UpdateUserRequest,
     metadata?: Metadata
@@ -320,6 +349,31 @@ export interface UserServiceController {
     metadata?: Metadata
   ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
 
+  recommendThroughMutualProfiles(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  recommendThroughExperience(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  recommendThroughEducation(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  recommendThroughSkills(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
+  recommendThroughInterests(
+    request: PaginationNumber,
+    metadata?: Metadata
+  ): Promise<UsersProto> | Observable<UsersProto> | UsersProto;
+
   update(
     request: UpdateUserRequest,
     metadata?: Metadata
@@ -403,6 +457,11 @@ export function UserServiceControllerMethods() {
       "unblock",
       "allBlockedUsers",
       "allBlockedByUsers",
+      "recommendThroughMutualProfiles",
+      "recommendThroughExperience",
+      "recommendThroughEducation",
+      "recommendThroughSkills",
+      "recommendThroughInterests",
       "update",
       "addEducations",
       "removeEducations",

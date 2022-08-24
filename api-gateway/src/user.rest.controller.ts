@@ -188,6 +188,96 @@ export class UserRestController implements OnModuleInit {
   }
 
   @UseGuards(AuthGuard)
+  @Get('/users/recommended/mutualProfile/:pageNum')
+  async recommendThroughMutualProfiles(
+    @Req() req,
+    @Param('pageNum') pageNumber,
+  ) {
+    this.logger.log(
+      'recommendThroughMutualProfiles.call#param username',
+      pageNumber,
+    );
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.recommendThroughMutualProfiles(
+      { num: parseInt(pageNumber) },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/recommended/experience/:pageNum')
+  async recommendThroughExperience(@Req() req, @Param('pageNum') pageNumber) {
+    this.logger.log(
+      'recommendThroughExperience.call#param username',
+      pageNumber,
+    );
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.recommendThroughExperience(
+      { num: parseInt(pageNumber) },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/recommended/skill/:pageNum')
+  async recommendThroughSkills(@Req() req, @Param('pageNum') pageNumber) {
+    this.logger.log('recommendThroughSkills.call#param username', pageNumber);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.recommendThroughSkills(
+      { num: parseInt(pageNumber) },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/recommended/education/:pageNum')
+  async recommendThroughEducation(@Req() req, @Param('pageNum') pageNumber) {
+    this.logger.log(
+      'recommendThroughEducation.call#param username',
+      pageNumber,
+    );
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.recommendThroughEducation(
+      { num: parseInt(pageNumber) },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/users/recommended/interest/:pageNum')
+  async recommendThroughInterests(@Req() req, @Param('pageNum') pageNumber) {
+    this.logger.log(
+      'recommendThroughInterests.call#param username',
+      pageNumber,
+    );
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.userService.recommendThroughInterests(
+      { num: parseInt(pageNumber) },
+      metadata,
+    );
+
+    return user;
+  }
+
+  @UseGuards(AuthGuard)
   @Post('/:username/block')
   async block(@Req() req, @Param('username') username) {
     this.logger.log('block.call#param username', username);
