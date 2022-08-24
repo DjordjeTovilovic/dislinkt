@@ -3,8 +3,24 @@ import { PostService } from './post.service';
 import { PostController } from './post.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { PostRepository } from './post.repository';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'NOTIFICATION_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'notification_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
+  ],
   controllers: [PostController],
   providers: [PostService, PostRepository],
 })

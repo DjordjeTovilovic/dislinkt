@@ -7,6 +7,7 @@
     "install:linux": "./scripts/install.sh",
     "install:win": ".\\scripts\\install.sh",
     "start:dev": "./scripts/dev.sh",
+    "start:dev:needed": "./scripts/dev-needed.sh",
     "start:dev:win": ".\\scripts\\dev.sh",
     "start:work": "./scripts/dev-work.sh",
     "start:work:win": ".\\scripts\\dev-work.sh",
