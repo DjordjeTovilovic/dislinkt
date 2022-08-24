@@ -8,6 +8,8 @@
     "install:win": ".\\scripts\\install.sh",
     "start:dev": "./scripts/dev.sh",
     "start:dev:win": ".\\scripts\\dev.sh",
+    "start:work": "./scripts/dev-work.sh",
+    "start:work:win": ".\\scripts\\dev-work.sh",
     "build": "./scripts/build.sh",
     "lint": "./scripts/lint.sh",
     "proto:generate": "./scripts/proto-generate.sh",
