@@ -3,6 +3,7 @@ import styled from "styled-components";
 const Signin = (props) => {
   return (
     <Container>
+      <Background />
       <Nav>
         <a href="/">
           <img src="/images/login-logo.svg" alt=""></img>
@@ -35,6 +36,8 @@ const Signin = (props) => {
 
 const Container = styled.div`
   padding: 0px;
+  width: 100%;
+  height: 100vh;
 `;
 
 const Nav = styled.nav`
@@ -46,6 +49,7 @@ const Nav = styled.nav`
   position: relative;
   justify-content: space-between;
   flex-wrap: nowrap;
+  z-index: 100;
 
   & > a {
     width: 135px;
@@ -67,6 +71,7 @@ const SignIn = styled.a`
   padding: 10px 24px;
   text-align: center;
   background-color: rgba(0, 0, 0, 0);
+
   &:hover {
     background-color: rgba(112, 181, 249, 0.15);
     color: #0a66c2;
@@ -102,6 +107,7 @@ const First = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 24rem;
+  z-index: 2;
 `;
 
 const Second = styled.div`
@@ -195,6 +201,17 @@ const NewAccount = styled.div`
       cursor: pointer;
     }
   }
+`;
+
+const Background = styled.div`
+  width: 100%;
+  height: 100%;
+  background: url("/images/background.png");
+  background-repeat: no-repeat;
+  background-size: 105% 850px;
+  background-position: center;
+  position: absolute;
+  z-index: 1;
 `;
 
 export default Signin;
