@@ -7,6 +7,7 @@
     "install:linux": "./scripts/install.sh",
     "install:win": ".\\scripts\\install.sh",
     "start:dev": "./scripts/dev.sh",
+    "start:dev:needed": "./scripts/dev-needed.sh",
     "start:dev:win": ".\\scripts\\dev.sh",
     "build": "./scripts/build.sh",
     "lint": "./scripts/lint.sh",
