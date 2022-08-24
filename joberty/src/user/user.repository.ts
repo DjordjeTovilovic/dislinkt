@@ -14,23 +14,33 @@ export class UserRepository {
     return createdUser.save();
   }
 
+  save(user: User) {
+    const createdUser = new this.userModel(user);
+    return createdUser.save();
+  }
+
   findAll() {
     return this.userModel.find({});
   }
 
   findOne(id: string) {
-    return this.userModel.findOne({ id });
+    return this.userModel.findOne({ _id: id });
   }
 
   findByUsername(username: string) {
     return this.userModel.findOne({ username });
   }
 
+  updatePure(id: string, user: User) {
+    const filter = { _id: id };
+    return this.userModel.updateOne(filter, user);
+  }
+
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.findOneAndUpdate({ id }, updateUserDto);
+    return this.userModel.findOneAndUpdate({ _id: id }, updateUserDto);
   }
 
   remove(id: string) {
-    return this.userModel.findOneAndDelete({ id });
+    return this.userModel.findOneAndDelete({ _id: id });
   }
 }

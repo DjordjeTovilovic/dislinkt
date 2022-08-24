@@ -7,11 +7,11 @@ import { UserRepository } from './user.repository';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/guards/role';
 import { AuthModule } from 'src/auth/auth.module';
-
+import { forwardRef } from '@nestjs/common';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    AuthModule,
+    forwardRef(() => AuthModule),
   ],
   controllers: [UserController],
   providers: [

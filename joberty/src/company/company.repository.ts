@@ -15,6 +15,10 @@ export class CompanyRepository {
     @InjectModel(Company.name) private companyModel: Model<CompanyDocument>,
   ) {}
 
+  save(company: Company) {
+    const createdCompany = new this.companyModel(company);
+    return createdCompany.save();
+  }
   create(createCompanyDto: CreateCompanyDto) {
     const createdCompany = new this.companyModel(createCompanyDto);
     return createdCompany.save();
@@ -25,7 +29,7 @@ export class CompanyRepository {
   }
 
   findOne(companyId: string) {
-    return this.companyModel.findOne({ id: companyId });
+    return this.companyModel.findOne({ _id: companyId });
   }
 
   update(companyId: string, updateCompanyDto: UpdateCompanyDto) {
@@ -39,7 +43,7 @@ export class CompanyRepository {
   }
 
   remove(companyId: string) {
-    return this.companyModel.findOneAndDelete({ id: companyId });
+    return this.companyModel.findOneAndDelete({ _id: companyId });
   }
 
   addJobOffer(companyId: string, newJobOfferDto: NewJobOfferDto) {
@@ -56,13 +60,13 @@ export class CompanyRepository {
 
   findAllJobOffersForCompany(companyId: string) {
     return this.companyModel
-      .find({ id: companyId })
+      .find({ _id: companyId })
       .select({ jobOffers: true });
   }
 
   addReview(companyId: string, newReviewDto: NewReviewDto) {
     return this.companyModel.findOneAndUpdate(
-      { id: companyId },
+      { _id: companyId },
       { $push: { reviews: newReviewDto } },
       { new: true },
     );
@@ -70,7 +74,7 @@ export class CompanyRepository {
 
   addSalary(companyId: string, newSalaryDto: NewSalaryDto) {
     return this.companyModel.findOneAndUpdate(
-      { id: companyId },
+      { _id: companyId },
       {
         $push: {
           salaries: newSalaryDto,
@@ -82,7 +86,7 @@ export class CompanyRepository {
 
   addInterview(companyId: string, newInterviewDto: NewInterviewDto) {
     return this.companyModel.findOneAndUpdate(
-      { id: companyId },
+      { _id: companyId },
       {
         $push: {
           interviews: newInterviewDto,

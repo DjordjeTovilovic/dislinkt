@@ -67,6 +67,9 @@ export class Company extends Document {
     _id: false,
   })
   interviews: { position: string; seniority: string; interview: string }[];
+
+  @Prop({ default: false })
+  enabled: boolean;
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

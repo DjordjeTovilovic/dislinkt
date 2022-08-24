@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { Role } from 'src/enums/role';
 import { RegistrationDto } from '../auth/dto/registration.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './schemas/user.schema';
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
+
+  save(user: User) {
+    return this.userRepository.save(user);
+  }
+
+  async changeRoleToOwner(userId: string) {
+    const user = await this.findOne(userId);
+    user.roles[0] = Role.Owner;
+    return this.userRepository.save(user);
+  }
 
   create(registrationDto: RegistrationDto) {
     return this.userRepository.create(registrationDto);
@@ -21,6 +33,10 @@ export class UserService {
 
   findByUsername(username: string) {
     return this.userRepository.findByUsername(username);
+  }
+
+  updatePure(id: string, user: User) {
+    return this.userRepository.updatePure(id, user);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
