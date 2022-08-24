@@ -7,6 +7,14 @@ service UserService {
   rpc FindByUsername (FindByUsernameRequest) returns (UserProto) {}
   rpc Create (CreateUserRequest) returns (UserProto) {}
   rpc Follow (FollowRequest) returns (UserProto) {}
+  rpc Unfollow (FollowRequest) returns (UserProto) {}
+  rpc ApproveFollowRequest (FollowRequest) returns (UserProto) {}
+  rpc DeclineFollowRequest (FollowRequest) returns (UserProto) {}
+  rpc DeleteFollowRequest (FollowRequest) returns (UserProto) {}
+  rpc AllFollowingRequests (Empty) returns (UsersProto) {}
+  rpc AllFollowerRequests (Empty) returns (UsersProto) {}
+  rpc AllFollowing (Empty) returns (UsersProto) {}
+  rpc AllFollowers(Empty) returns (UsersProto) {}
   rpc Block (BlockRequest) returns (UserProto) {}
   rpc Unblock (BlockRequest) returns (UserProto) {}
   rpc AllBlockedUsers (Empty) returns (UsersProto) {}

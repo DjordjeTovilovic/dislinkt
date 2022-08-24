@@ -47,14 +47,69 @@ export class UserController implements UserServiceController {
     return this.userService.follow(userToFollow.username, username);
   }
 
-  async block(userToFollow: BlockRequest, metadata: Metadata) {
+  async unfollow(userToUnfollow: FollowRequest, metadata: Metadata) {
     const username = metadata.get('username')[0];
-    return this.userService.block(userToFollow.username, username);
+    return this.userService.unfollow(userToUnfollow.username, username);
   }
 
-  async unblock(userToFollow: BlockRequest, metadata: Metadata) {
+  async approveFollowRequest(
+    userToUnfollow: FollowRequest,
+    metadata: Metadata,
+  ) {
     const username = metadata.get('username')[0];
-    return this.userService.unblock(userToFollow.username, username);
+    return this.userService.approveFollowRequest(
+      userToUnfollow.username,
+      username,
+    );
+  }
+
+  async declineFollowRequest(
+    userToUnfollow: FollowRequest,
+    metadata: Metadata,
+  ) {
+    const username = metadata.get('username')[0];
+    return this.userService.declineFollowRequest(
+      userToUnfollow.username,
+      username,
+    );
+  }
+
+  async deleteFollowRequest(userToUnfollow: FollowRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.deleteFollowRequest(
+      userToUnfollow.username,
+      username,
+    );
+  }
+
+  async allFollowing(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allFollowing(username);
+  }
+
+  async allFollowers(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allFollowers(username);
+  }
+
+  async allFollowingRequests(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allFollowingRequests(username);
+  }
+
+  async allFollowerRequests(reques: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.allFollowerRequests(username);
+  }
+
+  async block(userToBlock: BlockRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.block(userToBlock.username, username);
+  }
+
+  async unblock(userToUnblock: BlockRequest, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.userService.unblock(userToUnblock.username, username);
   }
 
   async allBlockedUsers(reques: Empty, metadata: Metadata) {
