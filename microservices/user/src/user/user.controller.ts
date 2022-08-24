@@ -9,6 +9,7 @@ import {
   FindByUsernameRequest,
   FollowRequest,
   InterestUpdateList,
+  PaginationNumber,
   SkillUpdateList,
   UserServiceController,
   UserServiceControllerMethods,
@@ -82,24 +83,73 @@ export class UserController implements UserServiceController {
     );
   }
 
-  async allFollowing(reques: Empty, metadata: Metadata) {
+  async allFollowing(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allFollowing(username);
   }
 
-  async allFollowers(reques: Empty, metadata: Metadata) {
+  async allFollowers(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allFollowers(username);
   }
 
-  async allFollowingRequests(reques: Empty, metadata: Metadata) {
+  async allFollowingRequests(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allFollowingRequests(username);
   }
 
-  async allFollowerRequests(reques: Empty, metadata: Metadata) {
+  async allFollowerRequests(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allFollowerRequests(username);
+  }
+
+  async recommendThroughMutualProfiles(
+    request: PaginationNumber,
+    metadata: Metadata,
+  ) {
+    const username = metadata.get('username')[0];
+    return await this.userService.recommendThroughMutualProfiles(
+      request.num,
+      username,
+    );
+  }
+
+  async recommendThroughSkills(request: PaginationNumber, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.userService.recommendThroughSkills(request.num, username);
+  }
+
+  async recommendThroughEducation(
+    request: PaginationNumber,
+    metadata: Metadata,
+  ) {
+    const username = metadata.get('username')[0];
+    return await this.userService.recommendThroughEducation(
+      request.num,
+      username,
+    );
+  }
+
+  async recommendThroughExperience(
+    request: PaginationNumber,
+    metadata: Metadata,
+  ) {
+    const username = metadata.get('username')[0];
+    return await this.userService.recommendThroughExperience(
+      request.num,
+      username,
+    );
+  }
+
+  async recommendThroughInterests(
+    request: PaginationNumber,
+    metadata: Metadata,
+  ) {
+    const username = metadata.get('username')[0];
+    return await this.userService.recommendThroughInterests(
+      request.num,
+      username,
+    );
   }
 
   async block(userToBlock: BlockRequest, metadata: Metadata) {
@@ -112,12 +162,12 @@ export class UserController implements UserServiceController {
     return this.userService.unblock(userToUnblock.username, username);
   }
 
-  async allBlockedUsers(reques: Empty, metadata: Metadata) {
+  async allBlockedUsers(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allBlockedUsers(username);
   }
 
-  async allBlockedByUsers(reques: Empty, metadata: Metadata) {
+  async allBlockedByUsers(request: Empty, metadata: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.allBlockedByUsers(username);
   }

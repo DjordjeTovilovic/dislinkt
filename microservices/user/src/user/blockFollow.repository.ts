@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UsersDto } from './dto/users.dto';
 import { User } from './entity/user.entity';
 
@@ -37,7 +36,7 @@ export class BlockFollowRepository {
     const res = await this.neo4jService.write(
       `
       
-      MATCH (loggedInUser:User {username: $username})-[f:FOLLOWS]-
+      MATCH (loggedInUser:User {username: $username})-[f:FOLLOWS]->
       (userToUnfollow:User {username: $usernameToUnfollow})
 
       DELETE f
@@ -232,7 +231,7 @@ export class BlockFollowRepository {
     const res = await this.neo4jService.write(
       `
       
-      MATCH (loggedInUser:User {username: $username})-[b:BLOCKS]-
+      MATCH (loggedInUser:User {username: $username})-[b:BLOCKS]->
       (userToUnblock:User {username: $usernameToUnblock})
 
       DELETE b

@@ -19,6 +19,11 @@ service UserService {
   rpc Unblock (BlockRequest) returns (UserProto) {}
   rpc AllBlockedUsers (Empty) returns (UsersProto) {}
   rpc AllBlockedByUsers (Empty) returns (UsersProto) {}
+  rpc RecommendThroughMutualProfiles (PaginationNumber) returns (UsersProto) {}
+  rpc RecommendThroughExperience (PaginationNumber) returns (UsersProto) {}
+  rpc RecommendThroughEducation (PaginationNumber) returns (UsersProto) {}
+  rpc RecommendThroughSkills (PaginationNumber) returns (UsersProto) {}
+  rpc RecommendThroughInterests (PaginationNumber) returns (UsersProto) {}
   rpc Update (UpdateUserRequest) returns (UserProto) {}
   rpc AddEducations (EducationUpdateList) returns (EducationUpdateList) {}
   rpc RemoveEducations (EducationUpdateList) returns (EducationUpdateList) {}
@@ -32,6 +37,9 @@ service UserService {
 
 message Empty {}
 
+message PaginationNumber {
+  int32 num = 1;
+}
 
 message FindByIdRequest {
   string id = 1;

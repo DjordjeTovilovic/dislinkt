@@ -202,6 +202,46 @@ export class UserService {
     return users;
   }
 
+  async recommendThroughMutualProfiles(pageNumber, username) {
+    const skipNumber = (pageNumber - 1) * 10;
+    return await this.userRepository.recommendThroughMutualProfiles(
+      skipNumber,
+      username,
+    );
+  }
+
+  async recommendThroughEducation(pageNumber, username) {
+    const skipNumber = (pageNumber - 1) * 10;
+    return await this.userRepository.recommendThroughEducation(
+      skipNumber,
+      username,
+    );
+  }
+
+  async recommendThroughExperience(pageNumber, username) {
+    const skipNumber = (pageNumber - 1) * 10;
+    return await this.userRepository.recommendThroughExperience(
+      skipNumber,
+      username,
+    );
+  }
+
+  async recommendThroughInterests(pageNumber, username) {
+    const skipNumber = (pageNumber - 1) * 10;
+    return await this.userRepository.recommendThroughInterests(
+      skipNumber,
+      username,
+    );
+  }
+
+  async recommendThroughSkills(pageNumber, username) {
+    const skipNumber = (pageNumber - 1) * 10;
+    return await this.userRepository.recommendThroughSkills(
+      skipNumber,
+      username,
+    );
+  }
+
   async block(usernameToBlock, username) {
     const user = await this.blockFollowRepository.block(
       usernameToBlock,

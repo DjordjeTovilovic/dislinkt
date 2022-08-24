@@ -35,22 +35,6 @@ message ValidateApiTokenResponse {
   bool valid = 1;
 }
 
-message RegistrationRequest {
-  string username = 1;
-  string password = 2;
-  string email = 3;
-  string bio = 4;
-  string image = 5;
-  string phoneNumber = 6;
-  string birthday = 7;
-  Gender gender = 8;
-  repeated ExperienceProto experiences = 9;
-  repeated EducationProto education = 10;
-  repeated SkillProto skills = 11;
-  repeated InterestProto interests = 12;
-  bool privateProfile = 13;
-}
-
 message LoggedInRequest {
   string token = 1;
 }
@@ -70,16 +54,24 @@ message AuthUserProto {
   string phoneNumber = 7;
   string birthday = 8;
   Gender gender = 9;
-  repeated ExperienceProto experiences = 10;
-  repeated EducationProto education = 11;
-  repeated SkillProto skills = 12;
-  repeated InterestProto interests = 13;
   bool privateProfile = 14;
 }
 
 enum Gender{
   MALE = 0;
   FEMALE = 1;
+}
+
+message RegistrationRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string bio = 4;
+  string image = 5;
+  string phoneNumber = 6;
+  string birthday = 7;
+  Gender gender = 8;
+  bool privateProfile = 13;
 }
 
 message ExperienceProto {
