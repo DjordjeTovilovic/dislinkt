@@ -1,16 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Roles } from 'src/decorators/role';
-import { Role } from 'src/enums/role';
 
 @Controller('users')
 export class UserController {
@@ -20,7 +10,6 @@ export class UserController {
   findAll() {
     return this.userService.findAll();
   }
-  @Roles(Role.User)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);

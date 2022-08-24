@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Company } from 'src/company/schemas/company.scheme';
-import { Role } from 'src/enums/role';
+import { User } from 'src/user/schemas/user.schema';
 
-export type UserDocument = User & Document;
+export type CreateRequestDocument = CreateRequest & Document;
 
 @Schema({
   toObject: {
@@ -23,30 +23,12 @@ export type UserDocument = User & Document;
     },
   },
 })
-export class User {
+export class CreateRequest extends Document {
   @Prop()
-  username: string;
-
-  @Prop()
-  password: string;
+  userId: string;
 
   @Prop()
-  role: string;
-
-  @Prop()
-  name: string;
-
-  @Prop()
-  lastname: string;
-
-  @Prop([Company])
-  companiesOwned: Company[];
-
-  @Prop()
-  dislinktToken: string;
-
-  @Prop({ default: Role.User })
-  roles: Role[];
+  companyId: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const CreateRequestSchema = SchemaFactory.createForClass(CreateRequest);

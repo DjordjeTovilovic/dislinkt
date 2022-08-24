@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import { CompanyRepository } from './company.repository';
 import { NewInterviewDto } from './dto/new-interview.dto';
 import { NewSalaryDto } from './dto/new-salary.dto';
@@ -6,10 +5,31 @@ import { CreateCompanyDto } from './dto/create-company.dto';
 import { NewReviewDto } from './dto/new-review.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import { NewJobOfferDto } from './dto/new-jobOffer.dto';
+import { AuthService } from 'src/auth/auth.service';
+
+import { UserService } from 'src/user/user.service';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class CompanyService {
-  constructor(private readonly companyRepository: CompanyRepository) {}
+  constructor(
+    private readonly companyRepository: CompanyRepository,
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
+
+  async setUserAsCompanyOwner(companyId: string, userId: string) {
+    const user = await this.userService.findOne(userId);
+    const company = await this.companyRepository.findOne(companyId);
+    user.companiesOwned.push(company);
+    return this.userService.updatePure(user.id, user);
+  }
+
+  async enable(companyId: string) {
+    const company = await this.companyRepository.findOne(companyId);
+    company.enabled = true;
+    return this.companyRepository.save(company);
+  }
 
   create(createCompanyDto: CreateCompanyDto) {
     return this.companyRepository.create(createCompanyDto);
