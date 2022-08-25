@@ -9,9 +9,13 @@ import {
   Param,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 import {
@@ -136,5 +140,17 @@ export class PostRestController implements OnModuleInit {
 
     this.logger.log('dislike.call#return dislike', dislike);
     return dislike;
+  }
+
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: '../uploads',
+      }),
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    console.log(file);
   }
 }
