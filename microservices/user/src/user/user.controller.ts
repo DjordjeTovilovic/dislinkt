@@ -2,6 +2,7 @@ import { Metadata } from '@grpc/grpc-js';
 import { Controller, Logger } from '@nestjs/common';
 import {
   BlockRequest,
+  DeleteByUsernameRequest,
   EducationUpdateList,
   Empty,
   ExperienceUpdateList,
@@ -33,6 +34,10 @@ export class UserController implements UserServiceController {
 
   async findByUsername(user: FindByUsernameRequest, metadata: Metadata) {
     return this.userService.findByUsername(user.username);
+  }
+
+  async deleteByUsername(user: DeleteByUsernameRequest) {
+    return this.userService.deleteByUsername(user.username);
   }
 
   async create(createUserDto: CreateUserDto) {

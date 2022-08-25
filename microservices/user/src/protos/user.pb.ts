@@ -25,6 +25,10 @@ export interface FindByUsernameRequest {
   username: string;
 }
 
+export interface DeleteByUsernameRequest {
+  username: string;
+}
+
 export interface FollowRequest {
   username: string;
 }
@@ -143,6 +147,11 @@ export interface UserServiceClient {
 
   findByUsername(
     request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  deleteByUsername(
+    request: DeleteByUsernameRequest,
     metadata?: Metadata
   ): Observable<UserProto>;
 
@@ -274,6 +283,11 @@ export interface UserServiceController {
 
   findByUsername(
     request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  deleteByUsername(
+    request: DeleteByUsernameRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
 
@@ -441,6 +455,7 @@ export function UserServiceControllerMethods() {
     const grpcMethods: string[] = [
       "findById",
       "findByUsername",
+      "deleteByUsername",
       "create",
       "follow",
       "unfollow",

@@ -46,6 +46,42 @@ export class UserRepository {
     return new User(row.get('u')).toJson();
   }
 
+  async deleteByUsername(username) {
+    const res = await this.neo4jService.write(
+      `
+          MATCH (u:User {username: $username})
+          SET u.deletedAt = localdatetime()
+          RETURN u
+      `,
+      {
+        username,
+      },
+    );
+
+    if (!res.records.length) return null;
+
+    const row = res.records[0];
+    return new User(row.get('u')).toJson();
+  }
+
+  async restoreDeleteById(userId) {
+    const res = await this.neo4jService.write(
+      `
+          MATCH (u:User {id: $userId})
+          REMOVE u.deletedAt
+          RETURN u
+      `,
+      {
+        userId,
+      },
+    );
+
+    if (!res.records.length) return null;
+
+    const row = res.records[0];
+    return new User(row.get('u')).toJson();
+  }
+
   async create(user: CreateUserDto) {
     const res = await this.neo4jService.write(
       `
@@ -141,7 +177,7 @@ export class UserRepository {
       (record) =>
         (users = users.concat(record.get('recommendedUser').properties)),
     );
-    let retUsers = new UsersDto();
+    const retUsers = new UsersDto();
     retUsers.users = users;
     return retUsers;
   }
@@ -182,7 +218,7 @@ export class UserRepository {
       (record) =>
         (users = users.concat(record.get('recommendedUser').properties)),
     );
-    let retUsers = new UsersDto();
+    const retUsers = new UsersDto();
     retUsers.users = users;
     return retUsers;
   }
@@ -223,7 +259,7 @@ export class UserRepository {
       (record) =>
         (users = users.concat(record.get('recommendedUser').properties)),
     );
-    let retUsers = new UsersDto();
+    const retUsers = new UsersDto();
     retUsers.users = users;
     return retUsers;
   }
@@ -264,7 +300,7 @@ export class UserRepository {
       (record) =>
         (users = users.concat(record.get('recommendedUser').properties)),
     );
-    let retUsers = new UsersDto();
+    const retUsers = new UsersDto();
     retUsers.users = users;
     return retUsers;
   }
@@ -305,7 +341,7 @@ export class UserRepository {
       (record) =>
         (users = users.concat(record.get('recommendedUser').properties)),
     );
-    let retUsers = new UsersDto();
+    const retUsers = new UsersDto();
     retUsers.users = users;
     return retUsers;
   }

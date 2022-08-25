@@ -192,4 +192,35 @@ export class PostRepository {
       row.get('disliked'),
     ).toJson();
   }
+
+  async deleteAllForUserId(userId) {
+    const res = await this.neo4jService.write(
+      `
+      MATCH (u:User {id: $userId})
+      MATCH (p:Post)
+      WHERE (p)<-[:POSTED]-(u)
+
+      SET p.deletedAt = localdatetime()
+
+
+      `,
+      {
+        userId,
+      },
+    );
+    // const posts = res.records.map((row) => {
+    //   const authorUsername = row.get('author').properties.username;
+
+    //   return new Post(
+    //     row.get('p'),
+    //     authorUsername,
+    //     row.get('likeCount'),
+    //     row.get('liked'),
+    //     row.get('dislikeCount'),
+    //     row.get('disliked'),
+    //   ).toJson();
+    // });
+    // console.log({ posts });
+    // return { posts };
+  }
 }

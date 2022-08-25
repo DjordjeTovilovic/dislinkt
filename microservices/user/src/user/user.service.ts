@@ -1,6 +1,6 @@
 import { status } from '@grpc/grpc-js';
-import { Injectable, Logger } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
   EducationUpdateList,
   ExperienceUpdateList,
@@ -17,6 +17,7 @@ export class UserService {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly blockFollowRepository: BlockFollowRepository,
+    @Inject('USER_SERVICE') private userClient: ClientProxy,
   ) {}
   private readonly logger = new Logger(UserService.name);
 
@@ -55,6 +56,37 @@ export class UserService {
       });
     }
 
+    return user;
+  }
+
+  async deleteByUsername(username) {
+    const user = await this.userRepository.deleteByUsername(username);
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with username:${username} not found`,
+      });
+    }
+
+    this.logger.log('deleteByUsername#emit user_deleted ' + user.id);
+    this.userClient.emit('user_deleted', { userId: user.id });
+    return user;
+  }
+
+  async restoreDeleteById(userId) {
+    const user = await this.userRepository.restoreDeleteById(userId);
+
+    if (!user) {
+      this.logger.warn('User not found, throwing exception');
+      throw new RpcException({
+        code: status.NOT_FOUND,
+        message: `User with userId:${userId} not found`,
+      });
+    }
+
+    this.logger.log('deleteByUsername#emit user_restored ' + user.id);
+    this.userClient.emit('user_restored', { userId: user.id });
     return user;
   }
 
