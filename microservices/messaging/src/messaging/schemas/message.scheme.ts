@@ -9,7 +9,7 @@ export type MessageDocument = Message & Document;
   toObject: {
     transform: function (doc: any, ret: any): MessageDto {
       return new MessageDto(
-        ret.message,
+        ret.text,
         ret.senderId,
         ret.receiverId,
         ret.createdAt,
@@ -19,7 +19,7 @@ export type MessageDocument = Message & Document;
   toJSON: {
     transform: function (doc: any, ret: any): MessageDto {
       return new MessageDto(
-        ret.message,
+        ret.text,
         ret.senderId,
         ret.receiverId,
         ret.createdAt,
@@ -29,7 +29,7 @@ export type MessageDocument = Message & Document;
 })
 export class Message {
   @Prop()
-  message: string;
+  text: string;
 
   @Prop()
   senderId: string;

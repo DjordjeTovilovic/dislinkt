@@ -18,6 +18,7 @@ import {
   FindAllRequest,
   MessagingServiceClient,
   MESSAGING_SERVICE_NAME,
+  NewMessage,
 } from './protos/messaging.pb';
 
 @Controller('messages')
@@ -34,7 +35,23 @@ export class MessagingRestController implements OnModuleInit {
     );
   }
 
-  @Get()
+  @Post('send')
+  async sendMessage(@Body() newMessage: NewMessage) {
+    this.logger.log('sendMessage.call#body ', newMessage);
+
+    const messages = await lastValueFrom(
+      this.messagingService.sendMessage(newMessage).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    // this.logger.log('sendMessage.call#return messages', messages);
+    // return messages;
+  }
+
+  @Post()
   async findAll(@Body() usersDto: FindAllRequest) {
     this.logger.log('findAll.call#body ', usersDto);
 

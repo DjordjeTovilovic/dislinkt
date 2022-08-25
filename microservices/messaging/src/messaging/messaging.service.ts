@@ -17,7 +17,7 @@ export class MessagingService {
     const messagesDto = messages.map(
       (message) =>
         new MessageDto(
-          message.message,
+          message.text,
           message.senderId,
           message.receiverId,
           message.createdAt,
