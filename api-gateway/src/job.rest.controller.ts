@@ -15,6 +15,7 @@ import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AuthGuard } from './auth.guard';
 import { JobServiceClient, JOB_SERVICE_NAME } from './protos/job.pb';
+import { JobProto } from './protos/job.pb';
 
 @Controller('jobs')
 export class JobRestController implements OnModuleInit {
@@ -43,5 +44,32 @@ export class JobRestController implements OnModuleInit {
 
     this.logger.log('findAll.call#return jobs', jobs);
     return jobs;
+  }
+
+  @Post('/addJob')
+  async addJob(@Body() job: JobProto) {
+    this.logger.log('addJob.call#body:job', job);
+
+    const jobs = await lastValueFrom(
+      this.jobService.addJob(job).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    return jobs;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/jobOffers/recommended')
+  async recommendedJobOffers(@Req() req) {
+    this.logger.log('recommendedJobOffers#Req token', req.user);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const user = await this.jobService.recommendedJobOffers(null, metadata);
+
+    return user;
   }
 }

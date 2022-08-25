@@ -3,7 +3,9 @@ syntax = "proto3";
 package job;
 
 service JobService {
-  rpc FindAll (Empty) returns (LoginResponse) {}
+  rpc FindAll (Empty) returns (JobsProto) {}
+  rpc AddJob (JobProto) returns (JobProto) {}
+  rpc recommendedJobOffers(Empty) returns (JobsProto) {}
 }
 
 message Empty {
@@ -11,4 +13,17 @@ message Empty {
 
 message LoginResponse {
   string token = 1;
+}
+
+message JobsProto {
+  repeated JobProto jobs = 1;
+}
+
+message JobProto {
+  string id = 1;
+  string position = 2;
+  string seniority = 3;
+  string description = 4;
+  repeated string requiredSkills = 5;
+  string postedBy = 6;
 }

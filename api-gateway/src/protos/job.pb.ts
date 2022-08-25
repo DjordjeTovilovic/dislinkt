@@ -11,22 +11,52 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface JobsProto {
+  jobs: JobProto[];
+}
+
+export interface JobProto {
+  id: string;
+  position: string;
+  seniority: string;
+  description: string;
+  requiredSkills: string[];
+  postedBy: string;
+}
+
 export const JOB_PACKAGE_NAME = "job";
 
 export interface JobServiceClient {
-  findAll(request: Empty, metadata?: Metadata): Observable<LoginResponse>;
+  findAll(request: Empty, metadata?: Metadata): Observable<JobsProto>;
+
+  addJob(request: JobProto, metadata?: Metadata): Observable<JobProto>;
+
+  recommendedJobOffers(
+    request: Empty,
+    metadata?: Metadata
+  ): Observable<JobsProto>;
 }
 
 export interface JobServiceController {
   findAll(
     request: Empty,
     metadata?: Metadata
-  ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
+
+  addJob(
+    request: JobProto,
+    metadata?: Metadata
+  ): Promise<JobProto> | Observable<JobProto> | JobProto;
+
+  recommendedJobOffers(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
 }
 
 export function JobServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll"];
+    const grpcMethods: string[] = ["findAll", "addJob", "recommendedJobOffers"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
