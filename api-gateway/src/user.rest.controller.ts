@@ -2,6 +2,7 @@ import { Metadata } from '@grpc/grpc-js';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Logger,
@@ -67,6 +68,22 @@ export class UserRestController implements OnModuleInit {
     );
 
     this.logger.log('findByUsername.call#return', user);
+    return user;
+  }
+
+  @Delete('/username/:username')
+  async deleteByUsername(@Param('username') username) {
+    this.logger.log('deleteByUsername.call#param username', username);
+
+    const user = await lastValueFrom(
+      this.userService.deleteByUsername({ username }).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('deleteByUsername.call#return', user);
     return user;
   }
 
