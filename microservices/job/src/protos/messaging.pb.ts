@@ -17,19 +17,32 @@ export interface Messages {
 }
 
 export interface Message {
-  message: string;
+  text: string;
   senderId: string;
   receiverId: string;
   createdAt: string;
 }
 
+export interface NewMessage {
+  text: string;
+  senderId: string;
+  receiverId: string;
+}
+
 export const MESSAGING_PACKAGE_NAME = "messaging";
 
 export interface MessagingServiceClient {
+  sendMessage(request: NewMessage, metadata?: Metadata): Observable<Empty>;
+
   findAll(request: FindAllRequest, metadata?: Metadata): Observable<Messages>;
 }
 
 export interface MessagingServiceController {
+  sendMessage(
+    request: NewMessage,
+    metadata?: Metadata
+  ): Promise<Empty> | Observable<Empty> | Empty;
+
   findAll(
     request: FindAllRequest,
     metadata?: Metadata
@@ -38,7 +51,7 @@ export interface MessagingServiceController {
 
 export function MessagingServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll"];
+    const grpcMethods: string[] = ["sendMessage", "findAll"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
