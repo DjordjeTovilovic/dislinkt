@@ -13,6 +13,10 @@ export class RequestService {
     return this.requestRepository.findAll();
   }
 
+  findOne(requestId: string) {
+    return this.requestRepository.findOne(requestId);
+  }
+
   remove(requestId: string) {
     return this.requestRepository.remove(requestId);
   }

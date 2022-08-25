@@ -16,7 +16,7 @@ export class UserService {
   async changeRoleToOwner(userId: string) {
     const user = await this.findOne(userId);
     user.roles[0] = Role.Owner;
-    return this.userRepository.save(user);
+    return this.userRepository.updatePure(user.id, user);
   }
 
   create(registrationDto: RegistrationDto) {
