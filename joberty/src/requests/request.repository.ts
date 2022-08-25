@@ -20,6 +20,10 @@ export class RequestRepository {
     return this.requestModel.find({});
   }
 
+  findOne(requestId: string) {
+    return this.requestModel.findOne({ _id: requestId });
+  }
+
   remove(requestId: string) {
     const filter = { _id: requestId };
 

@@ -1,7 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Company } from 'src/company/schemas/company.scheme';
-import { User } from 'src/user/schemas/user.schema';
 
 export type CreateRequestDocument = CreateRequest & Document;
 

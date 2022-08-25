@@ -16,6 +16,11 @@ export class RequestController {
     return this.requestService.findAll();
   }
 
+  @Get(':id')
+  findOne(@Param('id') requestId: string) {
+    return this.requestService.findOne(requestId);
+  }
+
   @Delete(':requestId')
   remove(@Param('requestId') requestId: string) {
     return this.requestService.remove(requestId);

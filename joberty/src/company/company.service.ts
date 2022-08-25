@@ -9,6 +9,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 import { UserService } from 'src/user/user.service';
 import { Injectable, Logger } from '@nestjs/common';
+import { Role } from 'src/enums/role';
 
 @Injectable()
 export class CompanyService {
@@ -22,6 +23,7 @@ export class CompanyService {
     const user = await this.userService.findOne(userId);
     const company = await this.companyRepository.findOne(companyId);
     user.companiesOwned.push(company);
+    user.roles[0] = Role.Owner;
     return this.userService.updatePure(user.id, user);
   }
 

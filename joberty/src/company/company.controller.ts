@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Logger,
 } from '@nestjs/common';
 import { CompanyService } from './company.service';
 import { NewInterviewDto } from './dto/new-interview.dto';
@@ -33,19 +32,13 @@ export class CompanyController {
   ) {}
 
   @Post('/enable/:requestId')
-  confirmRequest(
-    @Body() createCompanyRequestDto: CreateCompanyRequestDto,
-    @Param('requestId') requestId: string,
-  ) {
-    this.companyService.enable(createCompanyRequestDto.companyId);
+  async confirmRequest(@Param('requestId') requestId: string) {
+    const req = await this.requestService.findOne(requestId);
+    this.companyService.enable(req.companyId);
 
-    this.userService.changeRoleToOwner(createCompanyRequestDto.userId);
-    this.companyService.setUserAsCompanyOwner(
-      createCompanyRequestDto.companyId,
-      createCompanyRequestDto.userId,
-    );
+    this.companyService.setUserAsCompanyOwner(req.companyId, req.userId);
 
-    this.requestService.remove(requestId);
+    return this.requestService.remove(req.id);
   }
 
   @Post()
