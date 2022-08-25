@@ -3,9 +3,13 @@ import { JobService } from './job.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { UpdateJobDto } from './dto/update-job.dto';
 import {
+  Empty,
+  JobProto,
   JobServiceController,
   JobServiceControllerMethods,
 } from '../protos/job.pb';
+import { Metadata } from '@grpc/grpc-js';
+import { Observable } from 'rxjs';
 
 @Controller()
 @JobServiceControllerMethods()
@@ -14,7 +18,16 @@ export class JobController implements JobServiceController {
   private readonly logger = new Logger(JobController.name);
 
   async findAll() {
-    // return this.jobService.findAll(createPostDto, username);
-    return { token: 'agad' };
+    //return this.jobService.findAll(createPostDto, username);
+    return null;
+  }
+
+  async addJob(job: JobProto) {
+    return await this.jobService.addJob(job);
+  }
+
+  async recommendedJobOffers(request: Empty, metadata: Metadata) {
+    const username = metadata.get('username')[0];
+    return await this.jobService.recommendedJobOffers(username);
   }
 }

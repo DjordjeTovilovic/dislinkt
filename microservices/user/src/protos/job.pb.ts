@@ -1,9 +1,7 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import * as Long from "long";
-import * as _m0 from "protobufjs/minimal";
-import { Observable } from "rxjs";
 import { Metadata } from "@grpc/grpc-js";
+import { Observable } from "rxjs";
 
 export const protobufPackage = "job";
 
@@ -13,22 +11,52 @@ export interface LoginResponse {
   token: string;
 }
 
+export interface JobsProto {
+  jobs: JobProto[];
+}
+
+export interface JobProto {
+  id: string;
+  position: string;
+  seniority: string;
+  description: string;
+  requiredSkills: string[];
+  postedBy: string;
+}
+
 export const JOB_PACKAGE_NAME = "job";
 
 export interface JobServiceClient {
-  findAll(request: Empty, metadata?: Metadata): Observable<LoginResponse>;
+  findAll(request: Empty, metadata?: Metadata): Observable<JobsProto>;
+
+  addJob(request: JobProto, metadata?: Metadata): Observable<JobProto>;
+
+  recommendedJobOffers(
+    request: Empty,
+    metadata?: Metadata
+  ): Observable<JobsProto>;
 }
 
 export interface JobServiceController {
   findAll(
     request: Empty,
     metadata?: Metadata
-  ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
+
+  addJob(
+    request: JobProto,
+    metadata?: Metadata
+  ): Promise<JobProto> | Observable<JobProto> | JobProto;
+
+  recommendedJobOffers(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
 }
 
 export function JobServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll"];
+    const grpcMethods: string[] = ["findAll", "addJob", "recommendedJobOffers"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
@@ -56,10 +84,3 @@ export function JobServiceControllerMethods() {
 }
 
 export const JOB_SERVICE_NAME = "JobService";
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
