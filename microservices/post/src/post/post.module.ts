@@ -4,6 +4,7 @@ import { PostController } from './post.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { PostRepository } from './post.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { PostMessageController } from './post.message.controller';
 
 @Module({
   imports: [
@@ -20,8 +21,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'user_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
   ],
-  controllers: [PostController],
+  controllers: [PostController, PostMessageController],
   providers: [PostService, PostRepository],
 })
 export class PostModule implements OnModuleInit {

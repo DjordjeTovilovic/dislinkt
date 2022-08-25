@@ -4,9 +4,40 @@ import { UserController } from './user.controller';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { UserRepository } from './user.repository';
 import { BlockFollowRepository } from './blockFollow.repository';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { DeleteUserSaga } from './user.delete.saga';
+import { UserMessageController } from './user.message.controller';
 
 @Module({
-  controllers: [UserController],
+  imports: [
+    ClientsModule.register([
+      {
+        name: 'POST_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'post_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
+    ClientsModule.register([
+      {
+        name: 'USER_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: ['amqp://localhost:5672'],
+          queue: 'user_queue',
+          queueOptions: {
+            durable: false,
+          },
+        },
+      },
+    ]),
+  ],
+  controllers: [UserController, UserMessageController, DeleteUserSaga],
   providers: [UserService, UserRepository, BlockFollowRepository],
 })
 export class UserModule implements OnModuleInit {

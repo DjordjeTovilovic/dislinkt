@@ -1,9 +1,7 @@
 /* eslint-disable */
 import { GrpcMethod, GrpcStreamMethod } from "@nestjs/microservices";
-import * as Long from "long";
-import * as _m0 from "protobufjs/minimal";
-import { Observable } from "rxjs";
 import { Metadata } from "@grpc/grpc-js";
+import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
@@ -24,6 +22,10 @@ export interface FindByIdRequest {
 }
 
 export interface FindByUsernameRequest {
+  username: string;
+}
+
+export interface DeleteByUsernameRequest {
   username: string;
 }
 
@@ -145,6 +147,11 @@ export interface UserServiceClient {
 
   findByUsername(
     request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Observable<UserProto>;
+
+  deleteByUsername(
+    request: DeleteByUsernameRequest,
     metadata?: Metadata
   ): Observable<UserProto>;
 
@@ -276,6 +283,11 @@ export interface UserServiceController {
 
   findByUsername(
     request: FindByUsernameRequest,
+    metadata?: Metadata
+  ): Promise<UserProto> | Observable<UserProto> | UserProto;
+
+  deleteByUsername(
+    request: DeleteByUsernameRequest,
     metadata?: Metadata
   ): Promise<UserProto> | Observable<UserProto> | UserProto;
 
@@ -443,6 +455,7 @@ export function UserServiceControllerMethods() {
     const grpcMethods: string[] = [
       "findById",
       "findByUsername",
+      "deleteByUsername",
       "create",
       "follow",
       "unfollow",
@@ -499,10 +512,3 @@ export function UserServiceControllerMethods() {
 }
 
 export const USER_SERVICE_NAME = "UserService";
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}

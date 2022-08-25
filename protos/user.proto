@@ -5,6 +5,7 @@ package user;
 service UserService {
   rpc FindById(FindByIdRequest) returns (UserProto) {}
   rpc FindByUsername (FindByUsernameRequest) returns (UserProto) {}
+  rpc DeleteByUsername (DeleteByUsernameRequest) returns (UserProto) {}
   rpc Create (CreateUserRequest) returns (UserProto) {}
   rpc Follow (FollowRequest) returns (UserProto) {}
   rpc Unfollow (FollowRequest) returns (UserProto) {}
@@ -46,6 +47,10 @@ message FindByIdRequest {
 }
 
 message FindByUsernameRequest {
+  string username = 1;
+}
+
+message DeleteByUsernameRequest {
   string username = 1;
 }
 

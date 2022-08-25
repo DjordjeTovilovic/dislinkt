@@ -28,6 +28,6 @@ export class AppController {
 
   @EventPattern('post_liked')
   async handlePostLiked(payload) {
-    this.logger.log('handlePostLiked.event#payload', payload);
+    this.logger.log('Notification.handlePostLiked.event#payload');
   }
 }
