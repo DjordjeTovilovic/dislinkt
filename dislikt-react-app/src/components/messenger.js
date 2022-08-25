@@ -1,34 +1,15 @@
 import { Avatar, IconButton } from "@material-ui/core";
-import { AttachFile, DonutLarge, SearchOutlined } from "@material-ui/icons";
-import ChatIcon from "@material-ui/icons/Chat";
+import { InsertEmoticon, Mic, SearchOutlined } from "@material-ui/icons";
 import styled from "styled-components";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 const Messenger = (props) => {
+
   return (
     <Container>
       <Body>
         <Sidebar>
-          <SidebarHeader>
-            <IconButton>
-              <Avatar />
-            </IconButton>
-
-            <SidebarHeaderRight>
-              <IconButton>
-                <DonutLarge />
-              </IconButton>
-
-              <IconButton>
-                <ChatIcon />
-              </IconButton>
-
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            </SidebarHeaderRight>
-          </SidebarHeader>
-
+        
           <SidebarSearch>
             <Search>
               <SearchOutlined />
@@ -72,9 +53,6 @@ const Messenger = (props) => {
                 <SearchOutlined />
               </IconButton>
               <IconButton>
-                <AttachFile />
-              </IconButton>
-              <IconButton>
                 <MoreVertIcon />
               </IconButton>
             </ChatHeaderRight>
@@ -82,16 +60,25 @@ const Messenger = (props) => {
 
           <ChatBoddy>
             <Message>
-              <p>
                 <span>Aca Faca</span>
                 Hey bro
                 <p>3:52 PM</p>
-              </p>
             </Message>
-            <Message>Hey bro</Message>
+            <Message prop={"reciver"}>
+                <span>Elon Musk</span>
+                Hey m8
+                <p>3:53 PM</p>
+            </Message>
           </ChatBoddy>
 
-          <ChatFooter></ChatFooter>
+          <ChatFooter>
+          <InsertEmoticon/>
+          <form>
+            <input placeholder="Type a message" type="text"></input>
+            <button>Send a message</button>
+          </form>
+          <Mic/>
+          </ChatFooter>
         </Chat>
       </Body>
     </Container>
@@ -104,6 +91,7 @@ const Container = styled.div`
   display: grid;
   place-items: center;
   height: 100vh;
+
 `;
 
 const Body = styled.div`
@@ -113,20 +101,16 @@ const Body = styled.div`
   background-color: #ededed;
   box-shadow: -1px 4px 20px -6xp rgba(0, 0, 0, 0.75);
   margin-top: 50px;
+  border: 2px solid lightgray;
+  border-radius: 10px;
+
 `;
 
 const Sidebar = styled.div`
   flex: 0.35;
   display: flex;
   flex-direction: column;
-`;
 
-const SidebarHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  pad: 20px;
-  border-radius: 1px solid red;
-  height: 119px;
 `;
 
 const SidebarSearch = styled.div`
@@ -154,13 +138,14 @@ const Search = styled.div`
   input {
     border: none;
     margin: 10px;
+    flex:1
   }
 `;
 
 const SidebarChats = styled.div`
-  background-color: white;
+  background-color: whitesmoke;
   flex: 1;
-  overflow: scroll;
+  overflow-y: auto;
 `;
 
 const SidebarChat = styled.div`
@@ -183,17 +168,6 @@ const SidebarChatInfo = styled.div`
   }
 `;
 
-const SidebarHeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 10vw;
-
-  > .MuiSvgIcon-root {
-    margin-right: 2vw;
-    font-size: 24px !important;
-  }
-`;
 
 const Chat = styled.div`
   flex: 0.65;
@@ -202,20 +176,19 @@ const Chat = styled.div`
 `;
 
 const ChatHeader = styled.div`
-  padding: 20px;
+  padding: 2px 10px 2px 10px;
   display: flex;
   align-items: center;
   border-bottom: 1px solid lightgray;
+
 `;
 
 const ChatBoddy = styled.div`
-  background-color: lightblue;
+  background-color: lightgray;
   flex: 1;
   padding: 30px;
-  overflow: scroll;
+  overflow-y: auto;
 `;
-
-const ChatFooter = styled.div``;
 
 const ChatHeaderInfo = styled.div`
   flex: 1;
@@ -237,14 +210,18 @@ const ChatHeaderRight = styled.div`
   min-width: 100px;
 `;
 
-const Message = styled.div`
+const Message = styled.p.attrs(props => ({
+  className: props.className
+}))`
   position: relative;
   font-size: 16px;
   padding: 10px;
   background: white;
   border-radius: 10px;
   width: fit-content;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
 
   span {
     position: absolute;
@@ -252,12 +229,53 @@ const Message = styled.div`
     font-weight: 500;
     font-size: xx-small;
   }
-
   p {
-    p {
       padding-top: 6px;
       margin-left: 10px;
       font-size: xx-small;
+  }
+
+  .reciver {
+    margin-left: auto;
+    background-color: #dcf8c6
+  }
+
+`;
+
+const ChatFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+  border-top: 1px solid lightgray;
+
+  form {
+    flex: 1;
+    display: flex;
+
+    input {
+      flex: 1;
+      border-radius: 30px;
+      padding: 10px;
+      border: none;
+      background-color: lightgray;
     }
+
+    button {
+      display: none;
+    }
+  }
+
+  .MuiSvgIcon-root {
+    padding: 10px;
+    color: gray;
+  }
+
+  @media (max-width: 768px) {
+    position: fixed;
+    right: 27px;
+    bottom: 63px;
+    background: white;
+    width: 43%;
   }
 `;
