@@ -5,6 +5,7 @@ import Header from "./components/header";
 import Home from "./components/home";
 import Signin from "./components/signin";
 import Messenger from "./components/messenger";
+import Profile from "./components/profile";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               </>
             }
           ></Route>
+          <Route path="/profile" element={<><Header/><Profile/></>}></Route>
         </Routes>
       </Router>
     </div>
