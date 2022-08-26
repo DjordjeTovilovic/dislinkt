@@ -2,10 +2,10 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/login";
 import Header from "./components/header";
-import Home from "./components/home";
+import Home from "./components/home/home";
 import Signin from "./components/signin";
-import Messenger from "./components/messenger";
-import Profile from "./components/profile";
+import Messenger from "./components/messenger/messenger";
+import Profile from "./components/profile/src";
 
 function App() {
   return (
