@@ -86,7 +86,7 @@ export const SharedImage = styled.div`
 export const SocialCounts = styled.div`
 line-height: 1.3;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   overflow: auto;
   margin: 0 16px;
   padding: 8px 0;
@@ -102,17 +102,131 @@ line-height: 1.3;
       width: 60px;
       height: 35px;
       align-items: center;
+      cursor: pointer;
+
     }
 
     a {
-      display: flex;
       font-size: 20px;
 
       &:hover {
         color: blue;
+        cursor: pointer;
       }
     }
   }`;
 
+export const CommentsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid lightgray;
+  background-color: lightgray;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 
+  button {
+    width: 170px;
+    height: 40px;
+    align-self: center;
+    border-radius: 24px;
+    background-color: white ;
+    border: none;
+    color: #0a66c2 ;
+    cursor: pointer;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #0a66c2;
 
+    &:hover {
+      background-color: #00b3db;
+      border-color: #285e8e;
+      color: white;
+    }}
+`;
+
+export const Comments = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5px;
+`;
+
+  
+export const CommentBox = styled.div`
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  justify-content: space-evenly;
+
+  img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .comment-info {
+    width: 90%;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      padding-left: 6px;
+    }
+
+    p {padding-left: 8px}
+
+    .date {
+      align-self: flex-end;
+      font-size: x-small;
+      padding-right: 10px;
+    }
+  }
+
+`;
+
+export const Comment = styled.div`
+  
+  display: flex;
+  flex-direction: row;
+  margin-top: 8px;
+  padding: 5px 10px 5px 10px;
+  align-items: center;
+  justify-content: space-between;
+
+  textarea {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem; 
+    padding-left: 0.5rem;
+    padding-right: 0.5rem; 
+    width: 77%; 
+    height: fit-content;
+    height: 55px;
+    border-radius: 15px;
+    border: 1px solid lightblue;
+  }
+
+  button {
+    width: 100px;
+    border-radius: 24px;
+    background-color: #0a66c2 ;
+    border: none;
+    color: white ;
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid lightcyan;
+
+    &:hover {
+      background-color: #00b3db;
+      border-color: #285e8e;
+      color: white;
+    }
+  }
+`;
