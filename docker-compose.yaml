@@ -1,6 +1,35 @@
 version: "3"
 
 services:
+  api-gateway:
+    image: "dislinkt:api-gateway"
+    build:
+      context: "./api-gateway"
+    ports:
+      - "3000:3000"
+    networks:
+      - microservices
+    depends_on:
+      - "user"
+      - "auth"
+      - "post"
+      - "job"
+      - "messaging"
+    environment:
+      NODE_ENV: "test"
+      PORT: "3000"
+      USER_SERVICE_URL: "user"
+      USER_SERVICE_PORT: "50051"
+      AUTH_SERVICE_URL: "auth"
+      AUTH_SERVICE_PORT: "50052"
+      POST_SERVICE_URL: "post"
+      POST_SERVICE_PORT: "50053"
+      JOB_SERVICE_URL: "job"
+      JOB_SERVICE_PORT: "50054"
+      MESSAGING_SERVICE_URL: "messaging"
+      MESSAGING_SERVICE_PORT: "50055"
+    restart: "on-failure"
+
   user:
     image: "dislinkt:user"
     build:
@@ -9,13 +38,16 @@ services:
       - "50051"
     depends_on:
       - "neo"
+      - "rabbitmq"
     networks:
       - neo4j_net
       - microservices
+      - rabbitmq_go_net
     environment:
       NODE_ENV: "test"
       URL: "0.0.0.0"
       PORT: "50051"
+      RABBITMQ_HOST: "rabbitmq"
       NEO4J_SCHEME: "bolt"
       NEO4J_HOST: "neo"
       NEO4J_PORT: "7687"
@@ -52,13 +84,16 @@ services:
       - "50053"
     depends_on:
       - "neo"
+      - "rabbitmq"
     networks:
-      - neo4j_net
       - microservices
+      - neo4j_net
+      - rabbitmq_go_net
     environment:
       NODE_ENV: "test"
       URL: "0.0.0.0"
       PORT: "50053"
+      RABBITMQ_HOST: "rabbitmq"
       NEO4J_SCHEME: "bolt"
       NEO4J_HOST: "neo"
       NEO4J_PORT: "7687"
@@ -66,25 +101,101 @@ services:
       NEO4J_PASSWORD: "neo"
     restart: "on-failure"
 
-  api-gateway:
-    image: "dislinkt:api-gateway"
+  job:
+    image: "dislinkt:job"
     build:
-      context: "./api-gateway"
-    ports:
-      - "3000:3000"
+      context: "./microservices/job"
+    expose:
+      - "50054"
+    depends_on:
+      - "neo"
+      - "rabbitmq"
     networks:
       - microservices
-    depends_on:
-      - "user"
+      - neo4j_net
+      - rabbitmq_go_net
     environment:
       NODE_ENV: "test"
-      PORT: "3000"
-      USER_SERVICE_URL: "user"
-      USER_SERVICE_PORT: "50051"
-      AUTH_SERVICE_URL: "auth"
-      AUTH_SERVICE_PORT: "50052"
-      POST_SERVICE_URL: "post"
-      POST_SERVICE_PORT: "50053"
+      URL: "0.0.0.0"
+      PORT: "50054"
+      RABBITMQ_HOST: "rabbitmq"
+      NEO4J_SCHEME: "bolt"
+      NEO4J_HOST: "neo"
+      NEO4J_PORT: "7687"
+      NEO4J_USERNAME: "neo4j"
+      NEO4J_PASSWORD: "neo"
+    restart: "on-failure"
+
+  messaging:
+    image: "dislinkt:messaging"
+    build:
+      context: "./microservices/messaging"
+    expose:
+      - "50055"
+    depends_on:
+      - "mongodb"
+      - "rabbitmq"
+    networks:
+      - microservices
+      - mongodb_net
+      - rabbitmq_go_net
+    environment:
+      NODE_ENV: "test"
+      URL: "0.0.0.0"
+      PORT: "50055"
+      RABBITMQ_HOST: "rabbitmq"
+      MONGO_URL: mongodb
+    restart: "on-failure"
+
+  notification:
+    image: "dislinkt:notification"
+    build:
+      context: "./microservices/notification"
+    ports:
+      - "3009:3009"
+    expose:
+      - "50056"
+    depends_on:
+      - "mongodb"
+      - "rabbitmq"
+    networks:
+      - microservices
+      - mongodb_net
+      - rabbitmq_go_net
+    environment:
+      NODE_ENV: "test"
+      URL: "0.0.0.0"
+      PORT: "50056"
+      RABBITMQ_HOST: "rabbitmq"
+    restart: "on-failure"
+
+  joberty:
+    image: "dislinkt:joberty"
+    build:
+      context: "./joberty"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "mongodb"
+    networks:
+      - mongodb_net
+    environment:
+      NODE_ENV: "test"
+      URL: "0.0.0.0"
+      PORT: "8000"
+      MONGO_URL: mongodb
+    restart: "on-failure"
+
+  dislinkt-frontend:
+    image: "dislinkt:dislinkt-frontend"
+    build:
+      context: "./dislikt-react-app"
+    ports:
+      - "3001:3001"
+    networks:
+      - microservices
+    environment:
+      PORT: "3001"
     restart: "on-failure"
 
   neo:
@@ -101,12 +212,40 @@ services:
     networks:
       - neo4j_net
     restart: "on-failure"
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/
+      - rabbitmq_log:/var/log/rabbitmq/
+    networks:
+        - rabbitmq_go_net
       
+  mongodb:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/apps/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    networks:
+      - mongodb_net
 
 volumes:
   neo4j_data:
+  rabbitmq_data:
+  rabbitmq_log:
 
 networks:
   microservices:
+  mongodb_net:
   neo4j_net:
+    driver: bridge
+  rabbitmq_go_net:
     driver: bridge

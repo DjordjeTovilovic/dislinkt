@@ -6,10 +6,10 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json /usr/src/app/
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Bundle app source
 COPY . /usr/src/app
 
-EXPOSE 50052
+EXPOSE 3001
 CMD [ "npm", "start" ]

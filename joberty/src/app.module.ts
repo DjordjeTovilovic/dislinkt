@@ -8,14 +8,26 @@ import { AuthModule } from './auth/auth.module';
 import { CompanyModule } from './company/company.module';
 import { RequestModule } from './requests/request.module';
 
+const url = process.env.MONGO_URL || 'localhost';
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
     UserModule,
     AuthModule,
     CompanyModule,
     RequestModule,
+    process.env.MONGO_URL
+      ? MongooseModule.forRoot(
+          `mongodb://${url}:27017/joberty?authSource=admin`,
+          {
+            useNewUrlParser: true,
+            user: 'admin',
+            pass: 'admin',
+            keepAlive: true,
+          },
+        )
+      : MongooseModule.forRoot(process.env.MONGODB_ATLAS_URI),
   ],
   controllers: [AppController],
   providers: [AppService],

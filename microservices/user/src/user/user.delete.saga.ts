@@ -22,6 +22,7 @@ export class DeleteUserSaga {
 
   @EventPattern('user_posts_deleted')
   async handleUserPostsDeleted(payload) {
+    this.logger.log('SAGA#handle_user_posts_deleted#event');
     this.logger.log(
       'SAGA#completed_succesfully#deleted user ' + payload.userId,
     );

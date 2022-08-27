@@ -80,7 +80,6 @@ const SignIn = styled.a`
 `;
 
 const Form = styled.div`
-  margin-top: 100px;
   width: 100%;
   display: flex;
   padding: 1.25rem;
@@ -208,7 +207,7 @@ const Background = styled.div`
   height: 100%;
   background: url("/images/background.png");
   background-repeat: no-repeat;
-  background-size: 105% 850px;
+  background-size: 105% 800px;
   background-position: center;
   position: absolute;
   z-index: 1;
