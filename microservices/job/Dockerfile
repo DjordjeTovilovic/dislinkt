@@ -11,5 +11,5 @@ RUN npm ci
 # Bundle app source
 COPY . /usr/src/app
 
-EXPOSE 50052
+EXPOSE 50054
 CMD [ "npm", "start" ]

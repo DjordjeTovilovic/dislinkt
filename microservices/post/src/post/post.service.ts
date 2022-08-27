@@ -32,7 +32,7 @@ export class PostService {
   async like(postId, username) {
     const like = await this.postRepository.like(postId, username);
     this.logger.log('post_liked.emit#payload');
-    this.userClient.emit('post_liked', like);
+    this.notificationClient.emit('post_liked', like);
     return like;
   }
 

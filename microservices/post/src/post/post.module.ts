@@ -6,6 +6,8 @@ import { PostRepository } from './post.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { PostMessageController } from './post.message.controller';
 
+const host = process.env.RABBITMQ_HOST || 'localhost';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -13,7 +15,7 @@ import { PostMessageController } from './post.message.controller';
         name: 'NOTIFICATION_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [`amqp://${host}:5672`],
           queue: 'notification_queue',
           queueOptions: {
             durable: false,
@@ -26,7 +28,7 @@ import { PostMessageController } from './post.message.controller';
         name: 'USER_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [`amqp://${host}:5672`],
           queue: 'user_queue',
           queueOptions: {
             durable: false,

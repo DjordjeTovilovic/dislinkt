@@ -1,17 +1,15 @@
-FROM node:16-alpine as build
+FROM node:18-alpine
 
-WORKDIR /usr/local/api-gateway
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-COPY dist package.json ./
+# Install app dependencies
+COPY package*.json /usr/src/app/
+RUN npm ci
 
-RUN npm install --production
-
-FROM node:16-alpine
-
-WORKDIR /usr/local/api-gateway
-
-COPY --from=build /usr/local/api-gateway .
+# Bundle app source
+COPY . /usr/src/app
 
 EXPOSE 3000
-
-CMD ["node", "main.js"]
+CMD [ "npm", "start" ]
