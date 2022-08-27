@@ -5,6 +5,8 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { POST_PACKAGE_NAME } from './protos/post.pb';
 
+const host = process.env.RABBITMQ_HOST || 'localhost';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice<MicroserviceOptions>({
@@ -19,7 +21,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
-      urls: ['amqp://localhost:5672'],
+      urls: [`amqp://guest:guest@${host}:5672`],
       queue: 'post_queue',
       queueOptions: {
         durable: false,

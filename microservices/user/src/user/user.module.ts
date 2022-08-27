@@ -8,6 +8,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { DeleteUserSaga } from './user.delete.saga';
 import { UserMessageController } from './user.message.controller';
 
+const host = process.env.RABBITMQ_HOST || 'localhost';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -15,7 +17,7 @@ import { UserMessageController } from './user.message.controller';
         name: 'POST_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [`amqp://${host}:5672`],
           queue: 'post_queue',
           queueOptions: {
             durable: false,
@@ -28,7 +30,7 @@ import { UserMessageController } from './user.message.controller';
         name: 'USER_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://localhost:5672'],
+          urls: [`amqp://${host}:5672`],
           queue: 'user_queue',
           queueOptions: {
             durable: false,
