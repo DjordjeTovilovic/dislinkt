@@ -1,98 +1,142 @@
-import { Avatar, IconButton } from "@material-ui/core";
-import { InsertEmoticon, Mic, SearchOutlined } from "@material-ui/icons";
-import styled from "styled-components";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { Avatar, IconButton } from '@material-ui/core'
+import { InsertEmoticon, Mic, SearchOutlined } from '@material-ui/icons'
+import styled from 'styled-components'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import { useEffect, useState } from 'react'
+import { getMessagesForUsers, sendMessage } from '../../services/messages'
+import { useParams } from 'react-router-dom'
 
 const Messenger = (props) => {
+  let { receiverId } = useParams();
+	const [messages, setMessages] = useState([])
+	const [text, setText] = useState('')
 
-  return (
-    <Container>
-      <Body>
-        <Sidebar>
+
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedMessages = await getMessagesForUsers({user1Id: 1, user2Id: 3})
+			setMessages(fetchedMessages.messages)
+		}
+		fetchData()
+	}, [])
+
+  useEffect(() => {
+    const sse = new EventSource(`http://localhost:3008/messenger/${receiverId}`)
+
+    sse.onmessage = e => {
+        setMessages((old) => [...old, JSON.parse(e.data)])
+    }
+	}, [])
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault()
+      const message = {
+        text,
+        senderId: 1,
+        receiverId
+      }
+      sendMessage(message)
+      setText('')
+    }
+  }
+
+	return (
+		<Container>
+			<Body>
+				<Sidebar>
         
-          <SidebarSearch>
-            <Search>
-              <SearchOutlined />
-              <input placeholder="Search or start new chat"></input>
-            </Search>
-          </SidebarSearch>
+					<SidebarSearch>
+						<Search>
+							<SearchOutlined />
+							<input placeholder="Search or start new chat"></input>
+						</Search>
+					</SidebarSearch>
 
-          <SidebarChats>
-            <SidebarChat>
-              <h2>Add new Chat</h2>
-            </SidebarChat>
+					<SidebarChats>
+						<SidebarChat>
+							<h2>Add new Chat</h2>
+						</SidebarChat>
 
-            <SidebarChat>
-              <Avatar />
-              <SidebarChatInfo>
-                <h2>Room name</h2>
-                <p>Last message..</p>
-              </SidebarChatInfo>
-            </SidebarChat>
+						<SidebarChat>
+							<Avatar />
+							<SidebarChatInfo>
+								<h2>Room name</h2>
+								<p>Last message..</p>
+							</SidebarChatInfo>
+						</SidebarChat>
 
-            <SidebarChat>
-              <Avatar />
+						<SidebarChat>
+							<Avatar />
 
-              <SidebarChatInfo>
-                <h2>Room name</h2>
-                <p>Last message..</p>
-              </SidebarChatInfo>
-            </SidebarChat>
-          </SidebarChats>
-        </Sidebar>
+							<SidebarChatInfo>
+								<h2>Room name</h2>
+								<p>Last message..</p>
+							</SidebarChatInfo>
+						</SidebarChat>
+					</SidebarChats>
+				</Sidebar>
 
-        <Chat>
-          <ChatHeader>
-            <Avatar />
-            <ChatHeaderInfo>
-              <h3>Room name</h3>
-              <p>Last seen</p>
-            </ChatHeaderInfo>
-            <ChatHeaderRight>
-              <IconButton>
-                <SearchOutlined />
-              </IconButton>
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            </ChatHeaderRight>
-          </ChatHeader>
+				<Chat>
+					<ChatHeader>
+						<Avatar />
+						<ChatHeaderInfo>
+							<h3>Room name</h3>
+							<p>Last seen</p>
+						</ChatHeaderInfo>
+						<ChatHeaderRight>
+							<IconButton>
+								<SearchOutlined />
+							</IconButton>
+							<IconButton>
+								<MoreVertIcon />
+							</IconButton>
+						</ChatHeaderRight>
+					</ChatHeader>
 
-          <ChatBoddy>
-            <Message>
-                <span>Aca Faca</span>
+					<ChatBoddy>
+						{messages.map((message, index) => 
+							<Message key={index + Date.parse(message.createdAt)}
+								// prop={userId === message.receiverId ? 'reciver' : 'sender'}
+							>
+								{message.text}
+								<p>{new Date(message.createdAt).toLocaleTimeString()}</p>
+							</Message>
+						)}
+						{/* <Message>
+							<span>Aca Faca</span>
                 Hey bro
-                <p>3:52 PM</p>
-            </Message>
-            <Message prop={"reciver"}>
-                <span>Elon Musk</span>
+							<p>3:52 PM</p>
+						</Message>
+						<Message prop={'reciver'}>
+							<span>Elon Musk</span>
                 Hey m8
-                <p>3:53 PM</p>
-            </Message>
-          </ChatBoddy>
+							<p>3:53 PM</p>
+						</Message> */}
+					</ChatBoddy>
 
-          <ChatFooter>
-          <InsertEmoticon/>
-          <form>
-            <input placeholder="Type a message" type="text"></input>
-            <button>Send a message</button>
-          </form>
-          <Mic/>
-          </ChatFooter>
-        </Chat>
-      </Body>
-    </Container>
-  );
-};
+					<ChatFooter>
+						<InsertEmoticon/>
+						<form>
+							<input placeholder="Type a message" value={text} onChange={(e) => setText(e.target.value)} type="text" onKeyDown={handleKeyDown}></input>
+							<button>Send a message</button>
+						</form>
+						<Mic/>
+					</ChatFooter>
+				</Chat>
+			</Body>
+		</Container>
+	)
+}
 
-export default Messenger;
+export default Messenger
 
 const Container = styled.div`
   display: grid;
   place-items: center;
   height: 100vh;
 
-`;
+`
 
 const Body = styled.div`
   display: flex;
@@ -104,14 +148,14 @@ const Body = styled.div`
   border: 2px solid lightgray;
   border-radius: 10px;
 
-`;
+`
 
 const Sidebar = styled.div`
   flex: 0.35;
   display: flex;
   flex-direction: column;
 
-`;
+`
 
 const SidebarSearch = styled.div`
   display: flex;
@@ -120,7 +164,7 @@ const SidebarSearch = styled.div`
   height: 39px;
   padding: 10px;
   border-left: 1px solid lightgray;
-`;
+`
 
 const Search = styled.div`
   display: flex;
@@ -140,13 +184,13 @@ const Search = styled.div`
     margin: 10px;
     flex:1
   }
-`;
+`
 
 const SidebarChats = styled.div`
   background-color: whitesmoke;
   flex: 1;
   overflow-y: auto;
-`;
+`
 
 const SidebarChat = styled.div`
   display: flex;
@@ -157,7 +201,7 @@ const SidebarChat = styled.div`
   &:hover {
     background-color: #ebebeb;
   }
-`;
+`
 
 const SidebarChatInfo = styled.div`
   margin-left: 15px;
@@ -166,14 +210,14 @@ const SidebarChatInfo = styled.div`
     font-size: 16px;
     margin-bottom: 8px;
   }
-`;
+`
 
 
 const Chat = styled.div`
   flex: 0.65;
   display: flex;
   flex-direction: column;
-`;
+`
 
 const ChatHeader = styled.div`
   padding: 2px 10px 2px 10px;
@@ -181,14 +225,14 @@ const ChatHeader = styled.div`
   align-items: center;
   border-bottom: 1px solid lightgray;
 
-`;
+`
 
 const ChatBoddy = styled.div`
   background-color: lightgray;
   flex: 1;
   padding: 30px;
   overflow-y: auto;
-`;
+`
 
 const ChatHeaderInfo = styled.div`
   flex: 1;
@@ -202,16 +246,16 @@ const ChatHeaderInfo = styled.div`
   p {
     color: gray;
   }
-`;
+`
 
 const ChatHeaderRight = styled.div`
   display: flex;
   justify-content: space-between;
   min-width: 100px;
-`;
+`
 
 const Message = styled.p.attrs(props => ({
-  className: props.className
+	className: props.className
 }))`
   position: relative;
   font-size: 16px;
@@ -240,7 +284,7 @@ const Message = styled.p.attrs(props => ({
     background-color: #dcf8c6
   }
 
-`;
+`
 
 const ChatFooter = styled.div`
   display: flex;
@@ -278,4 +322,4 @@ const ChatFooter = styled.div`
     background: white;
     width: 43%;
   }
-`;
+`

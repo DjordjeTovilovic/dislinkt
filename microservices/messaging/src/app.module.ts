@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { MessagingModule } from './messaging/messaging.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
+import { EventsService } from './events.service';
 
 const url = process.env.MONGO_URL || 'localhost';
 
@@ -21,7 +23,7 @@ const url = process.env.MONGO_URL || 'localhost';
         )
       : MongooseModule.forRoot(process.env.MONGODB_ATLAS_URI),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [EventsService],
 })
 export class AppModule {}
