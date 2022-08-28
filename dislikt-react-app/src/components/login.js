@@ -1,6 +1,22 @@
 import styled from "styled-components";
+import {useNavigate} from 'react-router-dom'
 
 const Login = (props) => {
+  
+  const navigate = useNavigate();
+
+  const goToSignIn = () => {
+    navigate('/signin');
+  }
+
+  const login = () => {
+
+    //TO DO : connection with backend login
+    // if (credentials are valid ) {}
+
+    navigate('/home')
+  }
+
   return (
     <Container>
       <Nav>
@@ -8,7 +24,7 @@ const Login = (props) => {
           <img src="/images/login-logo.svg" alt=""></img>
         </a>
         <div>
-          <SignIn>Sign in</SignIn>
+          <SignIn onClick={goToSignIn}>Sign in</SignIn>
         </div>
       </Nav>
 
@@ -23,11 +39,11 @@ const Login = (props) => {
               <h1>Log in</h1>
               <input placeholder="Email@gmail.com"></input>
               <input type="password" placeholder="password"></input>
-              <button>Log in</button>
+              <button onClick={login}>Log in</button>
               <OrLine>
                 <NewAccount>
                   Don't have an account?
-                  <a> Sign in</a>
+                  <a onClick={goToSignIn}> Sign in</a>
                 </NewAccount>
               </OrLine>
             </Second>
@@ -76,6 +92,7 @@ const SignIn = styled.a`
     background-color: rgba(112, 181, 249, 0.15);
     color: #0a66c2;
     text-decoration: none;
+    cursor: pointer;
   }
 `;
 
@@ -206,6 +223,7 @@ const Second = styled.div`
     :hover {
       background-color: #60a5fa;
       border-color: #3b82f6;
+      cursor: pointer;
     }
   }
 `;
@@ -242,6 +260,7 @@ const NewAccount = styled.div`
     transition-duration: 200ms;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     color: #dc2626;
+    cursor: pointer;
 
     :hover {
       color: #b91c1c;
