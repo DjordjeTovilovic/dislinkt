@@ -1,0 +1,57 @@
+@import "../../utils/variables";
+
+.nav {
+  height: 70px;
+  width: 100%;
+  background-color: $colorThemePrimary;
+  display: flex;
+}
+
+.ul {
+  padding-inline-start: 0px;
+  display: flex;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ull {
+  display: flex;
+  padding-inline-start: 0px;
+}
+
+.li {
+  list-style-type: none;
+}
+
+.lii {
+  min-height: 100%;
+  margin: 0px 10px 0px 10px;
+  list-style-type: none;
+  display: flex;
+  :hover {
+    background-color: $colorThemeSecondary;
+  }
+  align-items: center;
+}
+
+.link {
+  padding: 10px;
+  font-size: 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 25%;
+}
+
+.button {
+  padding: 10px;
+  font-size: 20px;
+  color: white;
+  background-color: $colorThemePrimary;
+  text-decoration: none;
+  border-radius: 25%;
+  border: none;
+  cursor: pointer;
+}
