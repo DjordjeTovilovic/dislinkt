@@ -1,9 +1,16 @@
 import styles from "./NavBar.module.scss";
 import { Link } from "react-router-dom";
 import userService from "../../service/user";
+import { useEffect, useState } from "react";
 
 const NavBar = () => {
-  const token = localStorage.getItem("token");
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    userService
+      .getMe()
+      .then((user) => setUser(user))
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <nav className={styles.nav}>
       <ul className={styles.ul}>
@@ -14,23 +21,44 @@ const NavBar = () => {
                 Home
               </Link>
             </li>
+            {user?.roles?.includes("owner") && (
+              <li className={styles.lii}>
+                <Link to="/companies" className={styles.link}>
+                  Companies
+                </Link>
+              </li>
+            )}
+            {user && (
+              <li className={styles.lii}>
+                <Link to="/addCompany" className={styles.link}>
+                  Add Company
+                </Link>
+              </li>
+            )}
           </ul>
         </li>
         <li className={styles.li}>
           <ul className={styles.ull}>
-            {token ? (
-              <li className={styles.lii}>
-                <button
-                  className={styles.button}
-                  onClick={() =>
-                    userService
-                      .logout()
-                      .then(() => window.location.replace("/"))
-                  }
-                >
-                  Logout
-                </button>
-              </li>
+            {user ? (
+              <>
+                <li className={styles.lii}>
+                  <Link to="/profile" className={styles.link}>
+                    Profile
+                  </Link>
+                </li>
+                <li className={styles.lii}>
+                  <button
+                    className={styles.button}
+                    onClick={() =>
+                      userService
+                        .logout()
+                        .then(() => window.location.replace("/"))
+                    }
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
             ) : (
               <>
                 <li className={styles.lii}>

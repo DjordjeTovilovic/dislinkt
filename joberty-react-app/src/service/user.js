@@ -18,10 +18,20 @@ const logout = async () => {
   window.localStorage.clear();
 }
 
+const getMe = async () => {
+  const res = await axios.get(`${baseUrl}users/profile/me`, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res.data;
+}
+
 const userService = {
   signup,
   login,
-  logout
+  logout,
+  getMe
 }
 
 export default userService;
