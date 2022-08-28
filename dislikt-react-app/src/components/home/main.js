@@ -1,14 +1,38 @@
 import styled from "styled-components";
 import Article from "../posts";
+import PostModal from "../posts/postModal";
+import { useState } from "react";
 
 const Main = (props) => {
+  
+  const [showModal, setShowModal] = useState('close');
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if(e.target !== e.currentTarget) {
+      return;
+    }
+
+    switch(showModal) {
+      case "open" :
+        setShowModal('close');
+        break;
+      case "close" :
+        setShowModal('open');
+        break;
+      default: 
+        setShowModal('close');
+        break;
+    }
+  }
+
   return (
     <Container>
       <ShareBox>
         Share
         <div>
           <img src="/images/user.svg"></img>
-          <button>Start a post</button>
+          <button onClick={handleClick}>Start a post</button>
         </div>
         <div>
           <button>
@@ -32,6 +56,8 @@ const Main = (props) => {
         </div>
       </ShareBox>
         <Article/>
+
+      <PostModal showModal={showModal} handleClick={handleClick}/> 
     </Container>
   );
 };
@@ -60,6 +86,7 @@ const ShareBox = styled(CommonCard)`
 
   div {
     button {
+
       outline: none;
       color: rgba(0, 0, 0, 0.6);
       font-size: 14px;
@@ -81,6 +108,7 @@ const ShareBox = styled(CommonCard)`
         margin-right: 8px;
       }
       button {
+        cursor: pointer;
         margin: 4px 0;
         flex-grow: 1;
         border-radius: 35px;

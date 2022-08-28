@@ -1,6 +1,17 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
+  
+  const navigate = useNavigate();
+
+  const [activeTab, setActiveTab] = useState('about');
+  
+  const setTab = (name) => {
+    setActiveTab(name);
+  }
+
   return (
     <Container>
       <Content>
@@ -19,34 +30,34 @@ const Header = (props) => {
         </Search>
         <Nav>
           <NavListWrap>
-            <NavList className="active">
+            <NavList onClick={() => {setTab('home'); navigate('/home') }} className={activeTab == "home" ? 'active' : null}>
               <a>
                 <img src="/images/nav-home.svg"></img>
                 <span>Home</span>
               </a>
             </NavList>
-            <NavList>
+            <NavList onClick={() => setTab('network')} className={activeTab == "network" ? 'active' : null}>
               <a>
                 <img src="/images/nav-network.svg"></img>
                 <span>Network</span>
               </a>
             </NavList>
 
-            <NavList>
+            <NavList onClick={() => setTab('jobs')} className={activeTab == "jobs" ? 'active' : null}>
               <a>
                 <img src="/images/nav-jobs.svg"></img>
                 <span>Jobs</span>
               </a>
             </NavList>
 
-            <NavList>
+            <NavList onClick={() => {setTab('messages'); navigate('/messenger')}} className={activeTab == "messages" ? 'active' : null}>
               <a>
                 <img src="/images/nav-messaging.svg"></img>
                 <span>Messaging</span>
               </a>
             </NavList>
 
-            <NavList>
+            <NavList onClick={() => setTab('notifications')} className={activeTab == "notifications" ? 'active' : null}>
               <a>
                 <img src="/images/nav-notifications.svg"></img>
                 <span>Notifications</span>
@@ -55,7 +66,7 @@ const Header = (props) => {
 
             <User>
               <a>
-                <img src="/images/user.svg"></img>
+                <img onClick={() => {setTab('profile'); navigate('/profile')}} className={activeTab == "profile" ? 'active' : null} src="/images/user.svg"></img>
                 <span>Me</span>
                 <img src="/images/down-icon.svg"></img>
               </a>
