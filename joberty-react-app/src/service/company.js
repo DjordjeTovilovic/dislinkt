@@ -11,8 +11,18 @@ const addCompany = async (companyInfo) => {
   return res;
 }
 
+const updateCompany = async (companyId, companyInfo) => {
+  const res = await axios.patch(`${baseUrl}companies/${companyId}`, companyInfo, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
 const companyService = {
-  addCompany
+  addCompany,
+  updateCompany
 }
 
 export default companyService

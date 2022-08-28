@@ -1,4 +1,4 @@
-@import "../../utils/variables";
+@import "../../../utils/variables";
 
 .label {
   font-size: 25px;
@@ -8,6 +8,7 @@
   height: 25px;
   font-size: 20px;
   margin: 5px 0px 15px 0px;
+  border-radius: 10px;
   &:focus {
     outline: solid 2px $colorInputFocus !important;
   }
@@ -29,7 +30,7 @@
   border: solid 2px $colorButtonPrimary;
   background-color: $colorButtonPrimary;
   color: white;
-  border-radius: 7%;
+  border-radius: 10px;
   &:hover {
     background-color: $colorButtonSecondary;
   }

@@ -34,7 +34,7 @@ export class CompanyRepository {
 
   update(companyId: string, updateCompanyDto: UpdateCompanyDto) {
     return this.companyModel.findOneAndUpdate(
-      { id: companyId },
+      { _id: companyId },
       updateCompanyDto,
       {
         new: true,

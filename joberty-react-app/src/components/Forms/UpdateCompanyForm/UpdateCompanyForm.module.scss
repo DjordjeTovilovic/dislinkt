@@ -6,38 +6,18 @@
   height: 25px;
   font-size: 20px;
   margin: 5px 0px 15px 0px;
+  border: solid 1px black;
+  outline: solid 2px $colorInputFocus;
   border-radius: 10px;
-  &:focus {
-    outline: solid 2px $colorInputFocus !important;
-  }
-  &:valid {
-    color: $colorInputValid;
-    outline: solid 2px $colorInputValid;
-  }
-  &:invalid {
-    outline: solid 2px $colorInputInvalid;
-    color: $colorInputInvalid;
-    animation: shake 0.5s;
-  }
 }
 
 .textarea {
   resize: none;
   font-size: 20px;
   margin: 5px 0px 15px 0px;
+  border: solid 1px black;
+  outline: solid 2px $colorInputFocus;
   border-radius: 10px;
-  &:focus {
-    outline: solid 2px $colorInputFocus !important;
-  }
-  &:valid {
-    color: $colorInputValid;
-    outline: solid 2px $colorInputValid;
-  }
-  &:invalid {
-    outline: solid 2px $colorInputInvalid;
-    color: $colorInputInvalid;
-    animation: shake 0.5s;
-  }
 }
 
 .submitButton {
