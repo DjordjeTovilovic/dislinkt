@@ -1,0 +1,48 @@
+@import "../../utils/variables";
+
+.label {
+  font-size: 25px;
+}
+
+.input {
+  height: 25px;
+  font-size: 20px;
+  margin: 5px 0px 15px 0px;
+  &:focus {
+    outline: solid 2px $colorInputFocus !important;
+  }
+  &:valid {
+    color: $colorInputValid;
+    outline: solid 2px $colorInputValid;
+  }
+  &:invalid {
+    outline: solid 2px $colorInputInvalid;
+    color: $colorInputInvalid;
+    animation: shake 0.5s;
+  }
+}
+
+.submitButton {
+  height: 30px;
+  width: 150px;
+  font-size: 20px;
+  border: solid 2px $colorButtonPrimary;
+  background-color: $colorButtonPrimary;
+  color: white;
+  border-radius: 7%;
+  &:hover {
+    background-color: $colorButtonSecondary;
+  }
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
