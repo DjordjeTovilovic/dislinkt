@@ -63,7 +63,7 @@ export class MessagingRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('findAll.call#return messages', messages);
+    this.logger.log('findAll.call#return messages');
     return messages;
   }
 }

@@ -23,7 +23,7 @@ function App() {
           ></Route>
           <Route path="/signin" element={<Signin />}></Route>
           <Route
-            path="/messenger"
+            path="/messenger/:receiverId"
             element={
               <>
                 <Header />
