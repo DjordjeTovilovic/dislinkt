@@ -42,6 +42,11 @@ export class CompanyRepository {
     );
   }
 
+  updatePure(id: string, company: Company) {
+    const filter = { _id: id };
+    return this.companyModel.updateOne(filter, company);
+  }
+
   remove(companyId: string) {
     return this.companyModel.findOneAndDelete({ _id: companyId });
   }

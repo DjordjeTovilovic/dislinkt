@@ -34,7 +34,7 @@ export class CompanyController {
   @Post('/enable/:requestId')
   async confirmRequest(@Param('requestId') requestId: string) {
     const req = await this.requestService.findOne(requestId);
-    this.companyService.enable(req.companyId);
+    await this.companyService.enable(req.companyId);
 
     this.companyService.setUserAsCompanyOwner(req.companyId, req.userId);
 
@@ -67,7 +67,6 @@ export class CompanyController {
     return this.companyService.findOne(companyId);
   }
 
-  @Roles(Role.Owner)
   @Patch(':companyId')
   update(
     @Param('companyId') companyId: string,
