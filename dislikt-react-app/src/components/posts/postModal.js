@@ -4,7 +4,7 @@ import { useState } from "react";
 const PostModal = (props) => {
     
     const [editorText, setEditorText] = useState('');
-    
+
     const reset = (e) => {
         setEditorText('');
         props.handleClick(e);
@@ -69,7 +69,7 @@ const Container = styled.div`
     z-index: 9999;
     color: black;
     background-color: rgba(0,0,0,0.8);
-    animation: fadeIn 0.3s ease;
+    animation: ${(props) => (props.showModal==='open' ? 'fadeOut 0.3s ease' : 'fadeIn 0.3s ease' )};
 `;
 
 const Content = styled.div`
