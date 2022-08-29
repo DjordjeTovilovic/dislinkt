@@ -21,17 +21,22 @@ const NavBar = () => {
                 Home
               </Link>
             </li>
-            {user?.roles?.includes("owner") && (
-              <li className={styles.lii}>
-                <Link to="/companies" className={styles.link}>
-                  Companies
-                </Link>
-              </li>
-            )}
+            <li className={styles.lii}>
+              <Link to="/companies" className={styles.link}>
+                All Companies
+              </Link>
+            </li>
             {user && (
               <li className={styles.lii}>
                 <Link to="/addCompany" className={styles.link}>
                   Add Company
+                </Link>
+              </li>
+            )}
+            {user?.roles?.includes("owner") && (
+              <li className={styles.lii}>
+                <Link to="/mYcompanies" className={styles.link}>
+                  My Companies
                 </Link>
               </li>
             )}

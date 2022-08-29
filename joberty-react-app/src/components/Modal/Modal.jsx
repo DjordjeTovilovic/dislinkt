@@ -27,13 +27,14 @@ const Modal = ({ content, isOpenModal, changeModalState }) => {
             left: "50%",
             right: "auto",
             bottom: "auto",
-            marginRight: "-50%",
             transform: "translate(-50%, -50%)",
+            maxHeight: "585px",
+            overflowY: "auto",
           },
         }}
       >
         <button onClick={changeModalState} className={styles.closeButton}>
-          <img src={CloseIcon} />
+          <img src={CloseIcon} alt="close" />
         </button>
         {content}
       </ReactModal>

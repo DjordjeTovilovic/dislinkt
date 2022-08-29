@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import AddCompany from "./pages/AddCompany";
 import Companies from "./pages/Companies";
+import JobOffers from "./pages/JobOffers";
 
 function App() {
   return (
@@ -17,7 +18,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/addCompany" element={<AddCompany />} />
-        <Route path="/companies" element={<Companies />} />
+        <Route path="/companies" element={<Companies type={"client"} />} />
+        <Route path="/myCompanies" element={<Companies type={"my"} />} />
+        <Route path="/companies/:companyId/jobOffers" element={<JobOffers />} />
         <Route path="*" element={<h1>Not found page</h1>} />
       </Routes>
       <Footer />

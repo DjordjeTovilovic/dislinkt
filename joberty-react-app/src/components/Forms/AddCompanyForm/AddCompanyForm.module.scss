@@ -6,6 +6,7 @@
   height: 25px;
   font-size: 20px;
   margin: 5px 0px 15px 0px;
+  border: none;
   border-radius: 10px;
   &:focus {
     outline: solid 2px $colorInputFocus !important;
@@ -26,6 +27,7 @@
   font-size: 20px;
   margin: 5px 0px 15px 0px;
   border-radius: 10px;
+  border: none;
   &:focus {
     outline: solid 2px $colorInputFocus !important;
   }

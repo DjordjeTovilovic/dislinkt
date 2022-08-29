@@ -1,5 +1,5 @@
 import styles from "./CompanyList.module.scss";
-import CompanyCard from "../CompanyCard/CompanyCard";
+import CompanyCard from "../Cards/MyCompanyCard/MyCompanyCard";
 
 const CompanyList = ({ companies }) => {
   return (
