@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
 import { Company } from 'src/company/schemas/company.scheme';
 import { Role } from 'src/enums/role';
+import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -39,8 +39,8 @@ export class User {
   @Prop()
   lastname: string;
 
-  @Prop([Company])
-  companiesOwned: Company[];
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Company' })
+  companiesOwned: Company;
 
   @Prop()
   dislinktToken: string;

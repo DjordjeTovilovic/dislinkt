@@ -22,7 +22,7 @@ export class CompanyService {
   async setUserAsCompanyOwner(companyId: string, userId: string) {
     const user = await this.userService.findOne(userId);
     const company = await this.companyRepository.findOne(companyId);
-    user.companiesOwned.push(company);
+    user.companiesOwned = company;
     user.roles[0] = Role.Owner;
     return this.userService.updatePure(user.id, user);
   }
@@ -30,7 +30,7 @@ export class CompanyService {
   async enable(companyId: string) {
     const company = await this.companyRepository.findOne(companyId);
     company.enabled = true;
-    return this.companyRepository.save(company);
+    return this.companyRepository.updatePure(company.id, company);
   }
 
   create(createCompanyDto: CreateCompanyDto) {

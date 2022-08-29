@@ -20,11 +20,11 @@ export class UserRepository {
   }
 
   findAll() {
-    return this.userModel.find({});
+    return this.userModel.find({}).populate('companiesOwned');
   }
 
   findOne(id: string) {
-    return this.userModel.findOne({ _id: id });
+    return this.userModel.findOne({ _id: id }).populate('companiesOwned');
   }
 
   findByUsername(username: string) {
