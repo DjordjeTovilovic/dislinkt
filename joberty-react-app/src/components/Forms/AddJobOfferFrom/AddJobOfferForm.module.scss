@@ -1,0 +1,135 @@
+@import "../../../utils/variables";
+.label {
+  font-size: 25px;
+}
+.input {
+  height: 25px;
+  font-size: 20px;
+  margin: 5px 0px 15px 0px;
+  border-radius: 10px;
+  border: none;
+  &:focus {
+    outline: solid 2px $colorInputFocus !important;
+  }
+  &:valid {
+    color: $colorInputValid;
+    outline: solid 2px $colorInputValid;
+  }
+  &:invalid {
+    outline: solid 2px $colorInputInvalid;
+    color: $colorInputInvalid;
+    animation: shake 0.5s;
+  }
+}
+
+.skillsDiv {
+  font-size: 20px;
+  margin: 5px 0px 15px 0px;
+  border-radius: 10px;
+  border: none;
+  outline: solid 2px $colorInputFocus;
+  div {
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+    outline: solid 2px $colorInputFocus;
+    input {
+      height: 25px;
+      font-size: 20px;
+      border-radius: 10px;
+      border: none;
+      &:focus {
+        outline: none;
+      }
+    }
+    button {
+      min-height: 35px;
+      border-radius: 10px;
+      border: none;
+      color: white;
+      font-weight: 700;
+      font-size: 16px;
+      background-color: $colorButtonPrimary;
+      &:hover {
+        background-color: $colorButtonSecondary;
+      }
+    }
+  }
+  ul {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 3px;
+    padding-inline-end: 3px;
+    min-height: 85px;
+    max-height: 85px;
+    overflow-y: scroll;
+    li {
+      margin: 5px 0 5px 0;
+      display: flex;
+      list-style-type: none;
+      padding: 0 5px 0 5px;
+      border-radius: 10px;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgb(127, 219, 255);
+      button {
+        padding: 0;
+        max-height: 20px;
+        max-width: 20px;
+        border: none;
+        border-radius: 50%;
+        &:hover {
+          background-color: rgb(245, 109, 31);
+        }
+        img {
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.textarea {
+  resize: none;
+  font-size: 20px;
+  margin: 5px 0px 15px 0px;
+  border-radius: 10px;
+  border: none;
+  &:focus {
+    outline: solid 2px $colorInputFocus !important;
+  }
+  &:valid {
+    color: $colorInputValid;
+    outline: solid 2px $colorInputValid;
+  }
+  &:invalid {
+    outline: solid 2px $colorInputInvalid;
+    color: $colorInputInvalid;
+    animation: shake 0.5s;
+  }
+}
+
+.submitButton {
+  height: 30px;
+  width: 150px;
+  font-size: 20px;
+  border: solid 2px $colorButtonPrimary;
+  background-color: $colorButtonPrimary;
+  color: white;
+  border-radius: 10px;
+  &:hover {
+    background-color: $colorButtonSecondary;
+  }
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}

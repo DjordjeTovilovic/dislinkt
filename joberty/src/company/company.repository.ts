@@ -48,7 +48,7 @@ export class CompanyRepository {
 
   addJobOffer(companyId: string, newJobOfferDto: NewJobOfferDto) {
     return this.companyModel.findOneAndUpdate(
-      { id: companyId },
+      { _id: companyId },
       {
         $push: {
           jobOffers: newJobOfferDto,

@@ -20,9 +20,35 @@ const updateCompany = async (companyId, companyInfo) => {
   return res;
 }
 
+const getCompanyById = async (companyId) => {
+  const res = await axios.get(`${baseUrl}companies/${companyId}`, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
+const getAllCompanies = async () => {
+  const res = await axios.get(`${baseUrl}companies/`)
+  return res.data;
+}
+
+const addJobOffer = async (companyId, jobOffer) => {
+  const res = await axios.post(`${baseUrl}companies/${companyId}/jobs`, jobOffer, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
 const companyService = {
   addCompany,
-  updateCompany
+  updateCompany,
+  getCompanyById,
+  getAllCompanies,
+  addJobOffer
 }
 
 export default companyService

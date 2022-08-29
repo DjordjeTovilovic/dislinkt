@@ -38,30 +38,36 @@
     flex-direction: column;
     padding-left: 10px;
     border-left: solid 2px black;
-    button {
+    .jobOfferLink {
+      padding: 0px 5px 0px 5px;
       margin: 5px 15px 5px 0px;
-      height: 30px;
+      line-height: 30px;
       border-radius: 15px;
       cursor: pointer;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 500;
       color: white;
-    }
-    .jobOfferBtn {
+      border: solid 2px black;
+      text-decoration: none;
       background-color: rgb(19, 128, 19);
       &:hover {
         background-color: rgb(33, 172, 33);
       }
     }
-    .updateInfoBtn {
+    .profileLink {
+      padding: 0px 5px 0px 5px;
+      margin: 5px 15px 5px 0px;
+      line-height: 30px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      border: solid 2px black;
+      text-decoration: none;
       background-color: rgb(70, 70, 194);
       &:hover {
         background-color: rgb(81, 81, 223);
-      }
-    }
-    .deleteCompanyBtn {
-      background-color: red;
-      &:hover {
-        background-color: rgb(241, 63, 63);
       }
     }
   }

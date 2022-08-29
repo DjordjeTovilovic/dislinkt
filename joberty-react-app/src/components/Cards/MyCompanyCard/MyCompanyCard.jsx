@@ -1,16 +1,14 @@
 import { useState } from "react";
-import styles from "./CompanyCard.module.scss";
-import Modal from "../Modal/Modal";
-import UpdateCompanyForm from "../Forms/UpdateCompanyForm/UpdateCompanyForm";
-import companyService from "../../service/company";
+import styles from "./MyCompanyCard.module.scss";
+import Modal from "../../Modal/Modal";
+import UpdateCompanyForm from "../../Forms/UpdateCompanyForm/UpdateCompanyForm";
+import companyService from "../../../service/company";
+import { Link } from "react-router-dom";
 
-const CompanyCard = ({ company }) => {
+const MyCompanyCard = ({ company }) => {
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
-  const [isOpenJobOfferModal, setIsOpenJobOfferModal] = useState(false);
 
   const changeUpdateModalState = () => setIsOpenUpdateModal(!isOpenUpdateModal);
-  const changeJobOfferModalState = () =>
-    setIsOpenJobOfferModal(!isOpenJobOfferModal);
 
   const handleUpdateCompany = (companyInfo) => {
     companyService
@@ -31,7 +29,12 @@ const CompanyCard = ({ company }) => {
           </div>
         </div>
         <div className={styles.actions}>
-          <button className={styles.jobOfferBtn}>ADD JOB OFFER</button>
+          <Link
+            to={`/companies/${company.id}/jobOffers`}
+            className={styles.jobOfferLink}
+          >
+            VIEW JOB OFFERS
+          </Link>
           <button
             className={styles.updateInfoBtn}
             onClick={changeUpdateModalState}
@@ -54,4 +57,4 @@ const CompanyCard = ({ company }) => {
     </>
   );
 };
-export default CompanyCard;
+export default MyCompanyCard;
