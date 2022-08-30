@@ -7,6 +7,7 @@ import Signin from "./components/signin";
 import Messenger from "./components/messenger/messenger";
 import Profile from "./components/profile/src";
 import Settings from "./components/notification-settings/settings/settings";
+import FollowerRecommendation from "./components/recommendation/people/followerRecommendation";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           ></Route>
           <Route path="/profile" element={<><Header/><Profile/></>}></Route>
           <Route path="/settings" element={<><Header/><Settings/></>}></Route>
+          <Route path="/person-recommendation" element={<><Header/> <FollowerRecommendation/></>}></Route>
         </Routes>
       </Router>
     </div>
