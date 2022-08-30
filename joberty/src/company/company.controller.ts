@@ -34,9 +34,9 @@ export class CompanyController {
   @Post('/enable/:requestId')
   async confirmRequest(@Param('requestId') requestId: string) {
     const req = await this.requestService.findOne(requestId);
-    await this.companyService.enable(req.companyId);
+    await this.companyService.enable(req.company.id);
 
-    this.companyService.setUserAsCompanyOwner(req.companyId, req.userId);
+    this.companyService.setUserAsCompanyOwner(req.company.id, req.user.id);
 
     return this.requestService.remove(req.id);
   }
@@ -48,11 +48,12 @@ export class CompanyController {
   ) {
     const validToken = token.split(' ')[1];
     const { valid, user } = this.authService.validateToken(validToken);
-    const company = this.companyService.create(createCompanyDto);
+    const company = await this.companyService.create(createCompanyDto);
+    const newUser = await this.userService.findOne(user.id);
 
     const requestDto = new CreateCompanyRequestDto();
-    requestDto.userId = user.id;
-    requestDto.companyId = (await company).id;
+    requestDto.user = newUser;
+    requestDto.company = company;
 
     this.requestService.save(requestDto);
   }

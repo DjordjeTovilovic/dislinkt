@@ -1,4 +1,7 @@
+import { User } from 'src/user/schemas/user.schema';
+import { Company } from '../schemas/company.scheme';
+
 export class CreateCompanyRequestDto {
-  userId: string;
-  companyId: string;
+  user: User;
+  company: Company;
 }

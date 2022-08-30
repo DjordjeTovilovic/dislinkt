@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Company } from 'src/company/schemas/company.scheme';
+import { User } from 'src/user/schemas/user.schema';
 
 export type CreateRequestDocument = CreateRequest & Document;
 
@@ -23,10 +25,10 @@ export type CreateRequestDocument = CreateRequest & Document;
 })
 export class CreateRequest extends Document {
   @Prop()
-  userId: string;
+  user: User;
 
   @Prop()
-  companyId: string;
+  company: Company;
 }
 
 export const CreateRequestSchema = SchemaFactory.createForClass(CreateRequest);

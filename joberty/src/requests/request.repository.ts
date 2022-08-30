@@ -24,6 +24,10 @@ export class RequestRepository {
     return this.requestModel.findOne({ _id: requestId });
   }
 
+  removeAll() {
+    return this.requestModel.remove({});
+  }
+
   remove(requestId: string) {
     const filter = { _id: requestId };
 
