@@ -14,8 +14,6 @@ export class PostService {
 
   async create(createPostDto: CreatePostDto, username) {
     const post = await this.postRepository.create(createPostDto, username);
-    // this.logger.log('post_created.emit#body', post);
-    // this.notificationClient.emit('post_created', post);
     return post;
   }
 
@@ -25,20 +23,52 @@ export class PostService {
   }
 
   async comment(postId, body, username) {
-    const comment = await this.postRepository.comment(postId, body, username);
-    return comment;
+    const commentedPost = await this.postRepository.comment(
+      postId,
+      body,
+      username,
+    );
+
+    const payload = {
+      postId,
+      type: 'comment',
+      senderUsername: username,
+      receiverUsername: commentedPost.authorUsername,
+    };
+    this.logger.log('post_commented#emit');
+    this.notificationClient.emit('post_commented', payload);
+
+    return commentedPost;
   }
 
   async like(postId, username) {
-    const like = await this.postRepository.like(postId, username);
-    this.logger.log('post_liked.emit#payload');
-    this.notificationClient.emit('post_liked', like);
-    return like;
+    const likedPost = await this.postRepository.like(postId, username);
+
+    const payload = {
+      postId,
+      type: 'like',
+      senderUsername: username,
+      receiverUsername: likedPost.authorUsername,
+    };
+    this.logger.log('post_liked#emit');
+    this.notificationClient.emit('post_liked', payload);
+
+    return likedPost;
   }
 
   async dislike(postId, username) {
-    const dislike = await this.postRepository.dislike(postId, username);
-    return dislike;
+    const dislikedPost = await this.postRepository.dislike(postId, username);
+
+    const payload = {
+      postId,
+      type: 'dislike',
+      senderUsername: username,
+      receiverUsername: dislikedPost.authorUsername,
+    };
+    this.logger.log('post_disliked#emit');
+    this.notificationClient.emit('post_disliked', payload);
+
+    return dislikedPost;
   }
 
   async deleteAllForUserId(userId) {

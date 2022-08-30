@@ -27,12 +27,15 @@ export class MessagingRestController implements OnModuleInit {
 
   private messagingService: MessagingServiceClient;
 
-  constructor(@Inject(MESSAGING_SERVICE_NAME) private postClient: ClientGrpc) {}
+  constructor(
+    @Inject(MESSAGING_SERVICE_NAME) private messagingClient: ClientGrpc,
+  ) {}
 
   onModuleInit() {
-    this.messagingService = this.postClient.getService<MessagingServiceClient>(
-      MESSAGING_SERVICE_NAME,
-    );
+    this.messagingService =
+      this.messagingClient.getService<MessagingServiceClient>(
+        MESSAGING_SERVICE_NAME,
+      );
   }
 
   @Post('send')

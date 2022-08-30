@@ -23,11 +23,11 @@ export class JobRestController implements OnModuleInit {
 
   private jobService: JobServiceClient;
 
-  constructor(@Inject(JOB_SERVICE_NAME) private postClient: ClientGrpc) {}
+  constructor(@Inject(JOB_SERVICE_NAME) private jobClient: ClientGrpc) {}
 
   onModuleInit() {
     this.jobService =
-      this.postClient.getService<JobServiceClient>(JOB_SERVICE_NAME);
+      this.jobClient.getService<JobServiceClient>(JOB_SERVICE_NAME);
   }
 
   @Get()
