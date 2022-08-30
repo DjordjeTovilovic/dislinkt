@@ -26,7 +26,7 @@ const getCompanyById = async (companyId) => {
       'Authorization': `Bearer ${window.localStorage.getItem("token")}`
     }
   })
-  return res;
+  return res.data;
 }
 
 const getAllCompanies = async () => {
@@ -43,12 +43,42 @@ const addJobOffer = async (companyId, jobOffer) => {
   return res;
 }
 
+const addReview = async (companyId, review) => {
+  const res = await axios.post(`${baseUrl}companies/${companyId}/reviews`, review, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
+const addInterview = async (companyId, interview) => {
+  const res = await axios.post(`${baseUrl}companies/${companyId}/interviews`, interview, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
+const addSalary = async (companyId, salary) => {
+  const res = await axios.post(`${baseUrl}companies/${companyId}/salaries`, salary, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
 const companyService = {
   addCompany,
   updateCompany,
   getCompanyById,
   getAllCompanies,
-  addJobOffer
+  addJobOffer,
+  addInterview,
+  addReview,
+  addSalary
 }
 
 export default companyService
