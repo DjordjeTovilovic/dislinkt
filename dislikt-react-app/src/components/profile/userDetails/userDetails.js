@@ -9,11 +9,9 @@ const UserDetails = (props) => {
 
   const updateHandler = (e) => {
     e.preventDefault();
-
     if(e.target !== e.currentTarget) {
       return;
     }
-
     switch(showUpdateModal) {
       case 'open' :
         setShowUpdateModal('close');
