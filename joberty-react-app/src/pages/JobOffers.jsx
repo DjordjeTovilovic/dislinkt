@@ -14,7 +14,7 @@ const JobOffers = () => {
         setCompany(gotCompany);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [companyId]);
 
   const handleAddJobOffer = (jobOffer) => {
     if (jobOffer.position && jobOffer.seniority && jobOffer.description) {

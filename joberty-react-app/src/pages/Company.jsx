@@ -11,7 +11,7 @@ const Company = () => {
       .getCompanyById(companyId)
       .then((gotCompany) => setCompany(gotCompany))
       .catch((err) => console.log(err));
-  }, []);
+  }, [companyId]);
   return <CompanyProfileCard company={company} />;
 };
 export default Company;

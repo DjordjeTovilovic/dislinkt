@@ -12,7 +12,7 @@ const JobOfferCard = ({ job }) => {
       else skillss = `${skillss} ${skill},`;
     });
     setSkills(skillss);
-  }, []);
+  }, [job.skillsRequired]);
 
   return (
     <div className={styles.card}>
