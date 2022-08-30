@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package notification;
+
+service NotificationService {
+  rpc FindAll (Empty) returns (Notifications) {}
+}
+
+message Empty {
+}
+
+message Notifications {
+  repeated Notification notifications = 1;
+}
+
+message Notification {
+  string id = 1;
+  string postId = 2;
+  string type = 3;
+  string senderUsername = 4;
+  string receiverUsername = 5;
+  string createdAt = 6;
+}

@@ -18,7 +18,12 @@ import {
   MESSAGING_SERVICE_NAME,
 } from './protos/messaging.pb';
 import { MessagingRestController } from './messaging.rest.controller';
+import { NotificationRestController } from './notification.rest.controller';
 import { PrometheusModule } from '@willsoto/nestjs-prometheus';
+import {
+  NOTIFICATION_PACKAGE_NAME,
+  NOTIFICATION_SERVICE_NAME,
+} from './protos/notification.pb';
 
 @Module({
   imports: [
@@ -75,6 +80,16 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
           protoPath: join(__dirname, './protos/messaging.proto'),
         },
       },
+      {
+        name: NOTIFICATION_SERVICE_NAME,
+        transport: Transport.GRPC,
+        options: {
+          url: `${process.env.NOTIFICATION_SERVICE_URL}:${process.env.NOTIFICATION_SERVICE_PORT}`,
+          // url: '0.0.0.0:50056',
+          package: NOTIFICATION_PACKAGE_NAME,
+          protoPath: join(__dirname, './protos/notification.proto'),
+        },
+      },
     ]),
   ],
   controllers: [
@@ -83,6 +98,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
     PostRestController,
     JobRestController,
     MessagingRestController,
+    NotificationRestController,
   ],
   providers: [
     {

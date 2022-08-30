@@ -169,7 +169,9 @@ services:
       NODE_ENV: "test"
       URL: "0.0.0.0"
       PORT: "50056"
+      SERVER_PORT: "3009"
       RABBITMQ_HOST: "rabbitmq"
+      MONGO_URL: mongodb
     restart: "on-failure"
 
   joberty:

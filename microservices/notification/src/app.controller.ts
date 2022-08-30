@@ -1,33 +1,42 @@
-import { Controller, Get, Inject, Logger, Sse } from '@nestjs/common';
-import { AppService } from './app.service';
-import { interval, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {
-  ClientProxy,
-  Ctx,
-  EventPattern,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+import { Controller, Logger, Param, Sse } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
+import { EventsService } from './events.service';
+import { NotificationService } from './notification/notification.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly notificationService: NotificationService,
+  ) {}
   private readonly logger = new Logger(AppController.name);
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Sse('sse')
-  sse() {
-    return interval(1000).pipe(map((_) => ({ data: { hello: 'world' } })));
+  @Sse('notifications/sse/:username')
+  events(@Param('username') username: string) {
+    return this.eventsService.subscribe(username);
   }
 
   @EventPattern('post_liked')
   async handlePostLiked(payload) {
-    this.logger.log('Notification.handlePostLiked.event#payload');
+    this.logger.log('handle_post_liked#event#payload', payload);
+    this.handleNewNotification(payload);
+  }
+
+  @EventPattern('post_disliked')
+  async handlePostDisliked(payload) {
+    this.logger.log('handle_post_disliked#event#payload');
+    this.handleNewNotification(payload);
+  }
+
+  @EventPattern('post_commented')
+  async handlePostCommented(payload) {
+    this.logger.log('handle_post_commented#event#payload');
+    this.handleNewNotification(payload);
+  }
+
+  async handleNewNotification(payload) {
+    this.notificationService.newNotification(payload);
+    this.eventsService.emit(payload);
+    // return { ok: true };
   }
 }
