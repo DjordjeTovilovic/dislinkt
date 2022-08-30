@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import AddCompany from "./pages/AddCompany";
 import Companies from "./pages/Companies";
 import JobOffers from "./pages/JobOffers";
+import Admin from "./pages/Admin";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/companies" element={<Companies type={"client"} />} />
         <Route path="/myCompanies" element={<Companies type={"my"} />} />
         <Route path="/companies/:companyId/jobOffers" element={<JobOffers />} />
+        <Route path="/admin" element={<Admin />} />
+
         <Route path="*" element={<h1>Not found page</h1>} />
       </Routes>
       <Footer />

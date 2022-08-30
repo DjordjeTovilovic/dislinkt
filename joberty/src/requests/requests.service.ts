@@ -20,4 +20,8 @@ export class RequestService {
   remove(requestId: string) {
     return this.requestRepository.remove(requestId);
   }
+
+  removeAll() {
+    return this.requestRepository.removeAll();
+  }
 }

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Company } from 'src/company/schemas/company.scheme';
 import { Role } from 'src/enums/role';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
+import { expand } from 'rxjs';
 
 export type UserDocument = User & Document;
 
@@ -23,7 +24,7 @@ export type UserDocument = User & Document;
     },
   },
 })
-export class User {
+export class User extends Document {
   @Prop()
   username: string;
 

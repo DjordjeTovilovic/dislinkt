@@ -25,4 +25,9 @@ export class RequestController {
   remove(@Param('requestId') requestId: string) {
     return this.requestService.remove(requestId);
   }
+
+  @Delete()
+  removeAll() {
+    return this.requestService.removeAll();
+  }
 }
