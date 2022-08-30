@@ -6,6 +6,7 @@ import Home from "./components/home/home";
 import Signin from "./components/signin";
 import Messenger from "./components/messenger/messenger";
 import Profile from "./components/profile/src";
+import Settings from "./components/notification-settings/settings/settings";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             }
           ></Route>
           <Route path="/profile" element={<><Header/><Profile/></>}></Route>
+          <Route path="/settings" element={<><Header/><Settings/></>}></Route>
         </Routes>
       </Router>
     </div>
