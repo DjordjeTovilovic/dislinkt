@@ -18,11 +18,13 @@ import {
   MESSAGING_SERVICE_NAME,
 } from './protos/messaging.pb';
 import { MessagingRestController } from './messaging.rest.controller';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 @Module({
   imports: [
     PassportModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    PrometheusModule.register(),
     ClientsModule.register([
       {
         name: USER_SERVICE_NAME,

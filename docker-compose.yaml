@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 services:
   api-gateway:
@@ -132,6 +132,8 @@ services:
       context: "./microservices/messaging"
     expose:
       - "50055"
+    ports:
+      - "3008:3008"
     depends_on:
       - "mongodb"
       - "rabbitmq"
@@ -143,6 +145,7 @@ services:
       NODE_ENV: "test"
       URL: "0.0.0.0"
       PORT: "50055"
+      SERVER_PORT: "3008"
       RABBITMQ_HOST: "rabbitmq"
       MONGO_URL: mongodb
     restart: "on-failure"
@@ -170,7 +173,7 @@ services:
     restart: "on-failure"
 
   joberty:
-    image: "dislinkt:joberty"
+    image: "joberty:backend"
     build:
       context: "./joberty"
     ports:
@@ -196,6 +199,18 @@ services:
       - microservices
     environment:
       PORT: "3001"
+    restart: "on-failure"
+
+  joberty-frontend:
+    image: "joberty:frontend"
+    build:
+      context: "./joberty-react-app"
+    ports:
+      - "3002:3002"
+    networks:
+      - microservices
+    environment:
+      PORT: "3002"
     restart: "on-failure"
 
   neo:
@@ -237,10 +252,65 @@ services:
     networks:
       - mongodb_net
 
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - '9100:9100'
+    networks:
+      - microservices
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    networks:
+      - microservices
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    links:
+      - prometheus:prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=12345
+    networks:
+      - microservices
+    ports:
+      - '3005:3000'
+
+
 volumes:
   neo4j_data:
   rabbitmq_data:
   rabbitmq_log:
+  prometheus_data: {}
+  grafana_data: {}
 
 networks:
   microservices:

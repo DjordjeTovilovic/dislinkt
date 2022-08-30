@@ -26,7 +26,7 @@ const NavBar = () => {
                 All Companies
               </Link>
             </li>
-            {user && (
+            {user?.roles?.includes("user") && (
               <li className={styles.lii}>
                 <Link to="/addCompany" className={styles.link}>
                   Add Company
@@ -35,8 +35,8 @@ const NavBar = () => {
             )}
             {user?.roles?.includes("owner") && (
               <li className={styles.lii}>
-                <Link to="/mYcompanies" className={styles.link}>
-                  My Companies
+                <Link to="/mYcompany" className={styles.link}>
+                  My Company
                 </Link>
               </li>
             )}

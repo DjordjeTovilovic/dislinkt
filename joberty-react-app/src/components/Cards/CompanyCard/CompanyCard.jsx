@@ -9,6 +9,11 @@ const CompanyCard = ({ company }) => {
           <div className={styles.name}>
             <p>{company.name}</p>
           </div>
+          <div className={styles.others}>
+            <p className={styles.other}>({company.reviews.length} reviews)</p>
+            <p>({company.interviews.length} interviews)</p>
+            <p>({company.salaries.length} salaries)</p>
+          </div>
           <div className={styles.description}>
             <p>{company.description}</p>
           </div>
