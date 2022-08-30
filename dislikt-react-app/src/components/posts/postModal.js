@@ -4,6 +4,18 @@ import { useState } from "react";
 const PostModal = (props) => {
     
     const [editorText, setEditorText] = useState('');
+    const [shareImage, setshareImage] = useState('');
+
+    const handleChange = (e) => {
+        const image = e.target.files[0];
+
+        if(image === '' || image === undefined) {
+            alert(`not an image, the file is ${typeof image}`)
+            return
+        }
+
+        setshareImage(image)
+    }
 
     const reset = (e) => {
         setEditorText('');
@@ -34,8 +46,23 @@ const PostModal = (props) => {
                             onChange={(e) => setEditorText(e.target.value)}
                             placeholder='What do you want to talk abouy?' 
                             autoFocus='true'
-                            >
-                        </textarea>
+                            />
+                        <UplodImage>
+                            <input 
+                                type='file' 
+                                accept="image/gif, image/jpeg, image/png"
+                                name="image"
+                                id='file'
+                                style={{display: 'none'}}
+                                onChange={handleChange}
+                            ></input>    
+                            <p>
+                                <label htmlFor="file">
+                                    Select an image to share
+                                </label>
+                            </p>
+                            {shareImage && <img src={URL.createObjectURL(shareImage) }></img>}
+                        </UplodImage>                        
                     </Editor>
 
                 </SharedContent>
@@ -82,7 +109,7 @@ const Content = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    top: 200px;
+    top: 50px;
     margin: 0 auto;
 `;
 
@@ -192,5 +219,17 @@ const Editor = styled.div`
         height: 35px;
         font-size: 16px;
         margin-bottom: 20px;
+    }
+`;
+
+const UplodImage = styled.div`
+    margin-top: 4px;
+    text-align: center;
+
+    p{
+        cursor: pointer;
+    }
+    img {
+        width: 100%;
     }
 `;
