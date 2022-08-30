@@ -10,12 +10,11 @@ const JobOffers = () => {
   useEffect(() => {
     companyService
       .getCompanyById(companyId)
-      .then((res) => {
-        setCompany(res.data);
-        console.log(res.data);
+      .then((gotCompany) => {
+        setCompany(gotCompany);
       })
       .catch((err) => console.log(err));
-  }, [companyId]);
+  }, []);
 
   const handleAddJobOffer = (jobOffer) => {
     if (jobOffer.position && jobOffer.seniority && jobOffer.description) {
@@ -27,10 +26,7 @@ const JobOffers = () => {
   };
 
   return (
-    <JobOffersList
-      jobs={company.jobOffers}
-      handleAddJobOffer={handleAddJobOffer}
-    />
+    <JobOffersList company={company} handleAddJobOffer={handleAddJobOffer} />
   );
 };
 export default JobOffers;

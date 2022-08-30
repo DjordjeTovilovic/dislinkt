@@ -1,25 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import userService from "../../../service/user";
 import JobOfferCard from "../../Cards/JobOfferCard/JobOfferCard";
 import AddJobOfferForm from "../../Forms/AddJobOfferFrom/AddJobOfferForm";
 import Modal from "../../Modal/Modal";
 import styles from "./JobOffersList.module.scss";
 
-const JobOffersList = ({ jobs, handleAddJobOffer }) => {
+const JobOffersList = ({ company, handleAddJobOffer }) => {
   const [isAddJobOfferModalOpen, setIsAddJobOfferModalOpen] = useState(false);
+  const [user, setUser] = useState({});
+
   const changeAddJobOfferModalState = () =>
     setIsAddJobOfferModalOpen(!isAddJobOfferModalOpen);
 
+  useEffect(() => {
+    userService
+      .getMe()
+      .then((res) => setUser(res))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
-      <button
-        className={styles.addJobOfferBtn}
-        onClick={changeAddJobOfferModalState}
-      >
-        ADD JOB OFFER
-      </button>
+      <h2>Job offers</h2>
+      {user?.companiesOwned?.id === company.id && (
+        <button
+          className={styles.addJobOfferBtn}
+          onClick={changeAddJobOfferModalState}
+        >
+          ADD JOB OFFER
+        </button>
+      )}
       <div className={styles.jobOfferList}>
-        {jobs?.map((job) => (
-          <JobOfferCard job={job} />
+        {company.jobOffers?.map((job) => (
+          <JobOfferCard job={job} key={job.id} />
         ))}
       </div>
       <Modal
