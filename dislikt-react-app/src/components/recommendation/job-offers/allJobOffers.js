@@ -1,6 +1,10 @@
 import styled from 'styled-components'
+import { useNavigate } from "react-router-dom";
 
 const AllJobOffers = (props) => {
+
+    const navigate = useNavigate();
+
     return(
         <Container>
             <Content>
@@ -11,7 +15,7 @@ const AllJobOffers = (props) => {
                             <h2>Microsoft</h2>
                             <label className='label'>Requires  <h3> senior React Native engineer</h3>!!</label>
                         </div>
-                        <button>View</button>
+                        <button onClick={() => navigate('/job-details')}>View</button>
                     </Job>
 
                     <Job>
@@ -29,7 +33,8 @@ const AllJobOffers = (props) => {
 
 const Container = styled.div`
     padding: 62px;
-    max-width: 100%;`;
+    max-width: 100%;
+`;
 
 const Content = styled.div`
 
@@ -38,7 +43,7 @@ const Content = styled.div`
         font-size: 40px;
     }
 
-    margin:auto;
+    margin: auto;
     width: 40%;
     border: 1px solid lightgray;
     overflow-y: auto;
