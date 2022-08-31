@@ -24,9 +24,5 @@ export class RegistrationDto implements RegistrationRequest {
   gender: Gender;
   phoneNumber: string;
   birthday: string;
-  experiences: ExperienceProto[];
-  education: EducationProto[];
-  skills: SkillProto[];
-  interests: InterestProto[];
   privateProfile: boolean;
 }

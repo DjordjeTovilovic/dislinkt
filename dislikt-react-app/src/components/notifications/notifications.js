@@ -22,19 +22,19 @@ const Notifications = () => {
 	//   }
 	// }, [])
 
-	return (
-		<NotificationsContainer>
-			<ul>
-				{notifications.map((notification) =>
-					<li key={notification.id}>
-						<a>
-							{`User ${notification.senderUsername} ${notification.type} your post`}
-						</a>
-					</li>
-				)}
-			</ul>
-		</NotificationsContainer>
-	)
+  return (
+    <NotificationsContainer>
+      <ul>
+			{notifications && notifications.map((notification) => 
+			<li key={notification.id}>
+				<a>
+					{`User ${notification.senderUsername} ${notification.type} your post`}
+				</a>
+			</li>
+			)}
+      </ul>
+    </NotificationsContainer>
+  )
 }
 
 export default Notifications;

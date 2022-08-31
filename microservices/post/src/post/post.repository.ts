@@ -33,7 +33,66 @@ export class PostRepository {
     );
 
     const row = res.records[0];
-    return new Post(row.get('p'), username, 0, false, 0, false).toJson();
+    return new Post(row.get('p'), username, 0, false, 0, false, []).toJson();
+  }
+
+  async userFeed(username) {
+    const res = await this.neo4jService.read(
+      `
+        MATCH (u:User {username: $username})
+        MATCH (p:Post)
+        MATCH (a:User)
+        WHERE (p)-[:POSTED]-(a)<-[:FOLLOWS]-(u)
+        
+        RETURN
+          p,
+          [ (c)-[:ON]-(p) | c ] AS comments,
+          [ (c)-[:COMMENTED]-(ca) | ca ][0] AS commentAuthor,
+          CASE
+              WHEN $username IS NOT NULL
+              THEN exists((p)<-[:LIKED]-({username: $username}))
+              ELSE false
+          END AS liked,
+          CASE
+              WHEN $username IS NOT NULL
+              THEN exists((p)<-[:DISLIKED]-({username: $username}))
+              ELSE false
+          END AS disliked,
+          [ (p)<-[:POSTED]-(a) | a ][0] AS author,
+          size((p)<-[:LIKED]-()) AS likeCount,
+          size((p)<-[:DISLIKED]-()) AS dislikeCount
+`,
+      {
+        username,
+      },
+    );
+
+    const posts = res.records.map((row) => {
+      const authorUsername = row.get('author').properties.username;
+      // const comments = await this.getComments(row.get('p').properties.id);
+      // const comments = row.get('comments').map((comment) => {
+      //   return new Comment(
+      //     comment,
+      //     // postId,
+      //     row.get('p').properties.id,
+      //     row.get('commentAuthor').properties.username,
+      //     row.get('author').properties.username,
+      //   ).toJson();
+      // });
+      return new Post(
+        row.get('p'),
+        authorUsername,
+        row.get('likeCount'),
+        row.get('liked'),
+        row.get('dislikeCount'),
+        row.get('disliked'),
+        [],
+        // comments,
+      ).toJson();
+    });
+    // console.log(posts[0].comments[0]);
+    // console.log(posts);
+    return { posts };
   }
 
   async findByUserId(userId, username) {
@@ -75,10 +134,40 @@ export class PostRepository {
         row.get('liked'),
         row.get('dislikeCount'),
         row.get('disliked'),
+        [],
       ).toJson();
     });
     console.log(posts);
     return { posts };
+  }
+
+  async getComments(postId) {
+    const res = await this.neo4jService.read(
+      `
+        MATCH (p:Post {id: $postId})
+        MATCH (c:Comment)
+        WHERE (c)-[:ON]->(p)
+
+        
+        RETURN c,
+        [ (c)-[:COMMENTED]-(ca) | ca ][0] AS commentAuthor,
+        [ (p)-[:POSTED]-(a) | a ][0] AS author
+    `,
+      {
+        postId,
+      },
+    );
+
+    if (!res.records.length) return null;
+    const comments = res.records.map((row) => {
+      return new Comment(
+        row.get('c'),
+        postId,
+        row.get('commentAuthor').properties.username,
+        row.get('author').properties.username,
+      ).toJson();
+    });
+    return { comments };
   }
 
   async comment(postId, body, username) {
@@ -154,6 +243,7 @@ export class PostRepository {
       row.get('liked'),
       row.get('dislikeCount'),
       row.get('disliked'),
+      [],
     ).toJson();
   }
 
@@ -197,6 +287,7 @@ export class PostRepository {
       row.get('liked'),
       row.get('dislikeCount'),
       row.get('disliked'),
+      [],
     ).toJson();
   }
 

@@ -5,8 +5,18 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "post";
 
+export interface Empty {}
+
 export interface FindByUserIdRequest {
   userId: string;
+}
+
+export interface FindByPostIdRequest {
+  postId: string;
+}
+
+export interface CommentProtoList {
+  comments: CommentProto[];
 }
 
 export interface PostProtoList {
@@ -33,9 +43,12 @@ export interface DislikeRequest {
 }
 
 export interface CommentProto {
+  id: string;
   body: string;
   postId: string;
   authorUsername: string;
+  postAuthorUsername: string;
+  createdAt: string;
 }
 
 export interface PostProto {
@@ -48,6 +61,8 @@ export interface PostProto {
   liked: boolean;
   dislikeCount: number;
   disliked: boolean;
+  comments: CommentProto[];
+  createdAt: string;
 }
 
 export const POST_PACKAGE_NAME = "post";
@@ -57,6 +72,13 @@ export interface PostServiceClient {
     request: CreatePostRequest,
     metadata?: Metadata
   ): Observable<PostProto>;
+
+  userFeed(request: Empty, metadata?: Metadata): Observable<PostProtoList>;
+
+  getComments(
+    request: FindByPostIdRequest,
+    metadata?: Metadata
+  ): Observable<CommentProtoList>;
 
   findByUserId(
     request: FindByUserIdRequest,
@@ -78,6 +100,19 @@ export interface PostServiceController {
     request: CreatePostRequest,
     metadata?: Metadata
   ): Promise<PostProto> | Observable<PostProto> | PostProto;
+
+  userFeed(
+    request: Empty,
+    metadata?: Metadata
+  ): Promise<PostProtoList> | Observable<PostProtoList> | PostProtoList;
+
+  getComments(
+    request: FindByPostIdRequest,
+    metadata?: Metadata
+  ):
+    | Promise<CommentProtoList>
+    | Observable<CommentProtoList>
+    | CommentProtoList;
 
   findByUserId(
     request: FindByUserIdRequest,
@@ -104,6 +139,8 @@ export function PostServiceControllerMethods() {
   return function (constructor: Function) {
     const grpcMethods: string[] = [
       "create",
+      "userFeed",
+      "getComments",
       "findByUserId",
       "comment",
       "like",
