@@ -34,6 +34,7 @@ export interface ValidateApiTokenRequest {
 
 export interface ValidateApiTokenResponse {
   valid: boolean;
+  userId: string;
 }
 
 export interface LoggedInRequest {

@@ -19,6 +19,15 @@ export class PostController implements PostServiceController {
     return this.postService.create(createPostDto, username);
   }
 
+  async userFeed({}, metadata?: Metadata) {
+    const username = metadata.get('username')[0];
+    return this.postService.userFeed(username);
+  }
+
+  async getComments({ postId }) {
+    return this.postService.getComments(postId);
+  }
+
   async findByUserId(user: FindByUserIdRequest, metadata?: Metadata) {
     const username = metadata.get('username')[0];
     return this.postService.findByUserId(user.userId, username);

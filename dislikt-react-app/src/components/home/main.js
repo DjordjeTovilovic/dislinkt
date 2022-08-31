@@ -4,7 +4,6 @@ import PostModal from "../posts/postModal";
 import { useState } from "react";
 
 const Main = (props) => {
-  
   const [showModal, setShowModal] = useState('close');
 
   const handleClick = (e) => {
@@ -55,7 +54,7 @@ const Main = (props) => {
           </button>
         </div>
       </ShareBox>
-        <Article/>
+      <Article/>
 
       <PostModal showModal={showModal} handleClick={handleClick}/> 
     </Container>

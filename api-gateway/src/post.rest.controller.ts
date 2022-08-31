@@ -23,6 +23,7 @@ import {
   POST_SERVICE_NAME,
   CreatePostRequest,
   CreateCommentRequest,
+  FindByPostIdRequest,
 } from './protos/post.pb';
 
 @Controller('posts')
@@ -55,6 +56,41 @@ export class PostRestController implements OnModuleInit {
 
     this.logger.log('create.call#return post', post);
     return post;
+  }
+
+  @UseGuards(AuthGuard)
+  @Get()
+  async userFeed(@Req() req) {
+    this.logger.log('userFeed.call#username', req.user.username);
+    const metadata = new Metadata();
+    metadata.add('username', req.user.username);
+
+    const posts = await lastValueFrom(
+      this.postService.userFeed({}, metadata).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('userFeed.call#return posts', posts);
+    return posts;
+  }
+
+  @Get('/:postId/comments')
+  async getComments(@Param('postId') postId: string) {
+    this.logger.log('getComments.call#param ', postId);
+
+    const comments = await lastValueFrom(
+      this.postService.getComments({ postId }).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('getComments.call#return comments', comments);
+    return comments;
   }
 
   @UseGuards(AuthGuard)

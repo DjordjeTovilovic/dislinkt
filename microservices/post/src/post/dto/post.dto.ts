@@ -1,5 +1,6 @@
 import { PostProto } from '../../protos/post.pb';
 import { IsNotEmpty } from 'class-validator';
+import { CommentDto } from './comment.dto';
 
 export class PostDto implements PostProto {
   @IsNotEmpty()
@@ -21,4 +22,5 @@ export class PostDto implements PostProto {
   liked: boolean;
   dislikeCount: number;
   disliked: boolean;
+  comments: CommentDto[];
 }

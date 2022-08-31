@@ -4,14 +4,27 @@ package post;
 
 service PostService {
   rpc Create (CreatePostRequest) returns (PostProto) {}
+  rpc UserFeed (Empty) returns (PostProtoList) {}
+  rpc GetComments (FindByPostIdRequest) returns (CommentProtoList) {}
   rpc FindByUserId (FindByUserIdRequest) returns (PostProtoList) {}
   rpc Comment (CreateCommentRequest) returns (CommentProto) {}
   rpc Like (LikeRequest) returns (PostProto) {}
   rpc Dislike (DislikeRequest) returns (PostProto) {}
 }
 
+message Empty {
+}
+
 message FindByUserIdRequest {
   string userId = 1;
+}
+
+message FindByPostIdRequest {
+  string postId = 1;
+}
+
+message CommentProtoList {
+  repeated CommentProto comments=1;
 }
 
 message PostProtoList {
@@ -53,4 +66,5 @@ message PostProto {
   bool liked = 7;
   int32 dislikeCount = 8;
   bool disliked = 9;
+  repeated CommentProto comments=10;
 }

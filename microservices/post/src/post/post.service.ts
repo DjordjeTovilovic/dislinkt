@@ -17,6 +17,16 @@ export class PostService {
     return post;
   }
 
+  async userFeed(username) {
+    const posts = await this.postRepository.userFeed(username);
+    return posts;
+  }
+
+  async getComments(postId) {
+    const posts = await this.postRepository.getComments(postId);
+    return posts;
+  }
+
   async findByUserId(userId, username) {
     const posts = await this.postRepository.findByUserId(userId, username);
     return posts;

@@ -25,7 +25,7 @@ const Notifications = () => {
   return (
     <NotificationsContainer>
       <ul>
-			{notifications.map((notification) => 
+			{notifications && notifications.map((notification) => 
 			<li key={notification.id}>
 				<a>
 					{`User ${notification.senderUsername} ${notification.type} your post`}

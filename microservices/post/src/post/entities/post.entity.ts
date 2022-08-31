@@ -1,4 +1,5 @@
 import { Node } from 'neo4j-driver';
+import { CommentDto } from '../dto/comment.dto';
 import { PostDto } from '../dto/post.dto';
 
 export class Post {
@@ -9,6 +10,7 @@ export class Post {
     private readonly liked: boolean,
     private readonly dislikeCount: number,
     private readonly disliked: boolean,
+    private readonly comments: CommentDto[],
   ) {}
 
   toJson(): PostDto {
@@ -23,6 +25,7 @@ export class Post {
       liked: this.liked,
       dislikeCount: this.dislikeCount,
       disliked: this.disliked,
+      comments: this.comments,
     };
   }
 }

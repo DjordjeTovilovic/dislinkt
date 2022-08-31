@@ -1,26 +1,42 @@
 import {Container, Comment, Comments, CommentBox, 
   CommentsSection, SharedActor, Description, 
   SharedImage, SocialCounts} from './styles'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getPostsForUsers } from '../../services/post';
 
 const Article = (props) => {
-    
+  const [posts, setPosts] = useState([])
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedData = await getPostsForUsers()
+			setPosts(fetchedData.posts)
+		}
+		fetchData()
+	}, [])
+
+  {console.log(posts)}
+  
   return (
     <Container>
-       <SharedActor>
-            <a>
-              <img src="/images/user.svg"></img>
-              <div>
-                <span>Title</span>
-                <span>Info</span>
-                <span>Date</span>
-              </div>
-            </a>
-            <button>
-              <img src="/images/ellipsis.svg"></img>
-            </button>
-          </SharedActor>
-          <Description>Description</Description>
+      {posts.map((post) => 
+        <div key={post.id}>
+        <SharedActor>
+          <a>
+            <img src="/images/user.svg"></img>
+            <div>
+            <span>
+                {post.authorUsername}
+              </span>
+              <span>
+                {post.title}
+              </span>
+            </div>
+          </a>
+          <button>
+            <img src="/images/ellipsis.svg"></img>
+          </button>
+        </SharedActor>
+        <Description>{post.body}</Description>
           <SharedImage>
             <a>
               <img src="/images/random-image.png"></img>
@@ -30,7 +46,7 @@ const Article = (props) => {
             <li>
               <button>
                 <img src="/images/like-icon.svg" alt=""></img>
-                <span>75</span>
+                <span>{post.likeCount}</span>
               </button>
             </li>
             <li>
@@ -63,6 +79,8 @@ const Article = (props) => {
                 <button>Post</button>
             </Comment>  
           </CommentsSection> 
+        </div>
+      )}
     </Container>
    )
 }
