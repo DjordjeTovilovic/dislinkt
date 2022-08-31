@@ -4,7 +4,6 @@ export const Container = styled.div`
  padding: 0;
   margin: 0 0 8px;
   overflow: visible;
-  background-color: white;
   border-radius: 10px;
 `;
 
@@ -15,6 +14,8 @@ export const List = styled.div`
   justify-content: space-between;
   border: 1px solid lightgray;
   border-radius: 10px;
+  margin: 10px 0px 10px 0px;
+  background-color: white;
 
   button {
     width: 100px;

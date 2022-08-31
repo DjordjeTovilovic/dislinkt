@@ -55,6 +55,62 @@ export class UserRestController implements OnModuleInit {
     return user;
   }
 
+  @Get('/:id/skills')
+  async getSkillsForUser(@Param('id') id) {
+    this.logger.log('getSkillsForUser.call#param id', id);
+
+    const user = await this.userService.getSkillsForUser({ id }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
+  }
+
+  @Get('/:id/experience')
+  async getExperiencesForUser(@Param('id') id) {
+    this.logger.log('getExperiencesForUser.call#param id', id);
+
+    const user = await this.userService.getExperiencesForUser({ id }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
+  }
+
+  @Get('/:id/education')
+  async getEducationsForUser(@Param('id') id) {
+    this.logger.log('getEducationsForUser.call#param id', id);
+
+    const user = await this.userService.getEducationsForUser({ id }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
+  }
+
+  @Get('/:id/interests')
+  async getInterestsForUser(@Param('id') id) {
+    this.logger.log('getInterestsForUser.call#param id', id);
+
+    const user = await this.userService.getInterestsForUser({ id }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
+  }
+
   @Get('/username/:username')
   async findByUsername(@Param('username') username) {
     this.logger.log('findByUsername.call#param username', username);

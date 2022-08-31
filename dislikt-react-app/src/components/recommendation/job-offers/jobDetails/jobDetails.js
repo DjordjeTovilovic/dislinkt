@@ -1,24 +1,34 @@
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import userService from '../../../../services/user'
 
-const JobDetails = (props) => {
-    return (
-        <Container>
-            <Content>
-                <JobOffer>
-                    <h1>Facebook</h1>
-                    <div className='job'>
-                        <p className='seniority'>Senior</p>
-                        <p className='position'>Spring boot engineer</p>
-                    </div>
-                </JobOffer>
-                <div className='description'>Very good job, it's great, I swar.</div>
-                <p className='seniority'>REQUIRED SKILLS</p>
-                <div className='skills'>skillssss</div>
-            </Content>  
-        </Container>
-    )
-}   
-
+const JobDetails = () => {
+  const { jobId } = useParams();
+  const [job, setJob] = useState({})
+  useEffect(() => {
+    userService
+      .getJobById(jobId)
+      .then((gotJob) => setJob(gotJob))
+      .catch((err) => console.log(err));
+  }, [jobId]);
+  return (
+    <Container>
+      <Content>
+        <JobOffer>
+          <h1>{job.company}</h1>
+          <div className='job'>
+            <p className='seniority'>{job.seniority}</p>
+            <p className='position'>{job.position}</p>
+          </div>
+        </JobOffer>
+        <div className='description'>{job.description}</div>
+        <p className='seniority'>REQUIRED SKILLS</p>
+        {job.skillsRequired?.map((skill, index) => (<div className='skills' key={skill}>{index + 1}.{skill}</div>))}
+      </Content>
+    </Container>
+  )
+}
 export default JobDetails;
 
 const Container = styled.div`

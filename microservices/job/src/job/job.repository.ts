@@ -14,6 +14,35 @@ export class JobRepository {
     );
   }
 
+  async getJobById(jobId: string) {
+    let res = await this.neo4jService.read(
+      `
+      MATCH (j:Job {id: $jobId})
+      RETURN j
+        
+      `,
+      {
+        jobId: jobId,
+      },
+    );
+    let newJob: JobProto = res.records[0].get('j').properties;
+    res = await this.neo4jService.read(
+      `
+      MATCH (j:Job {id: $jobId})-[:REQUIRES_SKILL]->(s:Skill)
+      RETURN s
+      `,
+      {
+        jobId: jobId,
+      },
+    );
+    let skills = [];
+    res.records.forEach((record) => {
+      skills = skills.concat(record.get('s').properties.name);
+    });
+    newJob.skillsRequired = [...skills];
+    return newJob;
+  }
+
   async addJob(job) {
     let res = await this.neo4jService.write(
       `
@@ -21,7 +50,8 @@ export class JobRepository {
           id: randomUUID(),
           position: $position,
           seniority: $seniority,
-          description: $description
+          description: $description,
+          company:$company
         })
 
         RETURN j
@@ -30,6 +60,7 @@ export class JobRepository {
         position: job.position,
         seniority: job.seniority,
         description: job.description,
+        company: job.company,
       },
     );
     let newJob: JobProto = res.records[0].get('j').properties;
@@ -135,6 +166,7 @@ export class JobRepository {
     const jobs = res.records.map((record) => {
       return record.get('recommendedJob').properties;
     });
-    return { jobs: jobs };
+    if (jobs.length > 0) return { jobs: jobs };
+    else return { jobs: [] };
   }
 }

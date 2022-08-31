@@ -6,5 +6,5 @@ export class CreateJobDto implements JobProto {
   seniority: string;
   description: string;
   skillsRequired: string[];
-  company?: string;
+  company: string;
 }

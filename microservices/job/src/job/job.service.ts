@@ -11,6 +11,9 @@ export class JobService {
   async addJob(job) {
     return await this.jobRepository.addJob(job);
   }
+  async getJobById(jobId) {
+    return await this.jobRepository.getJobById(jobId);
+  }
 
   async recommendedJobOffers(username) {
     const res = await this.jobRepository.recommendedJobOffers(username);

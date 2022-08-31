@@ -273,6 +273,26 @@ export interface UserServiceClient {
     request: InterestUpdateList,
     metadata?: Metadata
   ): Observable<InterestUpdateList>;
+
+  getEducationsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ): Observable<EducationUpdateList>;
+
+  getInterestsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ): Observable<InterestUpdateList>;
+
+  getSkillsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ): Observable<SkillUpdateList>;
+
+  getExperiencesForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ): Observable<ExperienceUpdateList>;
 }
 
 export interface UserServiceController {
@@ -448,6 +468,35 @@ export interface UserServiceController {
     | Promise<InterestUpdateList>
     | Observable<InterestUpdateList>
     | InterestUpdateList;
+
+  getEducationsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ):
+    | Promise<EducationUpdateList>
+    | Observable<EducationUpdateList>
+    | EducationUpdateList;
+
+  getInterestsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ):
+    | Promise<InterestUpdateList>
+    | Observable<InterestUpdateList>
+    | InterestUpdateList;
+
+  getSkillsForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ): Promise<SkillUpdateList> | Observable<SkillUpdateList> | SkillUpdateList;
+
+  getExperiencesForUser(
+    request: FindByIdRequest,
+    metadata?: Metadata
+  ):
+    | Promise<ExperienceUpdateList>
+    | Observable<ExperienceUpdateList>
+    | ExperienceUpdateList;
 }
 
 export function UserServiceControllerMethods() {
@@ -484,6 +533,10 @@ export function UserServiceControllerMethods() {
       "removeSkills",
       "addInterests",
       "removeInterests",
+      "getEducationsForUser",
+      "getInterestsForUser",
+      "getSkillsForUser",
+      "getExperiencesForUser",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
