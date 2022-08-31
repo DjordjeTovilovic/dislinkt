@@ -1,22 +1,24 @@
-import {Container} from './styles'
-import { useState } from 'react';
+import { Container } from './styles'
 import UpdateModal from './updateProfileDetailsModal/updateModal';
+import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
-const UserDetails = (props) => {
-
-  const [isPrivate, setisPrivate] = useState('private');
+const UserDetails = ({ user }) => {
   const [showUpdateModal, setShowUpdateModal] = useState('close');
+
+  const [isPrivate, setIsPrivate] = useState(false)
+
 
   const updateHandler = (e) => {
     e.preventDefault();
-    if(e.target !== e.currentTarget) {
+    if (e.target !== e.currentTarget) {
       return;
     }
-    switch(showUpdateModal) {
-      case 'open' :
+    switch (showUpdateModal) {
+      case 'open':
         setShowUpdateModal('close');
         break;
-      case 'close' :
+      case 'close':
         setShowUpdateModal('open');
         break;
       default:
@@ -26,50 +28,38 @@ const UserDetails = (props) => {
   }
 
   const changePrivacy = () => {
-    switch (isPrivate) {
-      case 'private': 
-        setisPrivate('public');
-        break;
-      case 'public':
-        setisPrivate('private');
-        break;   
-      default:
-        setisPrivate('private');
-        break;
-    }
+    setIsPrivate(!isPrivate)
   }
 
-    return (
-      <>
-        <Container>
-            <div>
-                <h1>Kevin Hart</h1>
-                <p>Email: email@hart.com</p>
-                <p>Phone number: 042421421</p>
-                <p>Birth day: 20.03.1999.</p>
-                <p>Gender: Male</p>
+  return (
+    <>
+      <Container>
+        <div>
+          <h1>{user.username}</h1>
+          <p>Email: {user.email}</p>
+          <p>Phone number: {user.phoneNumber}</p>
+          <p>Birth day: {user.birthday}</p>
+          <p>Gender: {user.gender === 0 ? "Male" : user.gender === 1 ? "Female" : "Uncategorized"}</p>
 
-                <div className='row'>  
-                    <div className="buttons">
-                      <button>
-                        Follow
-                      </button>
-                      <button>
-                        Unfollow
-                      </button>
-                      <button onClick={updateHandler}>
-                        Update
-                      </button>
-                    </div>
-
-                  { isPrivate==='public' && <button onClick={changePrivacy}>Private</button> }
-                  { isPrivate==='private' && <button onClick={changePrivacy}>Public</button> }  
-                </div>
-            </div>      
-        </Container>
-        <UpdateModal showUpdateModal={showUpdateModal} updateHandler={updateHandler}/>
-      </>
-    );
+          <div className='row'>
+            <div className="buttons">
+              <button>
+                Follow
+              </button>
+              <button>
+                Unfollow
+              </button>
+              <button onClick={updateHandler}>
+                Update
+              </button>
+            </div>
+            <button onClick={changePrivacy}>{isPrivate ? "Private" : "Public"}</button>
+          </div>
+        </div>
+      </Container>
+      <UpdateModal showUpdateModal={showUpdateModal} updateHandler={updateHandler} />
+    </>
+  );
 }
 
 export default UserDetails;

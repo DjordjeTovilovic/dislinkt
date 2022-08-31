@@ -6,9 +6,14 @@ service JobService {
   rpc FindAll (Empty) returns (JobsProto) {}
   rpc AddJob (AddJobProto) returns (JobProto) {}
   rpc recommendedJobOffers(Empty) returns (JobsProto) {}
+  rpc getJobById(JobId) returns (JobProto) {}
 }
 
 message Empty {
+}
+
+message JobId {
+  string token = 1;
 }
 
 message LoginResponse {
@@ -25,6 +30,7 @@ message JobProto {
   string seniority = 3;
   string description = 4;
   repeated string skillsRequired = 5;
+  string company = 6;
 }
 
 message AddJobProto {

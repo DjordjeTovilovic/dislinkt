@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/login";
 import Header from "./components/header";
 import Home from "./components/home/home";
-import Signin from "./components/signin";
+import Signup from "./components/signup";
 import Messenger from "./components/messenger/messenger";
 import Profile from "./components/profile/src";
 import Settings from "./components/notification-settings/settings/settings";
@@ -25,7 +25,7 @@ function App() {
               </>
             }
           ></Route>
-          <Route path="/signin" element={<Signin />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
           <Route
             path="/messenger/:receiverId"
             element={
@@ -35,11 +35,11 @@ function App() {
               </>
             }
           ></Route>
-          <Route path="/profile" element={<><Header/><Profile/></>}></Route>
-          <Route path="/settings" element={<><Header/><Settings/></>}></Route>
-          <Route path="/person-recommendation" element={<><Header/> <FollowerRecommendation/></>}></Route>
-          <Route path="/job-offer" element={<><Header/><AllJobOffers/></>}></Route>
-          <Route path="/job-details" element={<><Header/><JobDetails/></>}></Route>
+          <Route path="/profile/:userId" element={<><Header /><Profile /></>}></Route>
+          <Route path="/settings" element={<><Header /><Settings /></>}></Route>
+          <Route path="/person-recommendation" element={<><Header /> <FollowerRecommendation /></>}></Route>
+          <Route path="/job-offer" element={<><Header /><AllJobOffers /></>}></Route>
+          <Route path="/job-details/:jobId" element={<><Header /><JobDetails /></>}></Route>
         </Routes>
       </Router>
     </div>

@@ -5,11 +5,11 @@ import Notifications from "./notifications/notifications";
 import { NotificationsContainer } from "./notifications/styles";
 
 const Header = (props) => {
-  
+
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('about');
-  
+
   const setTab = (name) => {
     setActiveTab(name);
   }
@@ -32,27 +32,27 @@ const Header = (props) => {
         </Search>
         <Nav>
           <NavListWrap>
-            <NavList onClick={() => {setTab('home'); navigate('/home') }} className={activeTab == "home" ? 'active' : null}>
+            <NavList onClick={() => { setTab('home'); navigate('/home') }} className={activeTab == "home" ? 'active' : null}>
               <a>
                 <img src="/images/nav-home.svg"></img>
                 <span>Home</span>
               </a>
             </NavList>
-            <NavList onClick={() => {setTab('network'); navigate('/person-recommendation') }} className={activeTab == "network" ? 'active' : null}>
+            <NavList onClick={() => { setTab('network'); navigate('/person-recommendation') }} className={activeTab == "network" ? 'active' : null}>
               <a>
                 <img src="/images/nav-network.svg"></img>
                 <span>Network</span>
               </a>
             </NavList>
 
-            <NavList onClick={() => {setTab('jobs'); navigate('/job-offer')  }} className={activeTab == "jobs" ? 'active' : null}>
+            <NavList onClick={() => { setTab('jobs'); navigate('/job-offer') }} className={activeTab == "jobs" ? 'active' : null}>
               <a>
                 <img src="/images/nav-jobs.svg"></img>
                 <span>Jobs</span>
               </a>
             </NavList>
 
-            <NavList onClick={() => {setTab('messages'); navigate('/messenger')}} className={activeTab == "messages" ? 'active' : null}>
+            <NavList onClick={() => { setTab('messages'); navigate('/messenger') }} className={activeTab == "messages" ? 'active' : null}>
               <a>
                 <img src="/images/nav-messaging.svg"></img>
                 <span>Messaging</span>
@@ -72,17 +72,17 @@ const Header = (props) => {
 
             <User>
               <a>
-                <img onClick={() => {setTab('profile'); navigate('/profile')}} className={activeTab == "profile" ? 'active' : null} src="/images/user.svg"></img>
+                <img onClick={() => { setTab('profile'); navigate('/profile') }} className={activeTab == "profile" ? 'active' : null} src="/images/user.svg"></img>
                 <span>Me</span>
                 <img src="/images/down-icon.svg"></img>
               </a>
               <SignOut>
-                <a onClick={() => {navigate('/signin')}}>Sign Out</a>
+                <a onClick={() => { window.localStorage.clear(); navigate('/') }}>Sign Out</a>
               </SignOut>
             </User>
             <Work>
               <a>
-                <img onClick={() => {setTab('settings'); navigate('/settings')}} className={activeTab == "settings" ? 'active' : null}  src="/images/nav-work.svg"></img>
+                <img onClick={() => { setTab('settings'); navigate('/settings') }} className={activeTab == "settings" ? 'active' : null} src="/images/nav-work.svg"></img>
                 <span>
                   Settings
                 </span>

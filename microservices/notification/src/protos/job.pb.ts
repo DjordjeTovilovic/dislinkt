@@ -7,6 +7,10 @@ export const protobufPackage = "job";
 
 export interface Empty {}
 
+export interface JobId {
+  token: string;
+}
+
 export interface LoginResponse {
   token: string;
 }
@@ -20,8 +24,19 @@ export interface JobProto {
   position: string;
   seniority: string;
   description: string;
-  requiredSkills: string[];
-  postedBy: string;
+  skillsRequired: string[];
+  company: string;
+}
+
+export interface AddJobProto {
+  id: string;
+  position: string;
+  seniority: string;
+  description: string;
+  skillsRequired: string[];
+  company: string;
+  dislinktToken: string;
+  userId: string;
 }
 
 export const JOB_PACKAGE_NAME = "job";
@@ -29,12 +44,14 @@ export const JOB_PACKAGE_NAME = "job";
 export interface JobServiceClient {
   findAll(request: Empty, metadata?: Metadata): Observable<JobsProto>;
 
-  addJob(request: JobProto, metadata?: Metadata): Observable<JobProto>;
+  addJob(request: AddJobProto, metadata?: Metadata): Observable<JobProto>;
 
   recommendedJobOffers(
     request: Empty,
     metadata?: Metadata
   ): Observable<JobsProto>;
+
+  getJobById(request: JobId, metadata?: Metadata): Observable<JobProto>;
 }
 
 export interface JobServiceController {
@@ -44,7 +61,7 @@ export interface JobServiceController {
   ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
 
   addJob(
-    request: JobProto,
+    request: AddJobProto,
     metadata?: Metadata
   ): Promise<JobProto> | Observable<JobProto> | JobProto;
 
@@ -52,11 +69,21 @@ export interface JobServiceController {
     request: Empty,
     metadata?: Metadata
   ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
+
+  getJobById(
+    request: JobId,
+    metadata?: Metadata
+  ): Promise<JobProto> | Observable<JobProto> | JobProto;
 }
 
 export function JobServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll", "addJob", "recommendedJobOffers"];
+    const grpcMethods: string[] = [
+      "findAll",
+      "addJob",
+      "recommendedJobOffers",
+      "getJobById",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,
