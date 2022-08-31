@@ -65,7 +65,6 @@ const Rightside = (props) => {
             </div>
           </li>
         </FeedList>
-
         <Recommendation onClick={() => navigate('/job-offer')}>
           View all job offers
           <img src="/images/right-icon.svg" alt="" />
