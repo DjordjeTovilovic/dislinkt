@@ -51,9 +51,12 @@ message DislikeRequest {
 }
 
 message CommentProto {
-  string body = 1;
-  string postId = 2;
-  string authorUsername = 3;
+  string id = 1;
+  string body = 2;
+  string postId = 3;
+  string authorUsername = 4;
+  string postAuthorUsername = 5;
+  string createdAt = 6;
 }
 
 message PostProto {
@@ -67,4 +70,5 @@ message PostProto {
   int32 dislikeCount = 8;
   bool disliked = 9;
   repeated CommentProto comments=10;
+  string createdAt = 11;
 }

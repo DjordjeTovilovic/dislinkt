@@ -14,12 +14,13 @@ export class Post {
   ) {}
 
   toJson(): PostDto {
-    const { id, title, description, body } = this.post.properties;
+    const { id, title, description, body, createdAt } = this.post.properties;
     return {
       id,
       title,
       description,
       body,
+      createdAt,
       authorUsername: this.authorUsername,
       likeCount: this.likeCount,
       liked: this.liked,

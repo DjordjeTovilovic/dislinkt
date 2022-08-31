@@ -43,9 +43,12 @@ export interface DislikeRequest {
 }
 
 export interface CommentProto {
+  id: string;
   body: string;
   postId: string;
   authorUsername: string;
+  postAuthorUsername: string;
+  createdAt: string;
 }
 
 export interface PostProto {
@@ -59,6 +62,7 @@ export interface PostProto {
   dislikeCount: number;
   disliked: boolean;
   comments: CommentProto[];
+  createdAt: string;
 }
 
 export const POST_PACKAGE_NAME = "post";

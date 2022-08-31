@@ -19,6 +19,12 @@ export class PostService {
 
   async userFeed(username) {
     const posts = await this.postRepository.userFeed(username);
+    await Promise.all(
+      posts.posts.map(async (post) => {
+        const { comments } = await this.getComments(post.id);
+        post.comments = comments;
+      }),
+    );
     return posts;
   }
 
@@ -29,6 +35,12 @@ export class PostService {
 
   async findByUserId(userId, username) {
     const posts = await this.postRepository.findByUserId(userId, username);
+    await Promise.all(
+      posts.posts.map(async (post) => {
+        const { comments } = await this.getComments(post.id);
+        post.comments = comments;
+      }),
+    );
     return posts;
   }
 

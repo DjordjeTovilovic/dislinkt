@@ -10,8 +10,10 @@ export class Comment {
   ) {}
 
   toJson(): CommentDto {
-    const { body } = this.comment.properties;
+    const { id, createdAt, body } = this.comment.properties;
     return {
+      id,
+      createdAt,
       body,
       postId: this.postId,
       authorUsername: this.authorUsername,

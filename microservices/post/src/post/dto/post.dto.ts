@@ -23,4 +23,5 @@ export class PostDto implements PostProto {
   dislikeCount: number;
   disliked: boolean;
   comments: CommentDto[];
+  createdAt: string;
 }
