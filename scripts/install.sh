@@ -10,4 +10,4 @@ cd microservices/messaging && npm i && cd - &&
 cd microservices/notification && npm i && cd - &&
 cd dislikt-react-app && npm i && cd - && 
 cd joberty && npm i && cd - &&
-cd joberty-react-app && npm run start && cd -
+cd joberty-react-app &&  npm i && cd -

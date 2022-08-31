@@ -34,6 +34,10 @@ service UserService {
   rpc RemoveSkills (SkillUpdateList) returns (SkillUpdateList) {}
   rpc AddInterests (InterestUpdateList) returns (InterestUpdateList) {}
   rpc RemoveInterests (InterestUpdateList) returns (InterestUpdateList) {}
+  rpc GetEducationsForUser(FindByIdRequest) returns (EducationUpdateList) {}
+  rpc GetInterestsForUser(FindByIdRequest) returns (InterestUpdateList) {}
+  rpc GetSkillsForUser(FindByIdRequest) returns (SkillUpdateList) {}
+  rpc GetExperiencesForUser(FindByIdRequest) returns (ExperienceUpdateList) {}
 }
 
 message Empty {}

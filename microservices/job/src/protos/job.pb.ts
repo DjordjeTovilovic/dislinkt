@@ -7,6 +7,10 @@ export const protobufPackage = "job";
 
 export interface Empty {}
 
+export interface JobId {
+  token: string;
+}
+
 export interface LoginResponse {
   token: string;
 }
@@ -21,6 +25,7 @@ export interface JobProto {
   seniority: string;
   description: string;
   skillsRequired: string[];
+  company: string;
 }
 
 export interface AddJobProto {
@@ -45,6 +50,8 @@ export interface JobServiceClient {
     request: Empty,
     metadata?: Metadata
   ): Observable<JobsProto>;
+
+  getJobById(request: JobId, metadata?: Metadata): Observable<JobProto>;
 }
 
 export interface JobServiceController {
@@ -62,11 +69,21 @@ export interface JobServiceController {
     request: Empty,
     metadata?: Metadata
   ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
+
+  getJobById(
+    request: JobId,
+    metadata?: Metadata
+  ): Promise<JobProto> | Observable<JobProto> | JobProto;
 }
 
 export function JobServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["findAll", "addJob", "recommendedJobOffers"];
+    const grpcMethods: string[] = [
+      "findAll",
+      "addJob",
+      "recommendedJobOffers",
+      "getJobById",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(
         constructor.prototype,

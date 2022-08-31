@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Signin = (props) => {
+const Signup = (props) => {
 
   const navigate = useNavigate();
 
@@ -13,13 +13,13 @@ const Signin = (props) => {
           <img src="/images/login-logo.svg" alt=""></img>
         </a>
         <div>
-          <SignIn>Sign in</SignIn>
+          <SignIn>Sign up</SignIn>
         </div>
       </Nav>
       <Form>
         <First>
           <Second>
-            <h1>Sign in</h1>
+            <h1>Sign up</h1>
             <input placeholder="Email@gmail.com"></input>
             <input type="password" placeholder="password"></input>
             <input type="password" placeholder="Confirm password"></input>
@@ -217,4 +217,4 @@ const Background = styled.div`
   z-index: 1;
 `;
 
-export default Signin;
+export default Signup;

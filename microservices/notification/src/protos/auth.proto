@@ -33,6 +33,7 @@ message ValidateApiTokenRequest {
 
 message ValidateApiTokenResponse {
   bool valid = 1;
+  string userId = 2;
 }
 
 message LoggedInRequest {

@@ -4,6 +4,7 @@ import {
   AddJobProto,
   Empty,
   JobProto,
+  JobId,
   JobServiceController,
   JobServiceControllerMethods,
 } from '../protos/job.pb';
@@ -18,6 +19,9 @@ export class JobController implements JobServiceController {
   async findAll() {
     //return this.jobService.findAll(createPostDto, username);
     return null;
+  }
+  async getJobById(jobId: JobId) {
+    return await this.jobService.getJobById(jobId.token);
   }
 
   async addJob(job: AddJobProto) {

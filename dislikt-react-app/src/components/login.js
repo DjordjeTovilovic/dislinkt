@@ -1,27 +1,32 @@
 import styled from "styled-components";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import userService from '../services/user'
 
 const Login = (props) => {
-  
+  const [loginCredentials, setLoginCredentials] = useState({})
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setLoginCredentials((prevstate) => ({ ...prevstate, [name]: value }))
+  }
+
   const navigate = useNavigate();
 
   const goToSignIn = () => {
-    navigate('/signin');
+    navigate('/signup');
   }
 
   const login = () => {
-
-    //TO DO : connection with backend login
-    // if (credentials are valid ) {}
-
-    navigate('/home')
+    if (loginCredentials.username && loginCredentials.password)
+      userService.login(loginCredentials).then(() => navigate('/home')).catch((err) => console.log(err))
   }
 
   return (
     <Container>
       <Nav>
         <a href="/">
-          <img src="/images/login-logo.svg" alt=""></img>
+          <img src="/images/login-logo.svg" alt="" ></img>
         </a>
         <Search>
           <div>
@@ -45,13 +50,13 @@ const Login = (props) => {
           <First>
             <Second>
               <h1>Log in</h1>
-              <input placeholder="Email@gmail.com"></input>
-              <input type="password" placeholder="password"></input>
+              <input placeholder="username" id="username" name="username" onChange={handleOnChange}></input>
+              <input type="password" placeholder="password" id="password" name="password" onChange={handleOnChange}></input>
               <button onClick={login}>Log in</button>
               <OrLine>
                 <NewAccount>
                   Don't have an account?
-                  <a onClick={goToSignIn}> Sign in</a>
+                  <a onClick={goToSignIn}> Sign up</a>
                 </NewAccount>
               </OrLine>
             </Second>

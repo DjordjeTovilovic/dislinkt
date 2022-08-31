@@ -1,5 +1,6 @@
 import { Metadata } from '@grpc/grpc-js';
 import { Controller, Logger } from '@nestjs/common';
+import { Observable } from 'rxjs';
 import {
   BlockRequest,
   DeleteByUsernameRequest,
@@ -215,5 +216,18 @@ export class UserController implements UserServiceController {
   async removeInterests(request: InterestUpdateList, metadata?: Metadata) {
     const username = metadata.get('username')[0];
     return await this.userService.removeInterests(request, username);
+  }
+
+  async getSkillsForUser(user: FindByIdRequest, metadata: Metadata) {
+    return this.userService.getSkillsForUser(user.id);
+  }
+  async getEducationsForUser(user: FindByIdRequest, metadata: Metadata) {
+    return this.userService.getEducationsForUser(user.id);
+  }
+  async getInterestsForUser(user: FindByIdRequest, metadata: Metadata) {
+    return this.userService.getInterestsForUser(user.id);
+  }
+  async getExperiencesForUser(user: FindByIdRequest, metadata: Metadata) {
+    return this.userService.getExperiencesForUser(user.id);
   }
 }

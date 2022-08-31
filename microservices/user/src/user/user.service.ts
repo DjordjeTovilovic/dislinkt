@@ -422,4 +422,16 @@ export class UserService {
     };
     return ints;
   }
+  async getSkillsForUser(userId: string) {
+    return this.userRepository.getSkillsForUser(userId);
+  }
+  async getEducationsForUser(userId: string) {
+    return this.userRepository.getEducationsForUser(userId);
+  }
+  async getInterestsForUser(userId: string) {
+    return this.userRepository.getInterestsForUser(userId);
+  }
+  async getExperiencesForUser(userId: string) {
+    return this.userRepository.getExperiencesForUser(userId);
+  }
 }

@@ -4,11 +4,16 @@ package job;
 
 service JobService {
   rpc FindAll (Empty) returns (JobsProto) {}
-  rpc AddJob (JobProto) returns (JobProto) {}
+  rpc AddJob (AddJobProto) returns (JobProto) {}
   rpc recommendedJobOffers(Empty) returns (JobsProto) {}
+  rpc getJobById(JobId) returns (JobProto) {}
 }
 
 message Empty {
+}
+
+message JobId {
+  string token = 1;
 }
 
 message LoginResponse {
@@ -24,6 +29,17 @@ message JobProto {
   string position = 2;
   string seniority = 3;
   string description = 4;
-  repeated string requiredSkills = 5;
-  string postedBy = 6;
+  repeated string skillsRequired = 5;
+  string company = 6;
+}
+
+message AddJobProto {
+  string id = 1;
+  string position = 2;
+  string seniority = 3;
+  string description = 4;
+  repeated string skillsRequired = 5;
+  string company = 6;
+  string dislinktToken = 7;
+  string userId = 8;
 }

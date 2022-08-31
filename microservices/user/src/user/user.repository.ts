@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { CreateUserDto } from './dto/create-user.dto';
+import {
+  EducationsDto,
+  ExperiencesDto,
+  InterestsDto,
+  SkillsDto,
+} from './dto/other.dto';
 import { UsersDto } from './dto/users.dto';
 import { Education } from './entity/education.entity';
 import { Experiences } from './entity/experiences.entity';
@@ -676,5 +682,89 @@ export class UserRepository {
       );
     }
     return userInterest;
+  }
+
+  async getSkillsForUser(userId) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {id: $userId})-[:HAS_SKILL]->(s:Skill)
+          RETURN s
+      `,
+      {
+        userId: userId,
+      },
+    );
+    let skills = [];
+    res.records.forEach(
+      (record) => (skills = skills.concat(record.get('s').properties)),
+    );
+    const retSkills = new SkillsDto();
+    retSkills.skills = skills.length > 0 ? skills : [];
+    return retSkills;
+  }
+
+  async getEducationsForUser(userId) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {id: $userId})-[a:ATTENDED]->(e:Education)
+          RETURN a,e
+      `,
+      {
+        userId: userId,
+      },
+    );
+    let educations = [];
+    res.records.forEach(
+      (record) =>
+        (educations = educations.concat({
+          ...record.get('a').properties,
+          ...record.get('e').properties,
+        })),
+    );
+    const retEducations = new EducationsDto();
+    retEducations.educations = educations.length > 0 ? educations : [];
+    return retEducations;
+  }
+
+  async getInterestsForUser(userId) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {id: $userId})-[:INTERESTED_IN]->(i:Interest)
+          RETURN i
+      `,
+      {
+        userId: userId,
+      },
+    );
+    let interests = [];
+    res.records.forEach(
+      (record) => (interests = interests.concat(record.get('i').properties)),
+    );
+    const retInterests = new InterestsDto();
+    retInterests.interests = interests.length > 0 ? interests : [];
+    return retInterests;
+  }
+  async getExperiencesForUser(userId) {
+    const res = await this.neo4jService.read(
+      `
+          MATCH (u:User {id: $userId})-[w:WORKED]->(e:Experience)
+          RETURN w,e
+      `,
+      {
+        userId: userId,
+      },
+    );
+    let experiences = [];
+    res.records.forEach(
+      (record) =>
+        (experiences = experiences.concat({
+          ...record.get('w').properties,
+          ...record.get('e').properties,
+        })),
+    );
+    console.log(experiences);
+    const retExperiences = new ExperiencesDto();
+    retExperiences.experiences = experiences.length > 0 ? experiences : [];
+    return retExperiences;
   }
 }

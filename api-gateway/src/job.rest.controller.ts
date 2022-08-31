@@ -6,6 +6,7 @@ import {
   Inject,
   Logger,
   OnModuleInit,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -48,6 +49,20 @@ export class JobRestController implements OnModuleInit {
     return jobs;
   }
 
+  @Get('/job/:jobId')
+  async findById(@Param('jobId') jobId: string) {
+    this.logger.log('findById.call#Param jobID:', jobId);
+
+    const job = await this.jobService.getJobById({ token: jobId }).pipe(
+      catchError((e) => {
+        throw new RpcException(e);
+      }),
+    );
+
+    this.logger.log('findAll.call#return jobs', job);
+    return job;
+  }
+
   @Post('/addJob')
   async addJob(@Body() job: AddJobProto) {
     this.logger.log('addJob.call#body:job', job);
@@ -61,8 +76,8 @@ export class JobRestController implements OnModuleInit {
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
-    const user = await this.jobService.recommendedJobOffers(null, metadata);
+    const jobs = await this.jobService.recommendedJobOffers(null, metadata);
 
-    return user;
+    return jobs;
   }
 }
