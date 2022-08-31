@@ -43,7 +43,7 @@ const Header = (props) => {
               </a>
             </NavList>
 
-            <NavList onClick={() => setTab('jobs')} className={activeTab == "jobs" ? 'active' : null}>
+            <NavList onClick={() => {setTab('jobs'); navigate('/job-offer')  }} className={activeTab == "jobs" ? 'active' : null}>
               <a>
                 <img src="/images/nav-jobs.svg"></img>
                 <span>Jobs</span>
