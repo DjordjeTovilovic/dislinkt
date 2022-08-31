@@ -1,0 +1,95 @@
+@import "../../../utils/variables";
+.card {
+  margin: 30px;
+  display: flex;
+  flex-direction: column;
+  background-color: bisque;
+  min-width: 60%;
+  align-items: flex-start;
+  box-shadow: 10px 15px rgb(241, 190, 128);
+  border-radius: 20px;
+  .userinfo {
+    text-align: left;
+    align-self: center;
+    width: 90%;
+    margin: 10px;
+    font-size: 1.5em;
+    padding: 0px 20px 10px 0px;
+    border-bottom: 2px solid black;
+    .title {
+      font-weight: 600;
+    }
+    .token {
+      border: 2px solid black;
+      border-radius: 10px;
+      overflow-x: scroll;
+      max-width: 25em;
+      &::-webkit-scrollbar {
+        width: 13px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: rgb(196, 27, 27);
+        border-radius: 10px;
+        &:hover {
+          background: rgb(122, 16, 16);
+        }
+      }
+    }
+  }
+  .dislinktConnect {
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    align-self: flex-end;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    border-radius: 10px;
+    background-color: rgb(252, 149, 118);
+    .tokenLabel {
+      font-size: 1.2em;
+      font-weight: 500;
+    }
+    .tokenInput {
+      width: 15em;
+      height: 25px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      &:focus {
+        outline: solid 2px $colorInputFocus !important;
+      }
+      &:valid {
+        color: $colorInputValid;
+        outline: solid 2px $colorInputValid;
+      }
+      &:invalid {
+        outline: solid 2px $colorInputInvalid;
+        color: $colorInputInvalid;
+        animation: shake 0.5s;
+      }
+    }
+    .connectBtn {
+      font-size: 1.3em;
+      background-color: rgb(20, 20, 248);
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(107, 107, 240);
+      }
+    }
+  }
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}

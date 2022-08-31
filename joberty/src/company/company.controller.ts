@@ -21,6 +21,7 @@ import { UserService } from 'src/user/user.service';
 import { CreateCompanyRequestDto } from './dto/create-company-request.dto';
 import { Headers } from '@nestjs/common';
 import { RequestService } from 'src/requests/requests.service';
+import { PromoteJobOfferDto } from './dto/promote-jobOffer.dto';
 
 @Controller('companies')
 export class CompanyController {
@@ -92,12 +93,17 @@ export class CompanyController {
     return this.companyService.findAllJobOffersForCompany(companyId);
   }
 
-  @Get(':companyId/jobs/:jobId/promote')
-  promoteJobOfferOnDislinkt(
-    @Param('companyId') companyId: string,
-    @Param('jobId') jobId: string,
-  ) {
-    return this.companyService.promoteJobOfferOnDislinkt(companyId, jobId);
+  @Post('/jobs/promote')
+  async promoteJobOfferOnDislinkt(@Body() job: PromoteJobOfferDto) {
+    this.companyService
+      .promoteJobOfferOnDislinkt(job)
+      .then((res) => {
+        return res.valid;
+      })
+      .catch((err) => {
+        console.log(err);
+        return null;
+      });
   }
 
   @Post(':companyId/reviews')

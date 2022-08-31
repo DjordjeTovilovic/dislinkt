@@ -120,7 +120,7 @@ const CompanyProfileCard = ({ company }) => {
           >
             VIEW JOB OFFERS
           </Link>
-          {user?.companiesOwned?.id !== company.id && (
+          {user && user?.companiesOwned?.id !== company.id && (
             <>
               <button
                 type="button"

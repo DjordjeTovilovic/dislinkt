@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./JobOfferCard.module.scss";
 
-const JobOfferCard = ({ job }) => {
+const JobOfferCard = ({ job, publish, publishToDislinkt, dislinktToken }) => {
   const [skills, setSkills] = useState("");
 
   useEffect(() => {
@@ -21,6 +21,17 @@ const JobOfferCard = ({ job }) => {
       <div className={styles.description}>{job.description}</div>
       <p className={styles.seniority}>REQUIRED SKILLS</p>
       <div className={styles.skills}>{skills}</div>
+      {publish && (
+        <button
+          type="button"
+          className={styles.publishBtn}
+          onClick={() =>
+            publishToDislinkt({ ...job, dislinktToken: dislinktToken })
+          }
+        >
+          PUBLISH ON DISLINKT
+        </button>
+      )}
     </div>
   );
 };

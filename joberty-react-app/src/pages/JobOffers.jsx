@@ -25,8 +25,25 @@ const JobOffers = () => {
     }
   };
 
+  const publishToDislinkt = (jobOffer) => {
+    companyService
+      .promoteJob({ ...jobOffer, company: company.name })
+      .then((res) => {
+        if (res.status === 201) alert("JOB OFFER HAS BEEN PUBLISHED");
+        else alert("PROBLEM");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("ERROR");
+      });
+  };
+
   return (
-    <JobOffersList company={company} handleAddJobOffer={handleAddJobOffer} />
+    <JobOffersList
+      company={company}
+      handleAddJobOffer={handleAddJobOffer}
+      publishToDislinkt={publishToDislinkt}
+    />
   );
 };
 export default JobOffers;

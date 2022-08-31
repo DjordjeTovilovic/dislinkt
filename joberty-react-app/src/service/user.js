@@ -27,11 +27,22 @@ const getMe = async () => {
   return res.data;
 }
 
+const connectWithDislinktAccount = async (token) => {
+  const res = await axios.patch(`${baseUrl}users/profile/me/${token}`, null, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+
+  return res.data;
+}
+
 const userService = {
   signup,
   login,
   logout,
-  getMe
+  getMe,
+  connectWithDislinktAccount
 }
 
 export default userService;

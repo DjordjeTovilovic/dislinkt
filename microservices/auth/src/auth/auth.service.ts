@@ -57,10 +57,11 @@ export class AuthService implements OnModuleInit {
       this.jwtService.verify(apiToken, {
         secret: this.configService.get('API_TOKEN_SECRET'),
       });
-      return { valid: true };
+      const user = this.jwtService.decode(apiToken);
+      return { valid: true, userId: user.sub };
     } catch (e) {
       this.logger.log(e);
-      return { valid: false };
+      return { valid: false, userId: null };
     }
   }
 

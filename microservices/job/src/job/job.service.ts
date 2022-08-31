@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
 import { JobRepository } from './job.repository';
 
 @Injectable()
@@ -16,7 +14,6 @@ export class JobService {
 
   async recommendedJobOffers(username) {
     const res = await this.jobRepository.recommendedJobOffers(username);
-    console.log(res);
     return res;
   }
 }

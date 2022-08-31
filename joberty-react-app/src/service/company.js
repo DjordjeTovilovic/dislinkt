@@ -70,6 +70,15 @@ const addSalary = async (companyId, salary) => {
   return res;
 }
 
+const promoteJob = async (job) => {
+  const res = await axios.post(`${baseUrl}companies/jobs/promote`, job, {
+    headers: {
+      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
+    }
+  })
+  return res;
+}
+
 const companyService = {
   addCompany,
   updateCompany,
@@ -78,7 +87,8 @@ const companyService = {
   addJobOffer,
   addInterview,
   addReview,
-  addSalary
+  addSalary,
+  promoteJob
 }
 
 export default companyService

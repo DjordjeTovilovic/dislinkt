@@ -10,6 +10,7 @@ import Companies from "./pages/Companies";
 import JobOffers from "./pages/JobOffers";
 import MyCompany from "./pages/MyCompany";
 import Company from "./pages/Company";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<UserProfile />} />
         <Route path="/addCompany" element={<AddCompany />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/companies/:companyId" element={<Company />} />

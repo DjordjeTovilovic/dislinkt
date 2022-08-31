@@ -1,15 +1,13 @@
+import { Metadata } from '@grpc/grpc-js';
 import { Controller, Logger } from '@nestjs/common';
-import { JobService } from './job.service';
-import { CreateJobDto } from './dto/create-job.dto';
-import { UpdateJobDto } from './dto/update-job.dto';
 import {
+  AddJobProto,
   Empty,
   JobProto,
   JobServiceController,
   JobServiceControllerMethods,
 } from '../protos/job.pb';
-import { Metadata } from '@grpc/grpc-js';
-import { Observable } from 'rxjs';
+import { JobService } from './job.service';
 
 @Controller()
 @JobServiceControllerMethods()
@@ -22,7 +20,7 @@ export class JobController implements JobServiceController {
     return null;
   }
 
-  async addJob(job: JobProto) {
+  async addJob(job: AddJobProto) {
     return await this.jobService.addJob(job);
   }
 

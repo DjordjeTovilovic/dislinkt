@@ -7,16 +7,14 @@ export class Job {
   skills: string[];
 
   toJson(): JobDto {
-    const { id, position, seniority, description, postedBy } =
-      this.node.properties;
+    const { id, position, seniority, description } = this.node.properties;
 
     return {
       id,
       position,
       seniority,
       description,
-      postedBy,
-      requiredSkills: [...this.skills],
+      skillsRequired: [...this.skills],
     };
   }
 }
