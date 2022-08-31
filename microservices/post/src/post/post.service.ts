@@ -31,9 +31,9 @@ export class PostService {
 
     const payload = {
       postId,
-      type: 'comment',
+      type: 'commented',
       senderUsername: username,
-      receiverUsername: commentedPost.authorUsername,
+      receiverUsername: commentedPost.postAuthorUsername,
     };
     this.logger.log('post_commented#emit');
     this.notificationClient.emit('post_commented', payload);
@@ -46,7 +46,7 @@ export class PostService {
 
     const payload = {
       postId,
-      type: 'like',
+      type: 'liked',
       senderUsername: username,
       receiverUsername: likedPost.authorUsername,
     };
@@ -61,7 +61,7 @@ export class PostService {
 
     const payload = {
       postId,
-      type: 'dislike',
+      type: 'disliked',
       senderUsername: username,
       receiverUsername: dislikedPost.authorUsername,
     };

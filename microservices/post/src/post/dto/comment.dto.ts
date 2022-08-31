@@ -10,4 +10,7 @@ export class CommentDto implements CommentProto {
 
   @IsNotEmpty()
   authorUsername: string;
+
+  @IsNotEmpty()
+  postAuthorUsername: string;
 }

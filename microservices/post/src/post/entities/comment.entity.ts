@@ -6,6 +6,7 @@ export class Comment {
     private readonly comment: Node,
     private readonly postId: string,
     private readonly authorUsername: string,
+    private readonly postAuthorUsername: string,
   ) {}
 
   toJson(): CommentDto {
@@ -14,6 +15,7 @@ export class Comment {
       body,
       postId: this.postId,
       authorUsername: this.authorUsername,
+      postAuthorUsername: this.postAuthorUsername,
     };
   }
 }

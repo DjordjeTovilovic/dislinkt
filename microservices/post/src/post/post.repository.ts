@@ -86,6 +86,8 @@ export class PostRepository {
       `
         MATCH (p:Post {id: $postId})
         MATCH (u:User {username: $username})
+        MATCH (a:User)
+        WHERE (p)<-[:POSTED]-(a)
 
         CREATE (u)-[:COMMENTED]->(c:Comment {
             id: randomUUID(),
@@ -94,7 +96,7 @@ export class PostRepository {
             body: $body
         })-[:ON]->(p)
 
-        RETURN c, u
+        RETURN c, u, a
     `,
       {
         postId,
@@ -104,7 +106,12 @@ export class PostRepository {
     );
 
     const row = res.records[0];
-    return new Comment(row.get('c'), postId, username).toJson();
+    return new Comment(
+      row.get('c'),
+      postId,
+      username,
+      row.get('a').properties.username,
+    ).toJson();
   }
 
   async like(postId, username) {

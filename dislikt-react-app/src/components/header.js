@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Notifications from "./notifications/notifications";
+import { NotificationsContainer } from "./notifications/styles";
 
 const Header = (props) => {
   
@@ -65,11 +67,7 @@ const Header = (props) => {
                   <img src="/images/down-icon.svg"></img>
                 </div>
               </a>
-              <Notifications>
-                <ul>
-                  <li><a>Milan Pavkov liked your post</a></li>     
-                </ul>
-              </Notifications>
+              <Notifications />
             </NavListNotifications>
 
             <User>
@@ -274,35 +272,6 @@ const Work = styled(User)`
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
 
-const Notifications = styled.div`
-  z-index: 200;
-  position: absolute;
-  top: 45px;
-  background: white;
-  border-radius: 5px 5px 5px 5px;
-  border: 2px solid gray;
-  width: 300px;
-  height: 300px;
-  font-size: 16px;
-  min-height: 200px;
-  transition-duration: 167ms;
-  text-align: left;
-  display: none;
-  list-style: none;
-  overflow-y: auto;
-
-  ul {
-    list-style: none;
-    width: 100%;
-
-  }
-
-  ul > li {
-    padding: 10px;
-    border: 1px solid lightgray;
-  }
-`;
-
 const NavListNotifications = styled(NavList)`
 
   display: flex;
@@ -332,7 +301,7 @@ const NavListNotifications = styled(NavList)`
   }
 
   &:hover {
-    ${Notifications} {
+    ${NotificationsContainer} {
       align-items: left;
       display: flex;
       justify-content: flex-start;
