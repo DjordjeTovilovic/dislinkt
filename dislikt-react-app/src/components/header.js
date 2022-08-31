@@ -36,7 +36,7 @@ const Header = (props) => {
                 <span>Home</span>
               </a>
             </NavList>
-            <NavList onClick={() => setTab('network')} className={activeTab == "network" ? 'active' : null}>
+            <NavList onClick={() => {setTab('network'); navigate('/person-recommendation') }} className={activeTab == "network" ? 'active' : null}>
               <a>
                 <img src="/images/nav-network.svg"></img>
                 <span>Network</span>
@@ -57,12 +57,20 @@ const Header = (props) => {
               </a>
             </NavList>
 
-            <NavList onClick={() => setTab('notifications')} className={activeTab == "notifications" ? 'active' : null}>
+            <NavListNotifications>
               <a>
                 <img src="/images/nav-notifications.svg"></img>
-                <span>Notifications</span>
+                <div className="notifications-icon">
+                  <span>Notifications</span>
+                  <img src="/images/down-icon.svg"></img>
+                </div>
               </a>
-            </NavList>
+              <Notifications>
+                <ul>
+                  <li><a>Milan Pavkov liked your post</a></li>     
+                </ul>
+              </Notifications>
+            </NavListNotifications>
 
             <User>
               <a>
@@ -76,10 +84,9 @@ const Header = (props) => {
             </User>
             <Work>
               <a>
-                <img src="/images/nav-work.svg"></img>
+                <img onClick={() => {setTab('settings'); navigate('/settings')}} className={activeTab == "settings" ? 'active' : null}  src="/images/nav-work.svg"></img>
                 <span>
                   Settings
-                  <img src="/images/down-icon.svg"></img>
                 </span>
               </a>
             </Work>
@@ -264,4 +271,70 @@ const User = styled(NavList)`
 
 const Work = styled(User)`
   border-left: 1px solid rgba(0, 0, 0, 0.08);
+`;
+
+const Notifications = styled.div`
+  z-index: 200;
+  position: absolute;
+  top: 45px;
+  background: white;
+  border-radius: 5px 5px 5px 5px;
+  border: 2px solid gray;
+  width: 300px;
+  height: 300px;
+  font-size: 16px;
+  min-height: 200px;
+  transition-duration: 167ms;
+  text-align: left;
+  display: none;
+  list-style: none;
+  overflow-y: auto;
+
+  ul {
+    list-style: none;
+    width: 100%;
+
+  }
+
+  ul > li {
+    padding: 10px;
+    border: 1px solid lightgray;
+  }
+`;
+
+const NavListNotifications = styled(NavList)`
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-self: center;
+  
+  .notifications-icon{
+    display: flex;
+    flex-direction: row;
+  }
+
+  a > svg {
+    width: 24px;
+    border-radius: 50%;
+  }
+
+  a > img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover {
+    ${Notifications} {
+      align-items: left;
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
 `;
