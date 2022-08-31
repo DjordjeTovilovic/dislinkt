@@ -3,5 +3,5 @@ import { Role } from 'src/enums/role';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-  roles: Role[];
+  roles?: Role[];
 }

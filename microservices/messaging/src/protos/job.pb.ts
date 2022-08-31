@@ -20,8 +20,18 @@ export interface JobProto {
   position: string;
   seniority: string;
   description: string;
-  requiredSkills: string[];
-  postedBy: string;
+  skillsRequired: string[];
+}
+
+export interface AddJobProto {
+  id: string;
+  position: string;
+  seniority: string;
+  description: string;
+  skillsRequired: string[];
+  company: string;
+  dislinktToken: string;
+  userId: string;
 }
 
 export const JOB_PACKAGE_NAME = "job";
@@ -29,7 +39,7 @@ export const JOB_PACKAGE_NAME = "job";
 export interface JobServiceClient {
   findAll(request: Empty, metadata?: Metadata): Observable<JobsProto>;
 
-  addJob(request: JobProto, metadata?: Metadata): Observable<JobProto>;
+  addJob(request: AddJobProto, metadata?: Metadata): Observable<JobProto>;
 
   recommendedJobOffers(
     request: Empty,
@@ -44,7 +54,7 @@ export interface JobServiceController {
   ): Promise<JobsProto> | Observable<JobsProto> | JobsProto;
 
   addJob(
-    request: JobProto,
+    request: AddJobProto,
     metadata?: Metadata
   ): Promise<JobProto> | Observable<JobProto> | JobProto;
 

@@ -46,4 +46,9 @@ export class UserService {
   remove(id: string) {
     return this.userRepository.remove(id);
   }
+
+  connectToDislinktAccount(userId: string, token: string) {
+    const updateUserDto: UpdateUserDto = { dislinktToken: token };
+    return this.userRepository.update(userId, updateUserDto);
+  }
 }

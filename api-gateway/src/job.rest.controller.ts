@@ -6,7 +6,6 @@ import {
   Inject,
   Logger,
   OnModuleInit,
-  Param,
   Post,
   Req,
   UseGuards,
@@ -14,8 +13,11 @@ import {
 import { ClientGrpc, RpcException } from '@nestjs/microservices';
 import { catchError, lastValueFrom } from 'rxjs';
 import { AuthGuard } from './auth.guard';
-import { JobServiceClient, JOB_SERVICE_NAME } from './protos/job.pb';
-import { JobProto } from './protos/job.pb';
+import {
+  AddJobProto,
+  JobServiceClient,
+  JOB_SERVICE_NAME,
+} from './protos/job.pb';
 
 @Controller('jobs')
 export class JobRestController implements OnModuleInit {
@@ -47,18 +49,9 @@ export class JobRestController implements OnModuleInit {
   }
 
   @Post('/addJob')
-  async addJob(@Body() job: JobProto) {
+  async addJob(@Body() job: AddJobProto) {
     this.logger.log('addJob.call#body:job', job);
-
-    const jobs = await lastValueFrom(
-      this.jobService.addJob(job).pipe(
-        catchError((e) => {
-          throw new RpcException(e);
-        }),
-      ),
-    );
-
-    return jobs;
+    return await this.jobService.addJob(job);
   }
 
   @UseGuards(AuthGuard)

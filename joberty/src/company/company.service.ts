@@ -10,6 +10,9 @@ import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { Role } from 'src/enums/role';
+import { PromoteJobOfferDto } from './dto/promote-jobOffer.dto';
+
+import axios from 'axios';
 
 @Injectable()
 export class CompanyService {
@@ -61,8 +64,17 @@ export class CompanyService {
     return jobOffer.toObject();
   }
 
-  async promoteJobOfferOnDislinkt(companyId: string, jobId: string) {
-    return this.findJobOffer(companyId, jobId);
+  async promoteJobOfferOnDislinkt(job: PromoteJobOfferDto) {
+    const res = await axios.post('http://localhost:3000/auth/token/validate', {
+      apiToken: job.dislinktToken,
+    });
+    if (res.data.valid) {
+      const kek = await axios.post('http://localhost:3000/jobs/addjob', {
+        ...job,
+        userId: res.data.userId,
+      });
+      return { valid: true };
+    } else return { valid: false };
   }
 
   addJobOffer(companyId: string, newJobOfferDto: NewJobOfferDto) {

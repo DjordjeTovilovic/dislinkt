@@ -1,4 +1,4 @@
-import styles from "./CompanyList.module.scss";
+//import styles from "./CompanyList.module.scss";
 import CompanyCard from "../../Cards/CompanyCard/CompanyCard";
 
 const CompanyList = ({ companies }) => {

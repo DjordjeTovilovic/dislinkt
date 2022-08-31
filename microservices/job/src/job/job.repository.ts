@@ -21,8 +21,7 @@ export class JobRepository {
           id: randomUUID(),
           position: $position,
           seniority: $seniority,
-          description: $description,
-          postedBy: $postedBy
+          description: $description
         })
 
         RETURN j
@@ -31,11 +30,10 @@ export class JobRepository {
         position: job.position,
         seniority: job.seniority,
         description: job.description,
-        postedBy: job.postedBy,
       },
     );
     let newJob: JobProto = res.records[0].get('j').properties;
-    job.requiredSkills.forEach(async (skill) => {
+    job.skillsRequired.forEach(async (skill) => {
       const exists = await this.neo4jService.read(
         `
         MATCH (s:Skill)
@@ -47,7 +45,7 @@ export class JobRepository {
         },
       );
       if (exists.records.length > 0)
-        this.neo4jService.write(
+        await this.neo4jService.write(
           `
           MATCH (j:Job {id: $id})
           MATCH (s:Skill)
@@ -60,7 +58,7 @@ export class JobRepository {
           },
         );
       else
-        this.neo4jService.write(
+        await this.neo4jService.write(
           `
           MATCH (j:Job {id: $id})
           CREATE (s:Skill {id: randomUUID(), name: $skill })
@@ -72,6 +70,53 @@ export class JobRepository {
           },
         );
     });
+    const exists = await this.neo4jService.read(
+      `
+      MATCH (e:Experience)
+      WHERE toLower(e.name) = toLower($company)
+      RETURN e
+      `,
+      {
+        company: job.company,
+      },
+    );
+    if (exists.records.length > 0)
+      await this.neo4jService.write(
+        `
+        MATCH (j:Job {id: $id})
+        MATCH (e:Experience)
+        WHERE toLower(e.name) = toLower($company)
+        MERGE (e)-[o:OFFERS]->(j)
+        `,
+        {
+          id: newJob.id,
+          company: job.company,
+        },
+      );
+    else
+      await this.neo4jService.write(
+        `
+        MATCH (j:Job {id: $id})
+        CREATE (e:Experience {id: randomUUID(), name: $company })
+        MERGE (e)-[o:OFFERS]->(j)
+        `,
+        {
+          id: newJob.id,
+          company: job.company,
+        },
+      );
+    await this.neo4jService.write(
+      `
+        MATCH (u:User {id: $userId})
+        MATCH (e:Experience)
+        WHERE toLower(e.name) = toLower($company)
+        MERGE (u)-[o:OWNS]->(e)
+        `,
+      {
+        userId: job.userId,
+        company: job.company,
+      },
+    );
     return newJob;
   }
 

@@ -27,22 +27,27 @@ const CompanyProfileCard = ({ company }) => {
   const handleAddReview = (review, type) => {
     switch (type) {
       case "interview":
-        companyService
-          .addInterview(company.id, review)
-          .then(() => window.location.reload())
-          .catch((err) => console.log(err));
+        if (review.seniority && review.position && review.interview)
+          companyService
+            .addInterview(company.id, review)
+            .then(() => window.location.reload())
+            .catch((err) => console.log(err));
         break;
       case "review":
-        companyService
-          .addReview(company.id, review)
-          .then(() => window.location.reload())
-          .catch((err) => console.log(err));
+        if (review.seniority && review.position && review.review)
+          companyService
+            .addReview(company.id, review)
+            .then(() => window.location.reload())
+            .catch((err) => console.log(err));
         break;
       case "salary":
-        companyService
-          .addSalary(company.id, review)
-          .then(() => window.location.reload())
-          .catch((err) => console.log(err));
+        if (review.seniority && review.position && review.salary > 0)
+          companyService
+            .addSalary(company.id, review)
+            .then(() => window.location.reload())
+            .catch((err) => console.log(err));
+        break;
+      default:
         break;
     }
   };
@@ -115,7 +120,7 @@ const CompanyProfileCard = ({ company }) => {
           >
             VIEW JOB OFFERS
           </Link>
-          {user?.companiesOwned?.id !== company.id && (
+          {user && user?.companiesOwned?.id !== company.id && (
             <>
               <button
                 type="button"

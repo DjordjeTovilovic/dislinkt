@@ -5,7 +5,7 @@ import AddJobOfferForm from "../../Forms/AddJobOfferFrom/AddJobOfferForm";
 import Modal from "../../Modal/Modal";
 import styles from "./JobOffersList.module.scss";
 
-const JobOffersList = ({ company, handleAddJobOffer }) => {
+const JobOffersList = ({ company, handleAddJobOffer, publishToDislinkt }) => {
   const [isAddJobOfferModalOpen, setIsAddJobOfferModalOpen] = useState(false);
   const [user, setUser] = useState({});
 
@@ -32,7 +32,13 @@ const JobOffersList = ({ company, handleAddJobOffer }) => {
       )}
       <div className={styles.jobOfferList}>
         {company.jobOffers?.map((job) => (
-          <JobOfferCard job={job} key={job.id} />
+          <JobOfferCard
+            job={job}
+            key={job.id}
+            publish={user?.companiesOwned?.id === company.id}
+            publishToDislinkt={publishToDislinkt}
+            dislinktToken={user?.dislinktToken}
+          />
         ))}
       </div>
       <Modal

@@ -85,7 +85,6 @@ export class AuthRestController implements OnModuleInit {
     return apiToken;
   }
 
-  @UseGuards(AuthGuard)
   @Post('/token/validate')
   async validateApiToken(
     @Body() validateApiTokenRequest: ValidateApiTokenRequest,
