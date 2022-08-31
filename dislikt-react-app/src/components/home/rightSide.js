@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Rightside = (props) => {
+  
+  const navigate = useNavigate();
+
   return (
     <Container>
       <FollowCard>
         <Title>
-          <h2>Add to your feed</h2>
+          <h2>People you may know</h2>
           <img src="/images/feed-icon.svg" alt="" />
         </Title>
 
@@ -30,14 +34,14 @@ const Rightside = (props) => {
           </li>
         </FeedList>
 
-        <Recommendation>
+        <Recommendation onClick={() => navigate('/person-recommendation')}>
           View all recommendations
           <img src="/images/right-icon.svg" alt="" />
         </Recommendation>
       </FollowCard>
       <FollowCard>
         <Title>
-          <h2>Add to your feed</h2>
+          <h2>Jobs you might like</h2>
           <img src="/images/feed-icon.svg" alt="" />
         </Title>
 
@@ -62,8 +66,8 @@ const Rightside = (props) => {
           </li>
         </FeedList>
 
-        <Recommendation>
-          View all recommendations
+        <Recommendation onClick={() => navigate('/job-offer')}>
+          View all job offers
           <img src="/images/right-icon.svg" alt="" />
         </Recommendation>
       </FollowCard>
@@ -150,6 +154,7 @@ const Recommendation = styled.a`
   display: flex;
   align-items: center;
   font-size: 14px;
+  cursor: pointer
 `;
 
 const BannerCard = styled(FollowCard)`

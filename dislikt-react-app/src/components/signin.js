@@ -1,6 +1,10 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Signin = (props) => {
+
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Background />
@@ -24,7 +28,7 @@ const Signin = (props) => {
             <OrLine>
               <NewAccount>
                 Already have an account?
-                <a> Log in</a>
+                <a onClick={() => navigate('/')}> Log in</a>
               </NewAccount>
             </OrLine>
           </Second>

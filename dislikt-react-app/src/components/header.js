@@ -79,7 +79,7 @@ const Header = (props) => {
                 <img src="/images/down-icon.svg"></img>
               </a>
               <SignOut>
-                <a>Sign Out</a>
+                <a onClick={() => {navigate('/signin')}}>Sign Out</a>
               </SignOut>
             </User>
             <Work>
@@ -232,7 +232,8 @@ const NavList = styled.li`
 
 const SignOut = styled.div`
   position: absolute;
-  top: 45px;
+  border: 1px solid gray;
+  top: 65px;
   background: white;
   border-radius: 0 0 5px 5px;
   width: 100px;
