@@ -124,7 +124,6 @@ export class PostRepository {
         [],
       ).toJson();
     });
-    console.log(posts);
     return { posts };
   }
 

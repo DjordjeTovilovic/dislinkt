@@ -164,8 +164,10 @@ export class JobRepository {
       },
     );
     const jobs = res.records.map((record) => {
+      console.log(record);
       return record.get('recommendedJob').properties;
     });
+
     if (jobs.length > 0) return { jobs: jobs };
     else return { jobs: [] };
   }

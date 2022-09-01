@@ -36,7 +36,7 @@ export class PostService {
   async findByUserId(userId, username) {
     const posts = await this.postRepository.findByUserId(userId, username);
     await Promise.all(
-      posts.posts.map(async (post) => {
+      posts.posts.map(async (post) => {ents = [];
         const commentsObj = await this.getComments(post.id);
         if (commentsObj !== null) post.comments = commentsObj.comments;
       }),

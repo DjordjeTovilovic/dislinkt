@@ -7,6 +7,11 @@ export const getPostsForUsers = async () => {
 	return res.data
 }
 
+export const getPostsForUserId = async (userId) => {
+	const res = await axios.get(baseUrl + `posts/user/${userId}`)
+	return res.data
+}
+
 export const getCommentsForPost = async (postId) => {
 	const res = await axios.get(baseUrl + `posts/${postId}/comments`)
 	return res.data

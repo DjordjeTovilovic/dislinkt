@@ -317,7 +317,7 @@ export class UserRepository {
       res = await this.neo4jService.read(
         `
           MATCH (loggedInUser:User {username: $username})-[:WORKED]->(commonCompany:Experience)<-[:WORKED]-(recommendedUser:User)
-          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser)
+          WHERE not (loggedInUser)-[:FOLLOWS]->(recommendedUser) AND loggedInUser.username <> recommendedUser.username
           RETURN recommendedUser, count(commonCompany)
           ORDER BY count(commonCompany) desc
           LIMIT 10

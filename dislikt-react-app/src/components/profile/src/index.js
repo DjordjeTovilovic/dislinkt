@@ -1,4 +1,4 @@
-import Article from "../../posts";
+import UserArticle from "../../posts/userPosts";
 import About from "../about/about";
 import Jobs from "../jobs/jobs";
 import Follows from "../follows/follows";
@@ -9,6 +9,7 @@ import Rightside from "../../home/rightSide";
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import userService from '../../../services/user'
+import { getPostsForUserId } from '../../../services/post'
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('about');
@@ -18,6 +19,8 @@ const Profile = () => {
   const [experience, setExperiences] = useState([])
   const [education, setEducation] = useState([])
   const [interests, setInterests] = useState([])
+  const [posts, setPosts] = useState([])
+
   useEffect(() => {
     userService
       .getById(userId)
@@ -25,21 +28,24 @@ const Profile = () => {
       .catch((err) => console.log(err));
     userService
       .getEducationsForUser(userId)
-      .then((gotUser) => setEducation(gotUser))
+      .then((gotEdus) => setEducation(gotEdus))
       .catch((err) => console.log(err));
     userService
       .getExperiencesForUser(userId)
-      .then((gotUser) => setExperiences(gotUser))
+      .then((gotExps) => setExperiences(gotExps))
       .catch((err) => console.log(err));
     userService
       .getInterestsForUser(userId)
-      .then((gotUser) => setInterests(gotUser))
+      .then((gotInts) => setInterests(gotInts))
       .catch((err) => console.log(err));
     userService
       .getSkillsForUser(userId)
-      .then((gotUser) => setSkills(gotUser))
+      .then((gotSkills) => setSkills(gotSkills))
+      .catch((err) => console.log(err));
+    getPostsForUserId(userId).then((gotPosts) => setPosts(gotPosts))
       .catch((err) => console.log(err));
   }, [userId]);
+
   const setTab = (name) => {
     setActiveTab(name);
   }
@@ -70,7 +76,7 @@ const Profile = () => {
 
           <Content>
             {activeTab == "about" ? <About bio={user.bio} /> : null}
-            {activeTab == "posts" ? <Article /> : null}
+            {activeTab == "posts" ? <UserArticle postss={posts} /> : null}
             {activeTab == "jobs" ? <Jobs other={
               {
                 skills: skills.skills,
