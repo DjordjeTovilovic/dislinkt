@@ -23,6 +23,7 @@ const getById = async (id) => {
   return res.data;
 }
 
+
 const getByUsername = async (username) => {
   const res = await axios.get(`http://localhost:3000/users/username/${username}`)
   return res.data;
@@ -120,7 +121,13 @@ const declineRequest = async (usernameToDecline) => {
   return res.data;
 }
 
+const generateDislinktToken = async () => {
+  const res = await axios.post("http://localhost:3000/auth/token")
+  return res.data;
+}
+
 const userService = {
+  generateDislinktToken,
   login,
   registration,
   logout,

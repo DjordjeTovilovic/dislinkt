@@ -52,13 +52,6 @@ const Header = (props) => {
               </a>
             </NavList>
 
-            <NavList onClick={() => { setTab('messages'); navigate('/messenger') }} className={activeTab == "messages" ? 'active' : null}>
-              <a>
-                <img src="/images/nav-messaging.svg"></img>
-                <span>Messaging</span>
-              </a>
-            </NavList>
-
             <NavListNotifications>
               <a>
                 <img src="/images/nav-notifications.svg"></img>

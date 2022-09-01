@@ -6,6 +6,7 @@ import Home from "./components/home/home";
 import Signup from "./components/signup";
 import Messenger from "./components/messenger/messenger";
 import Profile from "./components/profile/src";
+import MyProfile from "./components/profile/src/MyProfile";
 import Settings from "./components/notification-settings/settings/settings";
 import FollowerRecommendation from "./components/recommendation/people/followerRecommendation";
 import AllJobOffers from "./components/recommendation/job-offers/allJobOffers";
@@ -35,6 +36,7 @@ function App() {
               </>
             }
           ></Route>
+          <Route path="/profile/" element={<><Header /><MyProfile /></>}></Route>
           <Route path="/profile/:userId" element={<><Header /><Profile /></>}></Route>
           <Route path="/settings" element={<><Header /><Settings /></>}></Route>
           <Route path="/person-recommendation" element={<><Header /> <FollowerRecommendation /></>}></Route>

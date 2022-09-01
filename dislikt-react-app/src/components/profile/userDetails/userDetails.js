@@ -3,11 +3,10 @@ import UpdateModal from './updateProfileDetailsModal/updateModal';
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
-const UserDetails = ({ user }) => {
+const UserDetails = ({ user, isMy }) => {
   const [showUpdateModal, setShowUpdateModal] = useState('close');
   const [isPrivate, setIsPrivate] = useState(false)
   const navigate = useNavigate();
-
 
   const updateHandler = (e) => {
     e.preventDefault();
@@ -48,20 +47,15 @@ const UserDetails = ({ user }) => {
 
           <div className='row'>
             <div className="buttons">
-              <button>
-                Follow
-              </button>
-              <button>
-                Unfollow
-              </button>
-              <button onClick={updateHandler}>
-                Update
-              </button>
-              <button onClick={handleMessage}>
+              {!isMy && <button onClick={handleMessage}>
                 Message
-              </button>
+              </button>}
             </div>
-            <button onClick={changePrivacy}>{isPrivate ? "Private" : "Public"}</button>
+            {isMy
+              ? <button onClick={changePrivacy}>{isPrivate ? "Private" : "Public"}</button>
+              : <button>{isPrivate ? "Private" : "Public"}</button>
+            }
+
           </div>
         </div>
       </Container>
