@@ -12,13 +12,9 @@ axios.interceptors.request.use(function (config) {
     const token = `Bearer ${loggedInUser}`
     config.headers['Authorization'] = token
   }
-
   return config
 })
 
 root.render(
-  <React.StrictMode>
-
     <App />
-  </React.StrictMode>
 );

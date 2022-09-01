@@ -21,8 +21,8 @@ export class PostService {
     const posts = await this.postRepository.userFeed(username);
     await Promise.all(
       posts.posts.map(async (post) => {
-        const { comments } = await this.getComments(post.id);
-        post.comments = comments;
+        const commentsObj = await this.getComments(post.id);
+        if (commentsObj !== null) post.comments = commentsObj.comments;
       }),
     );
     return posts;
@@ -36,11 +36,9 @@ export class PostService {
   async findByUserId(userId, username) {
     const posts = await this.postRepository.findByUserId(userId, username);
     await Promise.all(
-      posts.posts.map(async (post) => {
-        if (await this.getComments(post.id)) {
-          const { comments } = await this.getComments(post.id);
-          post.comments = comments;
-        } else post.comments = [];
+      posts.posts.map(async (post) => {ents = [];
+        const commentsObj = await this.getComments(post.id);
+        if (commentsObj !== null) post.comments = commentsObj.comments;
       }),
     );
     return posts;
@@ -77,6 +75,8 @@ export class PostService {
     this.logger.log('post_liked#emit');
     this.notificationClient.emit('post_liked', payload);
 
+    const commentsObj = await this.getComments(likedPost.id);
+    if (commentsObj !== null) likedPost.comments = commentsObj.comments;
     return likedPost;
   }
 
@@ -92,6 +92,8 @@ export class PostService {
     this.logger.log('post_disliked#emit');
     this.notificationClient.emit('post_disliked', payload);
 
+    const commentsObj = await this.getComments(dislikedPost.id);
+    if (commentsObj !== null) dislikedPost.comments = commentsObj.comments;
     return dislikedPost;
   }
 

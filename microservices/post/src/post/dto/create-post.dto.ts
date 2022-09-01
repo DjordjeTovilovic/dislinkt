@@ -6,7 +6,7 @@ export class CreatePostDto implements CreatePostRequest {
   title: string;
 
   @IsNotEmpty()
-  description: string;
+  image: string;
 
   @IsNotEmpty()
   body: string;

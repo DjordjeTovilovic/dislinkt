@@ -55,6 +55,23 @@ export class UserRestController implements OnModuleInit {
     return user;
   }
 
+  @UseGuards(AuthGuard)
+  @Get('users/me')
+  async getMe(@Req() req) {
+    this.logger.log('getMe.call#param id', req.user.id);
+
+    const user = await lastValueFrom(
+      this.userService.findById({ id: req.user.id }).pipe(
+        catchError((e) => {
+          throw new RpcException(e);
+        }),
+      ),
+    );
+
+    this.logger.log('findById.call#return', user);
+    return user;
+  }
+
   @Get('/:id/skills')
   async getSkillsForUser(@Param('id') id) {
     this.logger.log('getSkillsForUser.call#param id', id);

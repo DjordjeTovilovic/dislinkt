@@ -18,6 +18,16 @@ const getById = async (id) => {
   return res.data;
 }
 
+const getByUsername = async (username) => {
+  const res = await axios.get(`http://localhost:3000/users/username/${username}`)
+  return res.data;
+}
+
+const getMe = async () => {
+  const res = await axios.get(`http://localhost:3000/users/users/me`)
+  return res.data;
+}
+
 const getRecommendedJobs = async () => {
   const res = await axios.get(`http://localhost:3000/jobs/jobOffers/recommended`)
   return res.data;
@@ -109,6 +119,8 @@ const userService = {
   login,
   logout,
   getById,
+  getByUsername,
+  getMe,
   getRecommendedJobs,
   getJobById,
   getRecommendedProfilesThroughMutual,

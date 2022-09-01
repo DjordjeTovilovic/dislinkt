@@ -51,7 +51,7 @@ export class NotificationRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('findAll.call#return notifications', notifications);
+    this.logger.log('findAll.call#return notifications');
     return notifications;
   }
 }

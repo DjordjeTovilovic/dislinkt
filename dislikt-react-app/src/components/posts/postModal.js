@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { makeNewPost, uploadImage } from "../../services/post";
 
 const PostModal = (props) => {
     
@@ -22,6 +23,33 @@ const PostModal = (props) => {
         props.handleClick(e);
     }
 
+    const handlePosting = async (e) => {
+        e.preventDefault()
+        if (shareImage !== '') {
+
+            const data = new FormData() 
+            data.append('file', shareImage)
+            
+            const image = await uploadImage(data)
+            
+            const post = {
+                body:editorText,
+                image,
+            }
+            makeNewPost(post)
+        }
+        else {
+            const post = {
+                body:editorText,
+            }
+            makeNewPost(post)
+        }
+
+
+
+    }
+
+
     return (
         <>
         { props.showModal === 'open' &&
@@ -35,17 +63,17 @@ const PostModal = (props) => {
                 </Header>
 
                 <SharedContent>
-                    <UserInfo>
+                    {/* <UserInfo>
                         <img src="/images/user.svg"></img>
                         <span>Name</span>
-                    </UserInfo>
+                    </UserInfo> */}
 
                     <Editor>
                         <textarea 
                             value={editorText}
                             onChange={(e) => setEditorText(e.target.value)}
-                            placeholder='What do you want to talk abouy?' 
-                            autoFocus='true'
+                            placeholder='What do you want to talk about?' 
+                            autoFocus={true}
                             />
                         <UplodImage>
                             <input 
@@ -76,7 +104,7 @@ const PostModal = (props) => {
                         </AssetButton>
                     </AttachAssets>
 
-                    <PostButton disabled={!editorText ? true : false}>Post</PostButton>
+                    <PostButton type="button" onSubmit={(e) => handlePosting(e)} onClick={(e) => handlePosting(e)} disabled={!editorText ? true : false}>Post</PostButton>
                 </SharedCreation>
             </Content>
         </Container>

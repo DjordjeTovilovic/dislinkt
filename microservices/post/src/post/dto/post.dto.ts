@@ -9,8 +9,7 @@ export class PostDto implements PostProto {
   @IsNotEmpty()
   title: string;
 
-  @IsNotEmpty()
-  description: string;
+  image: string;
 
   @IsNotEmpty()
   body: string;

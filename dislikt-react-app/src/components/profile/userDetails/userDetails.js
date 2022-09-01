@@ -1,12 +1,12 @@
 import { Container } from './styles'
 import UpdateModal from './updateProfileDetailsModal/updateModal';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 const UserDetails = ({ user }) => {
   const [showUpdateModal, setShowUpdateModal] = useState('close');
-
   const [isPrivate, setIsPrivate] = useState(false)
+  const navigate = useNavigate();
 
 
   const updateHandler = (e) => {
@@ -31,6 +31,11 @@ const UserDetails = ({ user }) => {
     setIsPrivate(!isPrivate)
   }
 
+  const handleMessage = () => {
+    setIsPrivate(!isPrivate)
+    navigate(`/messenger/${user.id}`)
+  }
+
   return (
     <>
       <Container>
@@ -51,6 +56,9 @@ const UserDetails = ({ user }) => {
               </button>
               <button onClick={updateHandler}>
                 Update
+              </button>
+              <button onClick={handleMessage}>
+                Message
               </button>
             </div>
             <button onClick={changePrivacy}>{isPrivate ? "Private" : "Public"}</button>

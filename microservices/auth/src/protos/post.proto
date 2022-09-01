@@ -33,7 +33,7 @@ message PostProtoList {
 
 message CreatePostRequest {
   string title = 1;
-  string description = 2;
+  string image = 2;
   string body = 3;
 }
 
@@ -62,7 +62,7 @@ message CommentProto {
 message PostProto {
   string id = 1;
   string title = 2;
-  string description = 3;
+  string image = 3;
   string body = 4;
   string authorUsername = 5;
   int32 likeCount = 6;

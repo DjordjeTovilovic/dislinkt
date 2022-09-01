@@ -103,7 +103,10 @@ line-height: 1.3;
       height: 35px;
       align-items: center;
       cursor: pointer;
-
+    }
+    
+    .active {
+      background: green;
     }
 
     a {

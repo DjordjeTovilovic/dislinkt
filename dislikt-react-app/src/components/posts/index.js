@@ -1,12 +1,15 @@
 import {Container, Comment, Comments, CommentBox, 
-  CommentsSection, SharedActor, Description, 
+  CommentsSection, SharedActor, Description, Selected,
   SharedImage, SocialCounts} from './styles'
 import { useEffect, useState } from 'react';
-import { commentPost, getPostsForUsers } from '../../services/post';
+import { commentPost, dislikePost, getPostsForUsers, likePost } from '../../services/post';
+import userService from '../../services/user';
+import { useNavigate } from 'react-router-dom';
 
 const Article = () => {
   const [posts, setPosts] = useState([])
-  const [commentText, setCommentText] = useState('')
+  const [commentText, setCommentText] = useState({})
+  const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -17,26 +20,63 @@ const Article = () => {
 		fetchData()
 	}, [])
 
-
-  const handlePostLike = () => {
-
+  const handleCommentChange = (value, postId) => {
+    const f = commentText
+    f[postId] = value
+    setCommentText(f)
   }
+  
+  const handlePostLike = async(postId) => {
+    const likedPost = await likePost(postId)
 
-  const handleCommentPost = async (postId) => {
-    const newComment = await commentPost({body: commentText}, postId)
     const updatedPosts = posts.map(post => {
-      if (post.id === postId) post.comments.push(newComment)
+      if (post.id === postId) {
+        return likedPost
+      }
       return post
     })
     setPosts(updatedPosts)
-    setCommentText('')
+  }
+
+
+  const handlePostDislike = async(postId) => {
+    const likedPost = await dislikePost(postId)
+
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        return likedPost
+      }
+      return post
+    })
+    setPosts(updatedPosts)
+  }
+
+  const handleCommentPost = async (postId) => {
+    const newComment = await commentPost({body: commentText[postId]}, postId)
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        if (post.comments)
+          post.comments.push(newComment)
+        else
+          post.comments = [newComment]
+      }
+      return post
+    })
+    setPosts(updatedPosts)
+    handleCommentChange('', postId)
+  }
+
+
+  const handleProfileClick = async (authorUsername) => {
+    const author = await userService.getByUsername(authorUsername)
+    navigate(`/profile/${author.id}`)
   }
   
   return (
     <Container>
       {posts && posts.map((post) => 
         <div key={post.id}>
-        <SharedActor>
+        <SharedActor onClick={() => handleProfileClick(post.authorUsername)}>
           <a>
             <img src="/images/user.svg"></img>
             <div>
@@ -53,22 +93,26 @@ const Article = () => {
           </button>
         </SharedActor>
         <Description>{post.body}</Description>
+
+        {post.image &&
           <SharedImage>
             <a>
-              <img src="/images/random-image.png"></img>
+              <img src={'/' + post.image}></img>
             </a>
           </SharedImage>
+          }
+          
           <SocialCounts>
             <li>
-              <button>
+              <button className={post.liked && 'active'} onClick={() => handlePostLike(post.id)}>
                 <img src="/images/like-icon.svg" alt=""></img>
                 <span>{post.likeCount}</span>
               </button>
             </li>
             <li>
-              <button onClick={() => handlePostLike}>
+              <button className={post.disliked && 'active'} onClick={() => handlePostDislike(post.id)}>
                 <img style={{transform: 'rotate(180deg)'}} src="/images/like-icon.svg" alt=""></img>
-                <span>{post.likeCount}</span>
+                <span>{post.dislikeCount}</span>
               </button>
             </li>
             <li>
@@ -80,7 +124,7 @@ const Article = () => {
 
             {post.comments && post.comments.map((comment) => 
             <CommentBox key={comment.id}>
-                <img src='/images/user.svg'></img>
+                <img onClick={() => handleProfileClick(comment.authorUsername)} src='/images/user.svg'></img>
                   <div className='comment-info'>
                     <h3>{comment.authorUsername}</h3>
                     <p>{comment.body}</p>
@@ -90,7 +134,7 @@ const Article = () => {
             )}
             </Comments> 
             <Comment>
-                <textarea placeholder='Comment on this...' value={commentText} onChange={(e) => setCommentText(e.target.value)} maxLength="250"></textarea>
+                <textarea placeholder='Comment on this...' value={commentText[post.id]} onChange={(e) => handleCommentChange(e.target.value, post.id)} maxLength="250"></textarea>
                 <button onClick={() => handleCommentPost(post.id)}>Post</button>
             </Comment>  
           </CommentsSection> 

@@ -2,8 +2,8 @@ import axios from 'axios'
 // const baseUrl = process.env.API_URL
 const baseUrl = 'http://localhost:3000/'
 
-export const getMessagesForUsers = async (users) => {
-	const res = await axios.post(baseUrl + 'messages', users)
+export const getChatWithUser = async (userId) => {
+	const res = await axios.post(baseUrl + `messages/${userId}`)
 	return res.data
 }
 
