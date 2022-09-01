@@ -63,12 +63,6 @@ export interface RegistrationRequest {
   username: string;
   password: string;
   email: string;
-  bio: string;
-  image: string;
-  phoneNumber: string;
-  birthday: string;
-  gender: Gender;
-  privateProfile: boolean;
 }
 
 export interface ExperienceProto {

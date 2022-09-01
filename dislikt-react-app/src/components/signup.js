@@ -1,9 +1,26 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import userService from "../services/user";
 
 const Signup = (props) => {
+  const [registrationFields, setRegistrationFields] = useState({})
 
   const navigate = useNavigate();
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setRegistrationFields((prevstate) => ({ ...prevstate, [name]: value }))
+  }
+
+  const handleRegistration = () => {
+    console.log(registrationFields.confirmPassword)
+    if (registrationFields.password === registrationFields.confirmPassword){
+      delete registrationFields.confirmPassword
+      userService.registration(registrationFields).then(() => navigate('/'))
+    }
+  }
+
 
   return (
     <Container>
@@ -20,11 +37,12 @@ const Signup = (props) => {
         <First>
           <Second>
             <h1>Sign up</h1>
-            <input placeholder="Email@gmail.com"></input>
-            <input type="password" placeholder="password"></input>
-            <input type="password" placeholder="Confirm password"></input>
+            <input name="username" placeholder="username" onChange={handleOnChange}></input>
+            <input name="email" placeholder="Email@gmail.com" onChange={handleOnChange}></input>
+            <input type="password" name="password" placeholder="password" onChange={handleOnChange}></input>
+            <input type="password" name="confirmPassword" placeholder="Confirm password" onChange={handleOnChange}></input>
 
-            <button>Create account</button>
+            <button onClick={handleRegistration}>Create account</button>
             <OrLine>
               <NewAccount>
                 Already have an account?

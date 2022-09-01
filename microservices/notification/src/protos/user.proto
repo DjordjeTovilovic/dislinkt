@@ -70,12 +70,6 @@ message CreateUserRequest {
   string username = 1;
   string password = 2;
   string email = 3;
-  string bio = 4;
-  string image = 5;
-  string phoneNumber = 6;
-  string birthday = 7;
-  Gender gender = 8;
-  bool privateProfile = 13;
 }
 
 message UserProto {
@@ -88,7 +82,7 @@ message UserProto {
   string phoneNumber = 7;
   string birthday = 8;
   Gender gender = 9;
-  bool privateProfile = 14;
+  bool privateProfile = 10;
 }
 
 message UsersProto {
@@ -105,7 +99,7 @@ message UpdateUserRequest {
   string phoneNumber = 7;
   string birthday = 8;
   Gender gender = 9;
-  bool privateProfile = 14;
+  bool privateProfile = 10;
 }
 
 enum Gender{

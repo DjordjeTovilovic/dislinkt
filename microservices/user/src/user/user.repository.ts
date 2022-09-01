@@ -95,14 +95,10 @@ export class UserRepository {
             id: randomUUID(),
             username: $username,
             password: $password,
-            email: $email,
-            bio: $bio,
-            image: $image,
-            gender: $gender,
-            phoneNumber: $phoneNumber,
-            birthday: $birthday,
-            privateProfile: $privateProfile
+            email: $email
         })
+
+        CREATE (u)<-[f:FOLLOWS]-(u)
 
         RETURN u
       `,
@@ -110,12 +106,6 @@ export class UserRepository {
         username: user.username,
         password: user.password,
         email: user.email,
-        bio: user.bio,
-        image: user.image,
-        gender: user.gender,
-        phoneNumber: user.phoneNumber,
-        birthday: user.birthday,
-        privateProfile: user.privateProfile,
       },
     );
 
@@ -123,10 +113,10 @@ export class UserRepository {
 
     const row = res.records[0];
     const u = new User(row.get('u'));
-    u.experiences = await this.addExperiences(user);
-    u.education = await this.addEducations(user);
-    u.skills = await this.addSkills(user);
-    u.interests = await this.addInterests(user);
+    // u.experiences = await this.addExperiences(user);
+    // u.education = await this.addEducations(user);
+    // u.skills = await this.addSkills(user);
+    // u.interests = await this.addInterests(user);
     return u.toJson();
   }
 
