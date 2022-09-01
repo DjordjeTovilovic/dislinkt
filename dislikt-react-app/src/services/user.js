@@ -23,6 +23,10 @@ const getById = async (id) => {
   return res.data;
 }
 
+const updateUser = async (credentials) => {
+  const res = await axios.put(`http://localhost:3000/users/`, credentials)
+  return res.data;
+}
 
 const getByUsername = async (username) => {
   const res = await axios.get(`http://localhost:3000/users/username/${username}`)
@@ -126,7 +130,38 @@ const generateDislinktToken = async () => {
   return res.data;
 }
 
+const removeEducations = async (educations) => {
+  const res = await axios.put("http://localhost:3000/users/removeEducation", educations)
+  return res.data;
+}
+
+const removeInterests = async (interests) => {
+  const res = await axios.put("http://localhost:3000/users/removeInterest", interests)
+  return res.data;
+}
+
+const removeExperience = async (experiences) => {
+  const res = await axios.put("http://localhost:3000/users/removeExperience", experiences)
+  return res.data;
+}
+
+const removeSkill = async (skills) => {
+  const res = await axios.put("http://localhost:3000/users/removeSkill", skills)
+  return res.data;
+}
+
+const addInterest = async (interests) => {
+  const res = await axios.put("http://localhost:3000/users/addInterest", interests)
+  return res.data;
+}
+
 const userService = {
+  addInterest,
+  removeSkill,
+  removeExperience,
+  removeInterests,
+  removeEducations,
+  updateUser,
   generateDislinktToken,
   login,
   registration,

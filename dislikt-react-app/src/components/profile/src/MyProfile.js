@@ -57,8 +57,8 @@ const MyProfile = () => {
         <MainContent>
           <UserDetailBox>
             <UserDetailsHeader />
-            <UserDetails user={user} isMy={true} />
-
+            {user.id && <UserDetails user={user} isMy={true} />
+            }
             <Tabs>
               <Tab onClick={() => setTab("about")} className={activeTab == "about" ? 'active' : null}>
                 <a><span>About</span></a>

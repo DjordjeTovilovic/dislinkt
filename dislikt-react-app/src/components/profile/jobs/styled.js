@@ -34,6 +34,34 @@ export const List = styled.div`
       border-color: #285e8e;
     }
   }
+  .delBtn{
+    width: 100px;
+    height: 20px;
+    margin-left: 10px;
+    border-radius: 15px;
+    background-color:  orange ;
+    border: none;
+    color: white;
+    cursor: pointer;
+    line-height:2px;
+    &:hover {
+      background-color: red;
+    }
+  }
+  .delBtnClicked{
+    width: 100px;
+    height: 20px;
+    margin-left: 10px;
+    border-radius: 15px;
+    background-color:  red ;
+    border: none;
+    color: white;
+    cursor: pointer;
+    line-height:2px;
+    &:hover {
+      background-color: orange;
+    }
+  }
   div {
     padding: 10px;
     h1 {
