@@ -182,11 +182,12 @@ export class PostRestController implements OnModuleInit {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: '../uploads',
+        destination: '../dislikt-react-app/public',
       }),
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
     console.log(file);
+    return file.filename;
   }
 }

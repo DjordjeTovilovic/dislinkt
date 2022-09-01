@@ -46,8 +46,6 @@ export class PostRepository {
         
         RETURN
           p,
-          [ (c)-[:ON]-(p) | c ] AS comments,
-          [ (c)-[:COMMENTED]-(ca) | ca ][0] AS commentAuthor,
           CASE
               WHEN $username IS NOT NULL
               THEN exists((p)<-[:LIKED]-({username: $username}))
@@ -69,16 +67,7 @@ export class PostRepository {
 
     const posts = res.records.map((row) => {
       const authorUsername = row.get('author').properties.username;
-      // const comments = await this.getComments(row.get('p').properties.id);
-      // const comments = row.get('comments').map((comment) => {
-      //   return new Comment(
-      //     comment,
-      //     // postId,
-      //     row.get('p').properties.id,
-      //     row.get('commentAuthor').properties.username,
-      //     row.get('author').properties.username,
-      //   ).toJson();
-      // });
+
       return new Post(
         row.get('p'),
         authorUsername,
@@ -87,11 +76,9 @@ export class PostRepository {
         row.get('dislikeCount'),
         row.get('disliked'),
         [],
-        // comments,
       ).toJson();
     });
-    // console.log(posts[0].comments[0]);
-    // console.log(posts);
+
     return { posts };
   }
 
