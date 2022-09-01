@@ -9,6 +9,11 @@ const login = async (credentials) => {
   return res.data;
 }
 
+const registration = async (body) => {
+  const res = await axios.post(`http://localhost:3000/auth/registration`, body)
+  return res.data;
+}
+
 const logout = async () => {
   window.localStorage.clear();
 }
@@ -117,6 +122,7 @@ const declineRequest = async (usernameToDecline) => {
 
 const userService = {
   login,
+  registration,
   logout,
   getById,
   getByUsername,
