@@ -38,8 +38,10 @@ export class MessagingRestController implements OnModuleInit {
       );
   }
 
+  @UseGuards(AuthGuard)
   @Post('send')
-  async sendMessage(@Body() newMessage: NewMessage) {
+  async sendMessage(@Req() req, @Body() newMessage: NewMessage) {
+    newMessage.senderId = req.user.id;
     this.logger.log('sendMessage.call#body ', newMessage);
 
     const messages = await lastValueFrom(
@@ -54,10 +56,14 @@ export class MessagingRestController implements OnModuleInit {
     // return messages;
   }
 
-  @Post()
-  async findAll(@Body() usersDto: FindAllRequest) {
+  @UseGuards(AuthGuard)
+  @Post(':userId')
+  async findAll(@Req() req, @Param('userId') userId: string) {
+    const usersDto: FindAllRequest = {
+      user1Id: req.user.id,
+      user2Id: userId,
+    };
     this.logger.log('findAll.call#body ', usersDto);
-
     const messages = await lastValueFrom(
       this.messagingService.findAll(usersDto).pipe(
         catchError((e) => {

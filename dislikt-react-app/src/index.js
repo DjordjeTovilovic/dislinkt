@@ -16,7 +16,5 @@ axios.interceptors.request.use(function (config) {
 })
 
 root.render(
-  <React.StrictMode>
     <App />
-  </React.StrictMode>
 );
