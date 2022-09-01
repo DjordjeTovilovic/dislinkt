@@ -1,19 +1,17 @@
 import UserArticle from "../../posts/userPosts";
 import About from "../about/about";
 import Jobs from "../jobs/jobs";
-import Follows from "../follows/follows";
+import Dislinkt from "../dislinkt/Dislinkt"
 import UserDetails from "../userDetails/userDetails";
 import UserDetailsHeader from "../userDetails/detailsHeader/userDetailsHeader";
 import { Container, Content, MainContent, Page, Tab, Tabs, UserDetailBox } from "./styles";
 import Rightside from "../../home/rightSide";
-import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import userService from '../../../services/user'
 import { getPostsForUserId } from '../../../services/post'
 
-const Profile = () => {
+const MyProfile = () => {
   const [activeTab, setActiveTab] = useState('about');
-  const { userId } = useParams();
   const [user, setUser] = useState({})
   const [skills, setSkills] = useState([])
   const [experience, setExperiences] = useState([])
@@ -23,28 +21,31 @@ const Profile = () => {
 
   useEffect(() => {
     userService
-      .getById(userId)
-      .then((gotUser) => setUser(gotUser))
+      .getMe()
+      .then((gotUser) => {
+        setUser(gotUser)
+        userService
+          .getEducationsForUser(gotUser.id)
+          .then((gotEdus) => setEducation(gotEdus))
+          .catch((err) => console.log(err));
+        userService
+          .getExperiencesForUser(gotUser.id)
+          .then((gotExps) => setExperiences(gotExps))
+          .catch((err) => console.log(err));
+        userService
+          .getInterestsForUser(gotUser.id)
+          .then((gotInts) => setInterests(gotInts))
+          .catch((err) => console.log(err));
+        userService
+          .getSkillsForUser(gotUser.id)
+          .then((gotSkills) => setSkills(gotSkills))
+          .catch((err) => console.log(err));
+        getPostsForUserId(gotUser.id).then((gotPosts) => setPosts(gotPosts))
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
-    userService
-      .getEducationsForUser(userId)
-      .then((gotEdus) => setEducation(gotEdus))
-      .catch((err) => console.log(err));
-    userService
-      .getExperiencesForUser(userId)
-      .then((gotExps) => setExperiences(gotExps))
-      .catch((err) => console.log(err));
-    userService
-      .getInterestsForUser(userId)
-      .then((gotInts) => setInterests(gotInts))
-      .catch((err) => console.log(err));
-    userService
-      .getSkillsForUser(userId)
-      .then((gotSkills) => setSkills(gotSkills))
-      .catch((err) => console.log(err));
-    getPostsForUserId(userId).then((gotPosts) => setPosts(gotPosts))
-      .catch((err) => console.log(err));
-  }, [userId]);
+
+  }, []);
 
   const setTab = (name) => {
     setActiveTab(name);
@@ -56,7 +57,7 @@ const Profile = () => {
         <MainContent>
           <UserDetailBox>
             <UserDetailsHeader />
-            <UserDetails user={user} isMy={false} />
+            <UserDetails user={user} isMy={true} />
 
             <Tabs>
               <Tab onClick={() => setTab("about")} className={activeTab == "about" ? 'active' : null}>
@@ -67,6 +68,9 @@ const Profile = () => {
               </Tab>
               <Tab onClick={() => setTab("jobs")} className={activeTab == "jobs" ? 'active' : null}>
                 <a><span>Jobs</span></a>
+              </Tab>
+              <Tab onClick={() => setTab("dislinkt")} className={activeTab == "dislinkt" ? 'active' : null}>
+                <a><span>Joberty</span></a>
               </Tab>
             </Tabs>
           </UserDetailBox>
@@ -81,7 +85,8 @@ const Profile = () => {
                 educations: education.educations,
                 interests: interests.interests
               }
-            } isMy={false} />}
+            } isMy={true} />}
+            {activeTab == "dislinkt" && <Dislinkt />}
           </Content>
 
         </MainContent>
@@ -91,5 +96,5 @@ const Profile = () => {
   )
 }
 
-export default Profile;
+export default MyProfile;
 

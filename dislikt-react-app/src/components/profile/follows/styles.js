@@ -28,8 +28,11 @@ export const FollowedPeople = styled.div`
     }
 
     ul {
+      max-height: 200px;
+      overflow-x:hidden;
+      overflow-y:scroll;
+      list-style: none;
       padding: 10px;
-
       li{
         margin-top: 4px;
         padding: 10px;
@@ -103,8 +106,11 @@ export const FollowingMe = styled.div`
     }
 
     ul {
-      padding: 10px;
+      max-height: 200px;
+      overflow-x:hidden;
+      overflow-y:scroll;
       list-style: none;
+      padding: 10px;
 
       li{
         padding: 10px;

@@ -37,7 +37,7 @@ const Login = (props) => {
           </SearchIcon>
         </Search>
         <div>
-          <SignIn onClick={goToSignIn}>Sign in</SignIn>
+          <SignIn onClick={goToSignIn}>Sign Up</SignIn>
         </div>
       </Nav>
 
