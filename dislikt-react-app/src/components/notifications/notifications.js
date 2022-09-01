@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import { NotificationsContainer } from "./styles";
-import { getNotificationsForUsers } from "../../services/notifications";
+import { getNotificationsForUser } from "../../services/notifications";
 
 
 const Notifications = () => {
 	const [notifications, setNotifications] = useState([])
 
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const fetchedNotifications = await getNotificationsForUsers()
-	// 		setNotifications(fetchedNotifications.notifications)
-	// 	}
-	// 	fetchData()
-	// }, [])
+	useEffect(() => {
+		const fetchData = async () => {
+			const fetchedNotifications = await getNotificationsForUser()
+			setNotifications(fetchedNotifications.notifications)
+		}
+		fetchData()
+	}, [])
 
 	// useEffect(() => {
 	//   const sse = new EventSource(`http://localhost:3008/notifications/sse/${user.username}`)

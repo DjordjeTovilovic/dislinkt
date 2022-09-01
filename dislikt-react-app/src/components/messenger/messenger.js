@@ -3,37 +3,43 @@ import { InsertEmoticon, Mic, SearchOutlined } from '@material-ui/icons'
 import styled from 'styled-components'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { useEffect, useState } from 'react'
-import { getMessagesForUsers, sendMessage } from '../../services/messages'
+import { getChatWithUser, sendMessage } from '../../services/messages'
 import { useParams } from 'react-router-dom'
+import userService from '../../services/user'
 
 const Messenger = (props) => {
   let { receiverId } = useParams();
 	const [messages, setMessages] = useState([])
 	const [text, setText] = useState('')
+	const [sender, setSender] = useState({})
+	const [receiver, setReceiver] = useState({})
 
 
 	useEffect(() => {
 		const fetchData = async () => {
-			const fetchedMessages = await getMessagesForUsers({user1Id: 1, user2Id: 3})
+			const fetchedMessages = await getChatWithUser(receiverId)
 			setMessages(fetchedMessages.messages)
+      const loggedInUser = await userService.getMe()
+      setSender(loggedInUser)
+
+      const fetchedReceiver = await userService.getById(receiverId)
+      setReceiver(fetchedReceiver)
+
+      const sse = new EventSource(`http://localhost:3008/messenger/${loggedInUser.id}`)
+
+      sse.onmessage = e => {
+          setMessages((old) => [...old, JSON.parse(e.data)])
+      }
 		}
 		fetchData()
 	}, [])
 
-  useEffect(() => {
-    const sse = new EventSource(`http://localhost:3008/messenger/${receiverId}`)
-
-    sse.onmessage = e => {
-        setMessages((old) => [...old, JSON.parse(e.data)])
-    }
-	}, [])
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault()
       const message = {
         text,
-        senderId: 1,
         receiverId
       }
       sendMessage(message)
@@ -44,7 +50,7 @@ const Messenger = (props) => {
 	return (
 		<Container>
 			<Body>
-				<Sidebar>
+				{/* <Sidebar>
         
 					<SidebarSearch>
 						<Search>
@@ -75,13 +81,13 @@ const Messenger = (props) => {
 							</SidebarChatInfo>
 						</SidebarChat>
 					</SidebarChats>
-				</Sidebar>
+				</Sidebar> */}
 
 				<Chat>
 					<ChatHeader>
 						<Avatar />
 						<ChatHeaderInfo>
-							<h3>Room name</h3>
+							<h3>{receiver.username}</h3>
 							<p>Last seen</p>
 						</ChatHeaderInfo>
 						<ChatHeaderRight>
@@ -95,7 +101,7 @@ const Messenger = (props) => {
 					</ChatHeader>
 
 					<ChatBoddy>
-						{messages.map((message, index) => 
+						{messages && messages.map((message, index) => 
 							<Message key={index + Date.parse(message.createdAt)}
 								// prop={userId === message.receiverId ? 'reciver' : 'sender'}
 							>

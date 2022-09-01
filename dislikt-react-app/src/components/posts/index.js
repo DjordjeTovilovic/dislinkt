@@ -3,10 +3,13 @@ import {Container, Comment, Comments, CommentBox,
   SharedImage, SocialCounts} from './styles'
 import { useEffect, useState } from 'react';
 import { commentPost, dislikePost, getPostsForUsers, likePost } from '../../services/post';
+import userService from '../../services/user';
+import { useNavigate } from 'react-router-dom';
 
 const Article = () => {
   const [posts, setPosts] = useState([])
   const [commentText, setCommentText] = useState({})
+  const navigate = useNavigate();
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -17,8 +20,6 @@ const Article = () => {
 		fetchData()
 	}, [])
 
-  console.log({commentText})
-  
   const handleCommentChange = (value, postId) => {
     const f = commentText
     f[postId] = value
@@ -64,12 +65,18 @@ const Article = () => {
     setPosts(updatedPosts)
     handleCommentChange('', postId)
   }
+
+
+  const handleProfileClick = async (authorUsername) => {
+    const author = await userService.getByUsername(authorUsername)
+    navigate(`/profile/${author.id}`)
+  }
   
   return (
     <Container>
       {posts && posts.map((post) => 
         <div key={post.id}>
-        <SharedActor>
+        <SharedActor onClick={() => handleProfileClick(post.authorUsername)}>
           <a>
             <img src="/images/user.svg"></img>
             <div>
@@ -97,13 +104,13 @@ const Article = () => {
           
           <SocialCounts>
             <li>
-              <button onClick={() => handlePostLike(post.id)}>
+              <button className={post.liked && 'active'} onClick={() => handlePostLike(post.id)}>
                 <img src="/images/like-icon.svg" alt=""></img>
                 <span>{post.likeCount}</span>
               </button>
             </li>
             <li>
-              <button onClick={() => handlePostDislike(post.id)}>
+              <button className={post.disliked && 'active'} onClick={() => handlePostDislike(post.id)}>
                 <img style={{transform: 'rotate(180deg)'}} src="/images/like-icon.svg" alt=""></img>
                 <span>{post.dislikeCount}</span>
               </button>
@@ -117,7 +124,7 @@ const Article = () => {
 
             {post.comments && post.comments.map((comment) => 
             <CommentBox key={comment.id}>
-                <img src='/images/user.svg'></img>
+                <img onClick={() => handleProfileClick(comment.authorUsername)} src='/images/user.svg'></img>
                   <div className='comment-info'>
                     <h3>{comment.authorUsername}</h3>
                     <p>{comment.body}</p>
