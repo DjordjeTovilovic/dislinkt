@@ -1,37 +1,25 @@
 import { Container } from './styles'
 import UpdateModal from './updateProfileDetailsModal/updateModal';
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import userService from '../../../services/user'
 
 const UserDetails = ({ user, isMy }) => {
-  const [showUpdateModal, setShowUpdateModal] = useState('close');
-  const [isPrivate, setIsPrivate] = useState(false)
+  const [isPrivate, setIsPrivate] = useState()
   const navigate = useNavigate();
 
-  const updateHandler = (e) => {
-    e.preventDefault();
-    if (e.target !== e.currentTarget) {
-      return;
-    }
-    switch (showUpdateModal) {
-      case 'open':
-        setShowUpdateModal('close');
-        break;
-      case 'close':
-        setShowUpdateModal('open');
-        break;
-      default:
-        setShowUpdateModal('close');
-        break;
-    }
-  }
+  useEffect(() => {
+    if (user)
+      setIsPrivate(user.privateProfile)
+  }, [])
 
   const changePrivacy = () => {
-    setIsPrivate(!isPrivate)
+    userService.updateUser({ id: user.id, privateProfile: !isPrivate })
+      .then(() => setIsPrivate(!isPrivate))
+      .catch((err) => console.log(err))
   }
 
   const handleMessage = () => {
-    setIsPrivate(!isPrivate)
     navigate(`/messenger/${user.id}`)
   }
 
@@ -59,7 +47,6 @@ const UserDetails = ({ user, isMy }) => {
           </div>
         </div>
       </Container>
-      <UpdateModal showUpdateModal={showUpdateModal} updateHandler={updateHandler} />
     </>
   );
 }
