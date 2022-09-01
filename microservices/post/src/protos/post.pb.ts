@@ -25,7 +25,7 @@ export interface PostProtoList {
 
 export interface CreatePostRequest {
   title: string;
-  description: string;
+  image: string;
   body: string;
 }
 
@@ -54,7 +54,7 @@ export interface CommentProto {
 export interface PostProto {
   id: string;
   title: string;
-  description: string;
+  image: string;
   body: string;
   authorUsername: string;
   likeCount: number;

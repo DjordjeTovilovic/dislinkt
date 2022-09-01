@@ -1,12 +1,12 @@
 import {Container, Comment, Comments, CommentBox, 
-  CommentsSection, SharedActor, Description, 
+  CommentsSection, SharedActor, Description, Selected,
   SharedImage, SocialCounts} from './styles'
 import { useEffect, useState } from 'react';
-import { commentPost, getPostsForUsers } from '../../services/post';
+import { commentPost, dislikePost, getPostsForUsers, likePost } from '../../services/post';
 
 const Article = () => {
   const [posts, setPosts] = useState([])
-  const [commentText, setCommentText] = useState('')
+  const [commentText, setCommentText] = useState({})
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -17,19 +17,52 @@ const Article = () => {
 		fetchData()
 	}, [])
 
-
-  const handlePostLike = () => {
-
+  console.log({commentText})
+  
+  const handleCommentChange = (value, postId) => {
+    const f = commentText
+    f[postId] = value
+    setCommentText(f)
   }
+  
+  const handlePostLike = async(postId) => {
+    const likedPost = await likePost(postId)
 
-  const handleCommentPost = async (postId) => {
-    const newComment = await commentPost({body: commentText}, postId)
     const updatedPosts = posts.map(post => {
-      if (post.id === postId) post.comments.push(newComment)
+      if (post.id === postId) {
+        return likedPost
+      }
       return post
     })
     setPosts(updatedPosts)
-    setCommentText('')
+  }
+
+
+  const handlePostDislike = async(postId) => {
+    const likedPost = await dislikePost(postId)
+
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        return likedPost
+      }
+      return post
+    })
+    setPosts(updatedPosts)
+  }
+
+  const handleCommentPost = async (postId) => {
+    const newComment = await commentPost({body: commentText[postId]}, postId)
+    const updatedPosts = posts.map(post => {
+      if (post.id === postId) {
+        if (post.comments)
+          post.comments.push(newComment)
+        else
+          post.comments = [newComment]
+      }
+      return post
+    })
+    setPosts(updatedPosts)
+    handleCommentChange('', postId)
   }
   
   return (
@@ -53,22 +86,26 @@ const Article = () => {
           </button>
         </SharedActor>
         <Description>{post.body}</Description>
+
+        {post.image &&
           <SharedImage>
             <a>
-              <img src="/images/random-image.png"></img>
+              <img src={'/' + post.image}></img>
             </a>
           </SharedImage>
+          }
+          
           <SocialCounts>
             <li>
-              <button>
+              <button onClick={() => handlePostLike(post.id)}>
                 <img src="/images/like-icon.svg" alt=""></img>
                 <span>{post.likeCount}</span>
               </button>
             </li>
             <li>
-              <button onClick={() => handlePostLike}>
+              <button onClick={() => handlePostDislike(post.id)}>
                 <img style={{transform: 'rotate(180deg)'}} src="/images/like-icon.svg" alt=""></img>
-                <span>{post.likeCount}</span>
+                <span>{post.dislikeCount}</span>
               </button>
             </li>
             <li>
@@ -90,7 +127,7 @@ const Article = () => {
             )}
             </Comments> 
             <Comment>
-                <textarea placeholder='Comment on this...' value={commentText} onChange={(e) => setCommentText(e.target.value)} maxLength="250"></textarea>
+                <textarea placeholder='Comment on this...' value={commentText[post.id]} onChange={(e) => handleCommentChange(e.target.value, post.id)} maxLength="250"></textarea>
                 <button onClick={() => handleCommentPost(post.id)}>Post</button>
             </Comment>  
           </CommentsSection> 
