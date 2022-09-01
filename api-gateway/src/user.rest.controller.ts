@@ -65,7 +65,7 @@ export class UserRestController implements OnModuleInit {
       }),
     );
 
-    this.logger.log('findById.call#return', user);
+    this.logger.log('getSkillsForUser.call#return', user);
     return user;
   }
 
@@ -79,7 +79,7 @@ export class UserRestController implements OnModuleInit {
       }),
     );
 
-    this.logger.log('findById.call#return', user);
+    this.logger.log('getExperiencesForUser.call#return', user);
     return user;
   }
 
@@ -93,7 +93,7 @@ export class UserRestController implements OnModuleInit {
       }),
     );
 
-    this.logger.log('findById.call#return', user);
+    this.logger.log('getEducationsForUser.call#return', user);
     return user;
   }
 
@@ -107,7 +107,7 @@ export class UserRestController implements OnModuleInit {
       }),
     );
 
-    this.logger.log('findById.call#return', user);
+    this.logger.log('getInterestsForUser.call#return', user);
     return user;
   }
 
@@ -277,7 +277,6 @@ export class UserRestController implements OnModuleInit {
       { num: parseInt(pageNumber) },
       metadata,
     );
-
     return user;
   }
 
@@ -295,7 +294,6 @@ export class UserRestController implements OnModuleInit {
       { num: parseInt(pageNumber) },
       metadata,
     );
-
     return user;
   }
 
@@ -310,7 +308,6 @@ export class UserRestController implements OnModuleInit {
       { num: parseInt(pageNumber) },
       metadata,
     );
-
     return user;
   }
 
@@ -328,7 +325,6 @@ export class UserRestController implements OnModuleInit {
       { num: parseInt(pageNumber) },
       metadata,
     );
-
     return user;
   }
 
@@ -346,7 +342,6 @@ export class UserRestController implements OnModuleInit {
       { num: parseInt(pageNumber) },
       metadata,
     );
-
     return user;
   }
 

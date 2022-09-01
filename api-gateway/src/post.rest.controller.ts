@@ -23,7 +23,6 @@ import {
   POST_SERVICE_NAME,
   CreatePostRequest,
   CreateCommentRequest,
-  FindByPostIdRequest,
 } from './protos/post.pb';
 
 @Controller('posts')
@@ -96,7 +95,7 @@ export class PostRestController implements OnModuleInit {
   @UseGuards(AuthGuard)
   @Get('/user/:userId')
   async findByUserId(@Req() req, @Param('userId') userId: string) {
-    this.logger.log('create.call#param userId', userId);
+    this.logger.log('findByUserId#param userId', userId);
     const metadata = new Metadata();
     metadata.add('username', req.user.username);
 
@@ -108,7 +107,7 @@ export class PostRestController implements OnModuleInit {
       ),
     );
 
-    this.logger.log('findByUsername.call#return posts', posts);
+    this.logger.log('findByUserId.call#return posts', posts);
     return posts;
   }
 

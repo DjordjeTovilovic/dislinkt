@@ -19,11 +19,7 @@ const getById = async (id) => {
 }
 
 const getRecommendedJobs = async () => {
-  const res = await axios.get(`http://localhost:3000/jobs/jobOffers/recommended`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/jobs/jobOffers/recommended`)
   return res.data;
 }
 
@@ -33,44 +29,34 @@ const getJobById = async (jobId) => {
 }
 
 const getRecommendedProfilesThroughMutual = async () => {
-  const res = await axios.get(`http://localhost:3000/users/users/recommended/mutualProfile/1`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/users/users/recommended/mutualProfile/1`)
   return res.data;
 }
 
 const getRecommendedProfilesThroughSkill = async () => {
-  const res = await axios.get(`http://localhost:3000/users/users/recommended/skill/1`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/users/users/recommended/skill/1`)
   return res.data;
 }
 const getRecommendedProfilesThroughExperience = async () => {
-  const res = await axios.get(`http://localhost:3000/users/users/recommended/experience/1`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/users/users/recommended/experience/1`)
   return res.data;
 }
 const getRecommendedProfilesThroughEducation = async () => {
-  const res = await axios.get(`http://localhost:3000/users/users/recommended/education/1`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/users/users/recommended/education/1`)
   return res.data;
 }
 const getRecommendedProfilesThroughInterest = async () => {
-  const res = await axios.get(`http://localhost:3000/users/users/recommended/interest/1`, {
-    headers: {
-      'Authorization': `Bearer ${window.localStorage.getItem("token")}`
-    }
-  })
+  const res = await axios.get(`http://localhost:3000/users/users/recommended/interest/1`)
+  return res.data;
+}
+
+const getFollowing = async () => {
+  const res = await axios.get(`http://localhost:3000/users/users/following`)
+  return res.data;
+}
+
+const getFollowRequests = async () => {
+  const res = await axios.get(`http://localhost:3000/users/users/followerRequests`)
   return res.data;
 }
 
@@ -94,6 +80,31 @@ const getExperiencesForUser = async (id) => {
   return res.data;
 }
 
+const follow = async (usernameToFollow) => {
+  const res = await axios.post(`http://localhost:3000/users/${usernameToFollow}/follow`)
+  return res.data;
+}
+
+const unfollow = async (usernameToUnfollow) => {
+  const res = await axios.post(`http://localhost:3000/users/${usernameToUnfollow}/unfollow`)
+  return res.data;
+}
+
+const deleteRequest = async (usernameToUnfollow) => {
+  const res = await axios.post(`http://localhost:3000/users/${usernameToUnfollow}/deleteFollow`)
+  return res.data;
+}
+
+const approveRequest = async (usernameToApprove) => {
+  const res = await axios.post(`http://localhost:3000/users/${usernameToApprove}/approveFollow`)
+  return res.data;
+}
+
+const declineRequest = async (usernameToDecline) => {
+  const res = await axios.post(`http://localhost:3000/users/${usernameToDecline}/declineFollow`)
+  return res.data;
+}
+
 const userService = {
   login,
   logout,
@@ -105,9 +116,16 @@ const userService = {
   getRecommendedProfilesThroughEducation,
   getRecommendedProfilesThroughExperience,
   getRecommendedProfilesThroughInterest,
+  getFollowing,
+  getFollowRequests,
   getEducationsForUser,
   getInterestsForUser,
   getSkillsForUser,
   getExperiencesForUser,
+  follow,
+  unfollow,
+  deleteRequest,
+  approveRequest,
+  declineRequest
 }
 export default userService;

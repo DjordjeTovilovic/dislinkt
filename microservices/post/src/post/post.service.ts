@@ -37,8 +37,10 @@ export class PostService {
     const posts = await this.postRepository.findByUserId(userId, username);
     await Promise.all(
       posts.posts.map(async (post) => {
-        const { comments } = await this.getComments(post.id);
-        post.comments = comments;
+        if (await this.getComments(post.id)) {
+          const { comments } = await this.getComments(post.id);
+          post.comments = comments;
+        } else post.comments = [];
       }),
     );
     return posts;
